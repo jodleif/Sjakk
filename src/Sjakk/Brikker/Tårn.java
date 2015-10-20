@@ -1,12 +1,14 @@
 package Sjakk.Brikker;
 
-import Sjakk.Brett;
+import Sjakk.Brett.Brett;
 
 /**
  * Created by Jo Øivind Gjernes on 20.10.2015.
  */
 public class Tårn extends Offiser
 {
+	private static final String BRIKKENAVN = "T";
+
 	public Tårn(Brett brett, String rutenavn, Farge farge) throws IllegalArgumentException
 	{
 		super(brett, rutenavn, farge);
@@ -21,6 +23,6 @@ public class Tårn extends Offiser
 	@Override
 	public String brikkenavn()
 	{
-		return "T"; // Tårn
+		return BRIKKENAVN;
 	}
 }

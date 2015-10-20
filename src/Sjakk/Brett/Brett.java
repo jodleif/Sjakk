@@ -1,10 +1,13 @@
-package Sjakk;
+package Sjakk.Brett;
 
 /**
  * Created by Jo Øivind Gjernes on 20.10.2015.
  */
 
 import Sjakk.Brikker.*;
+import Sjakk.Regler.Koordinater;
+import Sjakk.Regler.PosisjonRegler;
+import javafx.geometry.Pos;
 
 /***
  *
@@ -13,13 +16,8 @@ public class Brett
 {
 
 	/***
-	 * Startsposisjoner for tårn.
+	 * Startsposisjoner for brikker..
 	 */
-	private static final String[] TÅRNPOSISJONER = {new String("a1"), new String("a8"), new String("h1"), new String("h8")};
-	private static final String[] LØPERPOSISJONER = {new String("c1"), new String("f1"), new String("c8"), new String("f8")};
-	private static final String[] SPRINGERPOSISJONER = {new String("b1"), new String("g1"), new String("b8"), new String("g8")};
-	private static final String[] DRONNINGPOSISJONER = {new String("e1"), new String("d8")};
-	private static final String[] KONGEPOSISJONER = {new String("d1"), new String("e8")};
 	private static final int BRETTSTØRRELSE = 8;
 	private int spillNr;
 	private Brikke[][] brikkene;
@@ -37,28 +35,12 @@ public class Brett
 
 	private int[] til_koordinater(String rutenavn)
 	{
-		if (erLovligRutenavn(rutenavn)) {
-			int[] koordinater = new int[2];
-			koordinater[0] = rutenavn.charAt(0) - 'a';
-			koordinater[1] = rutenavn.charAt(1) - '1';
-			return koordinater;
-		}
-		return null;
+		return Koordinater.til_koordinater(rutenavn);
 	}
 
 	private String fra_koordinater(int[] koordinater)
 	{
-		if (koordinater.length != 2)
-			return null; // Avbryt.
-
-		String str = new String();
-		str += (char) (koordinater[0] + 'a');
-		str += (char) (koordinater[1] + '1');
-		if (erLovligRutenavn(str)) { // Sjekk om lovlig rutenavn.
-			return str;
-		}
-
-		return null;
+		return Koordinater.fra_koordinater(koordinater);
 	}
 
 	private void opprettSpillbrikker() throws IllegalArgumentException
@@ -73,27 +55,27 @@ public class Brett
 				}
 			}
 		}
-		for (String tårnPos : TÅRNPOSISJONER) {
+		for (String tårnPos : PosisjonRegler.TÅRNPOSISJONER) {
 			int[] koord = til_koordinater(tårnPos);
 			Farge farge = (koord[1] <= 1) ? Farge.HVIT : Farge.SVART; // Hvis rad 1 eller 2 (koordinat 0, 1) Hvite brikker.
 			brikkene[koord[0]][koord[1]] = new Tårn(this, tårnPos, farge);
 		}
-		for (String springerPos : SPRINGERPOSISJONER) {
+		for (String springerPos : PosisjonRegler.SPRINGERPOSISJONER) {
 			int[] koord = til_koordinater(springerPos);
 			Farge farge = (koord[1] <= 1) ? Farge.HVIT : Farge.SVART;
 			brikkene[koord[0]][koord[1]] = new Springer(this, springerPos, farge);
 		}
-		for (String løperPos : LØPERPOSISJONER) {
+		for (String løperPos : PosisjonRegler.LØPERPOSISJONER) {
 			int[] koord = til_koordinater(løperPos);
 			Farge farge = (koord[1] <= 1) ? Farge.HVIT : Farge.SVART;
 			brikkene[koord[0]][koord[1]] = new Løper(this, løperPos, farge);
 		}
-		for (String kongePos : KONGEPOSISJONER) {
+		for (String kongePos : PosisjonRegler.KONGEPOSISJONER) {
 			int[] koord = til_koordinater(kongePos);
 			Farge farge = (koord[1] <= 1) ? Farge.HVIT : Farge.SVART;
 			brikkene[koord[0]][koord[1]] = new Konge(this, kongePos, farge);
 		}
-		for (String dronningPos : DRONNINGPOSISJONER) {
+		for (String dronningPos : PosisjonRegler.DRONNINGPOSISJONER) {
 			int[] koord = til_koordinater(dronningPos);
 			Farge farge = (koord[1] <= 1) ? Farge.HVIT : Farge.SVART;
 			brikkene[koord[0]][koord[1]] = new Dronning(this, dronningPos, farge);
@@ -104,17 +86,7 @@ public class Brett
 
 	public static boolean erLovligRutenavn(String rutenavn)
 	{
-		if (rutenavn.length() != 2)
-			return false;
-		char bokstavDel = rutenavn.charAt(0);
-		char talldel = rutenavn.charAt(1);
-
-		if (bokstavDel < 'a' || bokstavDel > 'h')
-			return false;
-		if (talldel < '1' || talldel > '8')
-			return false;
-
-		return true;
+		return Koordinater.erLovligRutenavn(rutenavn);
 	}
 
 	public Brikke getBrikke(String rutenavn)

@@ -1,5 +1,6 @@
 package Sjakk;
 
+import Sjakk.Brett.Brett;
 import org.junit.Before;
 
 import static org.junit.Assert.*;

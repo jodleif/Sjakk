@@ -1,6 +1,6 @@
 package Sjakk.Brikker;
 
-import Sjakk.Brett;
+import Sjakk.Brett.Brett;
 
 /**
  * Created by Jo Øivind Gjernes on 20.10.2015.
