@@ -33,6 +33,13 @@ public abstract class Brikke
 	 * @return returnerer navnet på brikken. (i.e. T for tårn)
 	 */
 	public abstract String brikkenavn();
+
+	/***
+	 * Flytt brikke til rutenavn.
+	 * @param ruteNavn ruten brikken skal flyttes til.
+	 * @return true hvis den ble flyttet, false ellers.
+	 * TODO: Krasjdeteksjon (med andre brikker)
+	 */
 	public boolean flyttTil(String ruteNavn){
 		// Første sjekk! Er det et gyldig rutenavn?
 		if(!brett.erLovligRutenavn(ruteNavn))
@@ -45,5 +52,19 @@ public abstract class Brikke
 			}
 		}
 		return false; // "noe" gikk galt, men har ikke endret noe!
+	}
+	public String getRuteNavn()
+	{
+		return ruteNavn;
+	}
+
+	public Farge getFarge()
+	{
+		return farge;
+	}
+
+	public Brett getBrett()
+	{
+		return brett;
 	}
 }

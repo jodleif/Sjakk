@@ -1,5 +1,7 @@
 package Sjakk;
 
+import org.junit.Before;
+
 import static org.junit.Assert.*;
 
 /**
@@ -18,5 +20,11 @@ public class BrettTest
 		assertFalse(b.erLovligRutenavn("-99"));
 		assertFalse(b.erLovligRutenavn("A1"));
 		assertFalse(b.erLovligRutenavn("a-"));
+	}
+
+	@Before
+	public void setUp() throws Exception
+	{
+		Brett b = new Brett(0);
 	}
 }
