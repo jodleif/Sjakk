@@ -2,6 +2,9 @@ package GUI.Sjakk;
 
 import GUI.HjelpeFunksjoner;
 import Sjakk.Brikker.Farge;
+import javafx.scene.image.Image;
+
+import java.util.ArrayList;
 
 /**
  * Created by Jo Øivind Gjernes on 20.10.2015.
@@ -35,4 +38,6 @@ public class Brikker
 				throw new IllegalArgumentException("[bildestiForBrikke] Ugyldig brikke!");
 		}
 	}
+
+
 }

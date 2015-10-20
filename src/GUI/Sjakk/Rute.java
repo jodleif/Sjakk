@@ -4,7 +4,6 @@ import GUI.HjelpeFunksjoner;
 import Sjakk.Brikker.Brikke;
 import Sjakk.Brikker.Farge;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -16,24 +15,29 @@ import javafx.scene.shape.Rectangle;
 public class Rute extends Pane
 {
 	private Rectangle bakgrunn;
-	private ImageView brikke;
-	public Rute() {
+	private ImageView brikkeBilde;
+	private String rutePos;
+	private boolean merket = false;
+
+	public Rute(String pos) {
 		setPrefSize(80,80);
 		initBakgrunn();
+		rutePos = pos;
 	}
 
-	public Rute(String brikketype, Farge farge)
-	{
-		this();
-		setBrikke(brikketype, farge);
-	}
 	private void setBrikke(String brikketype, Farge farge) throws IllegalArgumentException
 	{
 		String bildeSti = Brikker.bildestiForBrikke(brikketype, farge);
 		if(bildeSti!=null) {
-			brikke = HjelpeFunksjoner.lastImageViewFraFil(bildeSti);
-			getChildren().add(brikke);
+			brikkeBilde = HjelpeFunksjoner.lastImageViewFraFil(bildeSti);
+			getChildren().add(brikkeBilde);
 		}
+	}
+
+	public void fjernBilde()
+	{
+		getChildren().remove(brikkeBilde);
+		brikkeBilde = null;
 	}
 	private void initBakgrunn()
 	{
@@ -42,14 +46,23 @@ public class Rute extends Pane
 		bakgrunn.setOpacity(0.0d);
 		getChildren().add(bakgrunn);
 	}
-	private void handleMouseEntered(MouseEvent e)
+
+	public boolean merk()
 	{
-		if(e.isSecondaryButtonDown())
-			bakgrunn.setOpacity(0.5d);
+		if(spillBrikke!=null) {
+			if (merket) {
+				bakgrunn.setOpacity(0.0d);
+				merket = false;
+				return merket;
+			} else {
+				merket = true;
+				bakgrunn.setOpacity(0.5d);
+				return merket;
+			}
+		}
+		return false;
 	}
-	private void handleMouseOut()
-	{
-		bakgrunn.setOpacity(0.0d);
-	}
+
+
 
 }

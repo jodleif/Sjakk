@@ -1,5 +1,7 @@
 package GUI;
+import GUI.Sjakk.LogikkKobling;
 import GUI.Sjakk.Rute;
+import GUI.Sjakk.SpilleBrett;
 import Sjakk.Brett.Brett;
 import Sjakk.Brikker.Brikke;
 import Sjakk.Regler.Koordinater;
@@ -18,10 +20,8 @@ public class SjakkApp extends Application
 {
 	private Group rot;
 	private Scene scene;
-	private GridPane gridPane;
 	private BorderPane borderPane;
-	private Rute[][] ruter;
-	private Brett sjakkBrett;
+	private SpilleBrett spilleBrett;
 	public static final double HEIGHT = 740;
 	public static final double WIDTH = 740;
 	@Override
@@ -30,13 +30,10 @@ public class SjakkApp extends Application
 		primaryStage.setTitle("Sjakk - Jo Øivind Gjernes");
 
 		// Init
-
-		ruter = new Rute[Brett.BRETTSTØRRELSE][Brett.BRETTSTØRRELSE];
+		borderPane = new BorderPane();
 		rot = new Group();
 		scene = new Scene(rot,WIDTH,HEIGHT);
-		gridPane = new GridPane();
-		borderPane = new BorderPane();
-		initSjakk(); // Start sjakkbrett.
+		spilleBrett = new SpilleBrett(0);
 		tegnBakgrunn();
 		byggSpillBrett();
 		primaryStage.setScene(scene);
@@ -57,29 +54,11 @@ public class SjakkApp extends Application
 		}
 	}
 
-	private void initRuter(){
-		for(int i=0;i<Brett.BRETTSTØRRELSE;++i){
-			for(int j=0;j<Brett.BRETTSTØRRELSE;++j){
-				Brikke tempBrikke = sjakkBrett.getBrikke(Koordinater.fra_koordinater(new int[] {i,j}));
-				if(tempBrikke!=null){
-					ruter[i][j] = new Rute(tempBrikke.brikkenavn(), tempBrikke.getFarge());
-				} else {
-					ruter[i][j] = new Rute();
-				}
-				gridPane.add(ruter[i][j],i,7-j); // OBS: Må tegne "opp ned" siden gridpane starter med (0,0) i øvre venstre hjørne, ikke nedre som sjakk
-			}
-		}
-	}
 
-	private void initSjakk(){
-		sjakkBrett = new Brett(0);
-	}
 	private void byggSpillBrett(){
 		borderPane.setPrefSize(740,740);
-		gridPane.setPrefSize(620,620);
 		leggTilPadding();
-		borderPane.setCenter(gridPane);
-		initRuter();
+		borderPane.setCenter(spilleBrett.getGridPane());
 		rot.getChildren().add(borderPane);
 	}
 	private void leggTilPadding(){
