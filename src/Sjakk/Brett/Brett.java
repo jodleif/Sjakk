@@ -7,7 +7,6 @@ package Sjakk.Brett;
 import Sjakk.Brikker.*;
 import Sjakk.Regler.Koordinater;
 import Sjakk.Regler.PosisjonRegler;
-import javafx.geometry.Pos;
 
 /***
  *
@@ -18,7 +17,7 @@ public class Brett
 	/***
 	 * Startsposisjoner for brikker..
 	 */
-	private static final int BRETTSTØRRELSE = 8;
+	public static final int BRETTSTØRRELSE = 8; // Vil ha tilgang til denne fra GUI
 	private int spillNr;
 	private Brikke[][] brikkene;
 
