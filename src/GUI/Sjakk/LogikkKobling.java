@@ -12,6 +12,8 @@ import javafx.scene.layout.GridPane;
  */
 public class LogikkKobling
 {
+
+	private static final double celleStørrelse = 80;
 	public static String fraGridPane(int x, int y)
 	{
 		String str = new String();
@@ -29,7 +31,6 @@ public class LogikkKobling
 
 	public static String pixelTilSjakkPos(double x, double y)
 	{
-		double celleStørrelse = 80;
 		//double midlX = x-60; // Fjerne padding
 		//double midlY = y-60; // Fjerne padding
 		//if(midlX<0||midlX>620)
@@ -39,6 +40,13 @@ public class LogikkKobling
 		int posX = (int)(x/celleStørrelse);
 		int posY = (int)(y/celleStørrelse);
 		return fraGridPane(posX,posY);
+	}
+
+	public static int[] pixelTilArrPos(double x, double y)
+	{
+		int posX = (int)(x/celleStørrelse);
+		int posY = (int)(y/celleStørrelse);
+		return new int[] {posX,posY};
 	}
 
 }

@@ -10,7 +10,7 @@ import javafx.scene.shape.Rectangle;
 
 
 /**
- * Created by Jo Øivind Gjernes on 20.10.2015.
+ * Created by Jo ï¿½ivind Gjernes on 20.10.2015.
  */
 public class Rute extends Pane
 {
@@ -18,9 +18,11 @@ public class Rute extends Pane
 	private ImageView brikkeBilde;
 	private String rutePos;
 	private boolean merket = false;
+	private boolean sjakkBrikke;
 
-	public Rute(String pos) {
-		setPrefSize(80,80);
+	public Rute(String pos)
+	{
+		setPrefSize(80, 80);
 		initBakgrunn();
 		rutePos = pos;
 	}
@@ -28,7 +30,7 @@ public class Rute extends Pane
 	private void setBrikke(String brikketype, Farge farge) throws IllegalArgumentException
 	{
 		String bildeSti = Brikker.bildestiForBrikke(brikketype, farge);
-		if(bildeSti!=null) {
+		if (bildeSti != null) {
 			brikkeBilde = HjelpeFunksjoner.lastImageViewFraFil(bildeSti);
 			getChildren().add(brikkeBilde);
 		}
@@ -39,30 +41,44 @@ public class Rute extends Pane
 		getChildren().remove(brikkeBilde);
 		brikkeBilde = null;
 	}
+
 	private void initBakgrunn()
 	{
-		bakgrunn = new Rectangle(80,80);
+		bakgrunn = new Rectangle(80, 80);
 		bakgrunn.setFill(Color.RED);
 		bakgrunn.setOpacity(0.0d);
 		getChildren().add(bakgrunn);
 	}
 
-	public boolean merk()
+	public void oppdater(Brikke brikke)
 	{
-		if(spillBrikke!=null) {
+		if (brikkeBilde != null) {
+			fjernBilde();
+		}
+
+		if (brikke != null) {
+			sjakkBrikke = true;
+			setBrikke(brikke.brikkenavn(), brikke.getFarge());
+		} else {
+			sjakkBrikke = false;
+		}
+	}
+
+	public void merk()
+	{
+		if(sjakkBrikke) {
 			if (merket) {
 				bakgrunn.setOpacity(0.0d);
 				merket = false;
-				return merket;
 			} else {
 				merket = true;
 				bakgrunn.setOpacity(0.5d);
-				return merket;
 			}
 		}
-		return false;
 	}
 
+	public String getPos() {return rutePos;}
+	public boolean erSjakkbrikke() {return sjakkBrikke;}
 
 
 }

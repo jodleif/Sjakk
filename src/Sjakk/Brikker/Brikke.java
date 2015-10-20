@@ -35,18 +35,14 @@ public abstract class Brikke
 	public abstract String brikkenavn();
 
 	/***
-	 * Flytt brikke til rutenavn.
+	 * Flytt brikke til rutenavn. Mesteparten av sjekkingen skjer i "brett"
 	 * @param ruteNavn ruten brikken skal flyttes til.
 	 * @return true hvis den ble flyttet, false ellers.
-	 * TODO: Krasjdeteksjon (med andre brikker)
+	 *
 	 */
 	public boolean flyttTil(String ruteNavn){
-		// Første sjekk! Er det et gyldig rutenavn?
-		if(!brett.erLovligRutenavn(ruteNavn))
-			return false;
-		// Hvis trekket er lovlig- utfør!
-		if(erLovligTrekk(ruteNavn)){
-			if(brett.flyttBrikke(this.ruteNavn, ruteNavn)){ // Flytt på brettet
+		if(brett.getBrikke(ruteNavn) == null || (brett.getBrikke(ruteNavn).getFarge()!=this.getFarge())) {
+			if (brett.flyttBrikke(this.ruteNavn, ruteNavn)) { // Flytt på brettet, hvis false var det ulovlig
 				this.ruteNavn = ruteNavn; // Oppdater posisjon hvis flyttingen ble utført
 				return true; // Ferdig flyttet!
 			}

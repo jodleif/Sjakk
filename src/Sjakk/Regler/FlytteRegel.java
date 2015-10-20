@@ -5,7 +5,7 @@ import Sjakk.Brikker.Brikke;
 import Sjakk.Brikker.Farge;
 
 /**
- * Created by Jo Øivind Gjernes on 20.10.2015.
+ * Created by Jo ï¿½ivind Gjernes on 20.10.2015.
  * <p>
  * Skal inneholde et rammeverk for flytteregel
  */
@@ -14,17 +14,17 @@ public class FlytteRegel
 	private boolean hoppOverAndre = false; // Standard.
 	private boolean flytteSidelengs;
 	private boolean flytteFremover;
-	private boolean flytteBakover; // Bønder kan ikke dette.
+	private boolean flytteBakover; // BÃ¸nder kan ikke dette.
 	private boolean flytteDiagonalt;
-//	private boolean flytteSpesielt; FOR SPRINGEREN
+	private boolean flytteSpringer = false;
 	// private int maxAvstand; TODO: implementere
 
 	/**
 	 * Flytteregel for en brikke
-	 * @param flytteSidelengs Har lov til å flytte sidelengs (a-h)
-	 * @param flytteFremover Har lov til å flytte fremover (avhengig av farge)
-	 * @param flytteBakover Har lov til å flytte bakover
-	 * @param flytteDiagonalt Har lov til å flytte diagonalt
+	 * @param flytteSidelengs Har lov til Ã¥ flytte sidelengs (a-h)
+	 * @param flytteFremover Har lov til Ã¥ flytte fremover (avhengig av farge)
+	 * @param flytteBakover Har lov til Ã¥ flytte bakover
+	 * @param flytteDiagonalt Har lov til Ã¥ flytte diagonalt
 	 */
 	public FlytteRegel(boolean flytteSidelengs, boolean flytteFremover, boolean flytteBakover, boolean flytteDiagonalt)
 	{
@@ -35,19 +35,17 @@ public class FlytteRegel
 	}
 	/**
 	 * Flytteregel for en brikke
-	 * @param flytteSidelengs Har lov til å flytte sidelengs (a-h)
-	 * @param flytteFremover Har lov til å flytte fremover (avhengig av farge)
-	 * @param flytteBakover Har lov til å flytte bakover
-	 * @param flytteDiagonalt Har lov til å flytte diagonalt
-	 * @param hoppOverAndre Har lov til å hoppe over andre brikker
+	 * @param flytteSpringer Har lov til Ã¥ flytte seg etter springer regler
+	 * @param hoppOverAndre Har lov til Ã¥ hoppe over andre brikker
 	 */
-	public FlytteRegel(boolean flytteSidelengs, boolean flytteFremover, boolean flytteBakover, boolean flytteDiagonalt, boolean hoppOverAndre)
+	public FlytteRegel(boolean hoppOverAndre, boolean flytteSpringer)
 	{
 		this.hoppOverAndre = hoppOverAndre;
-		this.flytteSidelengs = flytteSidelengs;
-		this.flytteFremover = flytteFremover;
-		this.flytteBakover = flytteBakover;
-		this.flytteDiagonalt = flytteDiagonalt;
+		this.flytteSidelengs = false;
+		this.flytteFremover = false;
+		this.flytteBakover = false;
+		this.flytteDiagonalt = false;
+		this.flytteSpringer = true;
 	}
 
 	public boolean gyldigTrekk(String fraPos, String tilPos, Brikke br, Brett brett)
@@ -56,30 +54,38 @@ public class FlytteRegel
 		if (retning == null) return false;
 		if(!hoppOverAndre){ // Hvis den ikke kan hoppe over andre brikker!
 			if(kollisjonsSjekk(fraPos,tilPos,brett)){
+				System.out.println("DEBUG: KOLLISJON!");
 				return false; // Hvis kollisjon - ugyldig trekk!
 			}
 		}
 		switch (retning) {
 			case FREM:
+				System.out.println("DEBUG: Flytter fremover!");
 				return flytteFremover;
 			case BAKOVER:
+				System.out.println("DEBUG: Flytter bakover!");
 				return flytteBakover;
 			case DIAGONALT:
+				System.out.println("DEBUG: Flytter diagonalt");
 				return flytteDiagonalt;
 			case SIDELENGS:
+				System.out.println("DEBUG: Flytter sidelengs!");
 				return flytteSidelengs;
+			case SPRINGER:
+				System.out.println("DEBUG: Flytter SPRINGER");
+				return flytteSpringer;
 			default:
 				return false;
 		}
 	}
 
 	/**
-	 * Metode som sjekker rutene mellom fra og til posisjon for å finne ut om det er noen brikker "på veien"
+	 * Metode som sjekker rutene mellom fra og til posisjon for ï¿½ finne ut om det er noen brikker "pï¿½ veien"
 	 *
 	 * @param fraPos brikkens fra-posisjon
 	 * @param tilPos brikkens til-posisjon
 	 * @param brett  spillbrettet
-	 * @return true hvis det oppstår kollisjoner.
+	 * @return true hvis det oppstï¿½r kollisjoner.
 	 */
 	private static boolean kollisjonsSjekk(String fraPos, String tilPos, Brett brett)
 	{
@@ -94,12 +100,12 @@ public class FlytteRegel
 	}
 
 	/**
-	 * Bestemmer retningen flyttingen går i
+	 * Bestemmer retningen flyttingen gï¿½r i
 	 *
 	 * @param fraPos brikkens fra-posisjon
 	 * @param tilPos brikkens til-posisjon
-	 * @param farge  brikkens farge (trengs for å finne ut om man beveger seg fremover eller bakover)
-	 * @return Returnerer hvilken retning bevegelsen vil være - (SE enumen Retning)
+	 * @param farge  brikkens farge (trengs for ï¿½ finne ut om man beveger seg fremover eller bakover)
+	 * @return Returnerer hvilken retning bevegelsen vil vï¿½re - (SE enumen Retning)
 	 */
 	private static Retning finnRetning(String fraPos, String tilPos, Farge farge)
 	{
@@ -120,8 +126,14 @@ public class FlytteRegel
 			return Retning.SIDELENGS;
 		}
 		// Diagonalt - TODO: fikse- ikke helt korrekt.
-		if (diff[1] == diff[0]) {
+		if (Math.abs(diff[0])==Math.abs(diff[1])) {
 			return Retning.DIAGONALT;
+		}
+		if(Math.abs(diff[0])==2&&Math.abs(diff[1])==1){
+			return Retning.SPRINGER;
+		}
+		if(Math.abs(diff[0])==1&&Math.abs(diff[1])==2){
+			return Retning.SPRINGER;
 		}
 		return null;
 	}
@@ -144,15 +156,15 @@ public class FlytteRegel
 		int avstand = Math.max(Math.abs(diff[0]),Math.abs(diff[1]));
 		if(avstand<=1) return null;
 
-		String[] ruter = new String[avstand-1];
+		String[] ruterMellom = new String[avstand-1];
 		int stegKol = diff[0]/(avstand);
 		int stegRad = diff[1]/(avstand);
 
 		for(int i=0;i<avstand-1;++i){
 			tPos[0]+=stegKol;tPos[1]+=stegRad; // Flytt til neste posisjon
-			ruter[i]=Koordinater.fra_koordinater(tPos);
+			ruterMellom[i]=Koordinater.fra_koordinater(tPos);
 		}
-		return ruter;
+		return ruterMellom;
 	}
 
 }

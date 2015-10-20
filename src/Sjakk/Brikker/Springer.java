@@ -8,7 +8,7 @@ import Sjakk.Regler.FlytteRegel;
  */
 public class Springer extends Offiser
 {
-	private static final FlytteRegel flytteRegel = new FlytteRegel(false,false,false,false,true);
+	private static final FlytteRegel flytteRegel = new FlytteRegel(true,true);
 
 	public Springer(Brett brett, String rutenavn, Farge farge) throws IllegalArgumentException
 	{

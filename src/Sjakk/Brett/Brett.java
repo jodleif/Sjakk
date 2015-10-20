@@ -99,15 +99,17 @@ public class Brett
 
 	}
 
-	public boolean flyttBrikke(String fraRute, String tilRute)
+        public boolean flyttBrikke(String fraRute, String tilRute)
 	{
 		if (!(erLovligRutenavn(fraRute) && erLovligRutenavn(tilRute))) {
 			return false;
 		}
 		// Sjekk at det står en brikke der vi flytter fra
-		if (getBrikke(fraRute) == null)
+		Brikke br = getBrikke(fraRute);
+		if (br == null)
 			return false;
-		// TODO: Eventuell spillogikk som sjekker dit den flytter - Må være motsatt farge
+		if(!br.erLovligTrekk(tilRute))
+			return false;
 		int[] koordFra = til_koordinater(fraRute);
 		int[] koordTil = til_koordinater(tilRute);
 		brikkene[koordTil[0]][koordTil[1]] = brikkene[koordFra[0]][koordFra[1]];
