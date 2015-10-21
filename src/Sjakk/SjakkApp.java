@@ -1,5 +1,7 @@
-package GUI;
+package Sjakk;
 
+import GUI.HjelpeFunksjoner;
+import GUI.Padding;
 import GUI.Sjakk.SpilleBrett;
 import javafx.application.Application;
 import javafx.scene.Group;
@@ -14,7 +16,7 @@ import javafx.stage.Stage;
 public class SjakkApp extends Application
 {
 	private Group rot;
-	private Scene scene;
+	//private Scene scene;
 	private BorderPane borderPane;
 	private SpilleBrett spilleBrett;
 	public static final double HEIGHT = 760;
@@ -28,7 +30,7 @@ public class SjakkApp extends Application
 		// Init
 		borderPane = new BorderPane();
 		rot = new Group();
-		scene = new Scene(rot,WIDTH,HEIGHT);
+		Scene scene = new Scene(rot,WIDTH,HEIGHT);
 		spilleBrett = new SpilleBrett(0);
 		tegnBakgrunn();
 		byggSpillBrett();

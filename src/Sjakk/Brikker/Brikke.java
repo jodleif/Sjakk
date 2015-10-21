@@ -17,7 +17,7 @@ public abstract class Brikke
 	public Brikke(Brett brett, String rutenavn, Farge farge) throws IllegalArgumentException {
 		this.farge = farge;
 		this.brett = brett;
-		if(brett.erLovligRutenavn(rutenavn)){
+		if(Brett.erLovligRutenavn(rutenavn)){
 			this.ruteNavn = rutenavn;
 		} else {
 			throw new IllegalArgumentException("Ugyldig rutenavn");
@@ -87,9 +87,6 @@ public abstract class Brikke
 	private boolean sjekkForKollisjoner(String sjakkPos)
 	{
 		Brikke tmp = brett.getBrikke(sjakkPos);
-		if(tmp!=null&&(tmp.getFarge()==this.getFarge())){
-			return true;
-		}
-		return false;
+		return tmp != null && (tmp.getFarge() == this.getFarge());
 	}
 }

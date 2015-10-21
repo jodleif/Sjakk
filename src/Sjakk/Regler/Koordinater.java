@@ -1,7 +1,7 @@
 package Sjakk.Regler;
 
 /**
- * Created by Jo Øivind Gjernes on 20.10.2015.
+ * Created by Jo ï¿½ivind Gjernes on 20.10.2015.
  */
 public class Koordinater
 {
@@ -14,10 +14,8 @@ public class Koordinater
 
 		if (bokstavDel < 'a' || bokstavDel > 'h')
 			return false;
-		if (talldel < '1' || talldel > '8')
-			return false;
+		return !(talldel < '1' || talldel > '8');
 
-		return true;
 	}
 	public static int[] til_koordinater(String rutenavn)
 	{
@@ -43,5 +41,21 @@ public class Koordinater
 		}
 
 		return null;
+	}
+
+	public static int avstand(String fraPos, String tilPos)
+	{
+		int[] koordFra = Koordinater.til_koordinater(fraPos);
+		int[] koordTil = Koordinater.til_koordinater(tilPos);
+		int[] diff = differanse(koordFra,koordTil);
+		int antallRuter = Math.max(Math.abs(diff[0]),Math.abs(diff[1]));
+		return antallRuter;
+	}
+
+	public static int[] differanse(int[] fra, int[] til)
+	{
+		if (fra.length != til.length)
+			return null;
+		return new int[]{til[0] - fra[0], til[1] - fra[1]};
 	}
 }

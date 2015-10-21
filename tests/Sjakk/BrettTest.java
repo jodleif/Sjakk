@@ -15,12 +15,12 @@ public class BrettTest
 	public void testErLovligRutenavn() throws Exception
 	{
 		Brett b = new Brett(123);
-		assertTrue(b.erLovligRutenavn("a1"));
-		assertTrue(b.erLovligRutenavn("h8"));
-		assertFalse(b.erLovligRutenavn("a9"));
-		assertFalse(b.erLovligRutenavn("-99"));
-		assertFalse(b.erLovligRutenavn("A1"));
-		assertFalse(b.erLovligRutenavn("a-"));
+		assertTrue(Brett.erLovligRutenavn("a1"));
+		assertTrue(Brett.erLovligRutenavn("h8"));
+		assertFalse(Brett.erLovligRutenavn("a9"));
+		assertFalse(Brett.erLovligRutenavn("-99"));
+		assertFalse(Brett.erLovligRutenavn("A1"));
+		assertFalse(Brett.erLovligRutenavn("a-"));
 	}
 
 	@Before

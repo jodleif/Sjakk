@@ -12,7 +12,7 @@ public class Konge extends Offiser
 	public Konge(Brett brett, String rutenavn, Farge farge) throws IllegalArgumentException
 	{
 		super(brett, rutenavn, farge);
-		flytteRegel = new FlytteRegel(true, true, true, true);
+		flytteRegel = new FlytteRegel(true, true, true, true, 1);
 	}
 
 	@Override

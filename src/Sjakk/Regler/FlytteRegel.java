@@ -8,16 +8,17 @@ import Sjakk.Brikker.Farge;
  * Created by Jo Øivind Gjernes on 20.10.2015.
  * <p>
  * Inneholder definerbare regler for hvordan en brikke skal ha lov til å bevege seg.
+ * Alle "private" felter er gjort protected pga jeg har utvidet regelen med noen spesialklausuler for bonde
  */
 public class FlytteRegel
 {
-	private boolean hoppOverAndre = false; // Standard.
-	private boolean flytteSidelengs;
-	private boolean flytteFremover;
-	private boolean flytteBakover; // Bønder kan ikke dette.
-	private boolean flytteDiagonalt;
-	private boolean flytteSpringer = false;
-	// private int maxAvstand; TODO: implementere
+	protected boolean hoppOverAndre = false; // Standard.
+	protected boolean flytteSidelengs;
+	protected boolean flytteFremover; // Alle kan dette
+	protected boolean flytteBakover; // Bønder kan ikke dette.
+	protected boolean flytteDiagonalt;
+	protected boolean flytteSpringer = false;
+	protected int maxAvstand = 0;
 
 	/**
 	 * Flytteregel for en brikke
@@ -33,6 +34,24 @@ public class FlytteRegel
 		this.flytteBakover = flytteBakover;
 		this.flytteDiagonalt = flytteDiagonalt;
 	}
+
+	/**
+	 * Flytteregel for en brikke som kun kan bevege seg en begrenset lengde
+ 	 * @param flytteSidelengs
+	 * @param flytteFremover
+	 * @param flytteBakover
+	 * @param flytteDiagonalt
+	 * @param maxAvstand
+	 */
+	public FlytteRegel(boolean flytteSidelengs, boolean flytteFremover, boolean flytteBakover, boolean flytteDiagonalt, int maxAvstand)
+	{
+		this.flytteSidelengs = flytteSidelengs;
+		this.flytteFremover = flytteFremover;
+		this.flytteBakover = flytteBakover;
+		this.flytteDiagonalt = flytteDiagonalt;
+		this.maxAvstand = maxAvstand;
+	}
+
 	/**
 	 * Flytteregel for en brikke
 	 * @param flytteSpringer Har lov til å flytte seg etter springer regler
@@ -60,27 +79,26 @@ public class FlytteRegel
 	{
 		Retning retning = finnRetning(fraPos, tilPos, br.getFarge());
 		if (retning == null) return false;
+
+		if(maxAvstand!=0&&(!gyldigAvstand(fraPos,tilPos))){
+			return false;
+		}
+
 		if(!hoppOverAndre){ // Hvis den ikke kan hoppe over andre brikker!
 			if(kollisjonsSjekk(fraPos,tilPos,brett)){
-				System.out.println("DEBUG: KOLLISJON!");
 				return false; // Hvis kollisjon - ugyldig trekk!
 			}
 		}
 		switch (retning) {
 			case FREM:
-				System.out.println("DEBUG: Flytter fremover!");
 				return flytteFremover;
 			case BAKOVER:
-				System.out.println("DEBUG: Flytter bakover!");
 				return flytteBakover;
 			case DIAGONALT:
-				System.out.println("DEBUG: Flytter diagonalt");
 				return flytteDiagonalt;
 			case SIDELENGS:
-				System.out.println("DEBUG: Flytter sidelengs!");
 				return flytteSidelengs;
 			case SPRINGER:
-				System.out.println("DEBUG: Flytter SPRINGER");
 				return flytteSpringer;
 			default:
 				return false;
@@ -95,7 +113,7 @@ public class FlytteRegel
 	 * @param brett  spillbrettet
 	 * @return true hvis det oppst�r kollisjoner.
 	 */
-	private static boolean kollisjonsSjekk(String fraPos, String tilPos, Brett brett)
+	protected static boolean kollisjonsSjekk(String fraPos, String tilPos, Brett brett)
 	{
 		String[] diff = ruterMellom(fraPos, tilPos);
 		if(diff==null)
@@ -115,11 +133,11 @@ public class FlytteRegel
 	 * @param farge  brikkens farge (trengs for � finne ut om man beveger seg fremover eller bakover)
 	 * @return Returnerer hvilken retning bevegelsen vil v�re - (SE enumen Retning)
 	 */
-	private static Retning finnRetning(String fraPos, String tilPos, Farge farge)
+	protected static Retning finnRetning(String fraPos, String tilPos, Farge farge)
 	{
 		int[] koordFra = Koordinater.til_koordinater(fraPos);
 		int[] koordTil = Koordinater.til_koordinater(tilPos);
-		int[] diff = differanse(koordFra, koordTil);
+		int[] diff = Koordinater.differanse(koordFra, koordTil);
 		// Frem og tilbake
 		if (diff[0] == 0 && diff[1] != 0) {
 			if (diff[1] > 0) {
@@ -148,12 +166,7 @@ public class FlytteRegel
 		return null;
 	}
 
-	private static int[] differanse(int[] fra, int[] til)
-	{
-		if (fra.length != til.length)
-			return null;
-		return new int[]{til[0] - fra[0], til[1] - fra[1]};
-	}
+
 
 	/**
 	 * Finner rutene mellom to sjakkruter f.eks a1 og d4 skal gi oss b2 c3 som resultat - skal brukes til å sjekke for kollisjoner i et sjakktrekk.
@@ -162,15 +175,12 @@ public class FlytteRegel
 	 * @param til rute man ender i
 	 * @return navn på rutene mellom fra og til
 	 */
-	public static String[] ruterMellom(String fra, String til)
+	protected static String[] ruterMellom(String fra, String til)
 	{
 		int[] fraKoord = Koordinater.til_koordinater(fra);
 		int[] tilKoord = Koordinater.til_koordinater(til);
-		int[] diff = differanse(fraKoord, tilKoord);
-		int[] tPos = new int[2];
-
-		tPos[0] = fraKoord[0]; tPos[1] = fraKoord[1];
-		int avstand = Math.max(Math.abs(diff[0]),Math.abs(diff[1]));
+		int[] diff = Koordinater.differanse(fraKoord, tilKoord);
+		int avstand = Koordinater.avstand(fra,til);
 		if(avstand<=1) return null;
 
 		String[] ruterMellom = new String[avstand-1];
@@ -178,10 +188,19 @@ public class FlytteRegel
 		int stegRad = diff[1]/(avstand);
 
 		for(int i=0;i<avstand-1;++i){
-			tPos[0]+=stegKol;tPos[1]+=stegRad; // Flytt til neste posisjon
-			ruterMellom[i]=Koordinater.fra_koordinater(tPos);
+			fraKoord[0]+=stegKol;fraKoord[1]+=stegRad; // Flytt til neste posisjon
+			ruterMellom[i]=Koordinater.fra_koordinater(fraKoord);
 		}
 		return ruterMellom;
+	}
+
+	protected boolean gyldigAvstand(String fraPos, String tilPos)
+	{
+		return Koordinater.avstand(fraPos,tilPos)<=maxAvstand;
+	}
+
+	public void setMaxAvstand(int maxAvstand){
+		this.maxAvstand=maxAvstand;
 	}
 
 }

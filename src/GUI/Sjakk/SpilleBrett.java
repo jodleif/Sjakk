@@ -1,16 +1,14 @@
 package GUI.Sjakk;
 
 import Sjakk.Brett.Brett;
-import Sjakk.Brikker.Brikke;
 import Sjakk.Regler.Koordinater;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
-import sun.rmi.runtime.Log;
-
-import java.util.ArrayList;
 
 /**
  * Created by Jo Øivind Gjernes on 20.10.2015.
+ *
+ * Spillebrettets representasjon i gui
  */
 public class SpilleBrett
 {
@@ -18,7 +16,7 @@ public class SpilleBrett
 	private GridPane gridPane;
 	private Rute sistMerket;
 	private Rute[][] ruter;
-	private String[] gyldigePos;
+	private String[] gyldigePos; // Lagres for å kunne fjerne avmerkinger. Kunne eventuelt søkt gjennom rutene for å fjerne.
 
 	public SpilleBrett(int spillnr)
 	{

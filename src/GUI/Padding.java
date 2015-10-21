@@ -3,7 +3,9 @@ package GUI;
 import javafx.scene.layout.Pane;
 
 /**
- * Created by Jo �ivind Gjernes on 20.10.2015.
+ * Created by Jo Øivind Gjernes on 20.10.2015.
+ * 
+ * Liten klasse for å fylle ut tomrom!
  */
 public class Padding extends Pane
 {
