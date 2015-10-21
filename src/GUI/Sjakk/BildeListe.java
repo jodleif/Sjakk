@@ -20,7 +20,6 @@ public class BildeListe
 
 	private void byggBildeListe() {
 		sjakkBrikkeBilder = new HashMap<>();
-
 	}
 
 	public void add(String navn, Image bilde)

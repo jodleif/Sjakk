@@ -12,12 +12,16 @@ import javafx.scene.layout.GridPane;
  */
 public class SpilleBrett
 {
-	private Brett sjakkBrett;
-	private GridPane gridPane;
-	private Rute sistMerket;
-	private Rute[][] ruter;
+	private Brett sjakkBrett; // Sjakkbrett - spill logikk
+	private GridPane gridPane; // GridPane - til å knytte opp mot hovedvinduet
+	private Rute sistMerket; // Her lagres den siste merkede ruten - for interaksjon med musepeker!
+	private Rute[][] ruter; // Her lagres GUI representasjonen av spillruter.
 	private String[] gyldigePos; // Lagres for å kunne fjerne avmerkinger. Kunne eventuelt søkt gjennom rutene for å fjerne.
 
+	/**
+	 * Oppretter et nytt GUI-brett
+	 * @param spillnr spillnr for sjakkbrettet
+	 */
 	public SpilleBrett(int spillnr)
 	{
 		sjakkBrett = new Brett(spillnr);
@@ -29,6 +33,9 @@ public class SpilleBrett
 		oppdaterBrett();
 	}
 
+	/**
+	 * Opprett ruter i brettet
+	 */
 	public void initBrett()
 	{
 		for (int i = 0; i < Brett.BRETTSTØRRELSE; ++i) {
@@ -41,11 +48,19 @@ public class SpilleBrett
 
 	}
 
+	/**
+	 * Returner GridPane for spillbrettet
+	 * @return gridpane
+	 */
 	public GridPane getGridPane()
 	{
 		return gridPane;
 	}
 
+	/**
+	 * Eventhandler for museklikk på spillbrettet! Gjelder kun i GridPane sitt område. Brukes for flytting av brikker
+	 * @param event sendes fra MouseEvent
+	 */
 	private void mouseClickHandler(MouseEvent event)
 	{
 		String sjakkPos = LogikkKobling.pixelTilSjakkPos(event.getX(),event.getY());
@@ -70,14 +85,20 @@ public class SpilleBrett
 				merkGyldige();
 				gyldigePos = null;
 				sistMerket = null;
+
+
+				oppdaterBrett(); // Brikke flyttet, oppdater brett!!
 			} else {
 				System.out.println("Ugyldig trekk!");
 			}
 
 		}
 
-		oppdaterBrett();
 	}
+
+	/**
+	 * Merk alle mulige gyldige trekk.
+	 */
 	private void merkGyldige()
 	{
 		if(gyldigePos!=null){
@@ -86,6 +107,11 @@ public class SpilleBrett
 			}
 		}
 	}
+
+	/**
+	 * Oppdater brett etter endringer i spill-logikk (Klasse Brett)
+	 * Må kjøres etter at brikker har blitt flyttet!
+	 */
 	private void oppdaterBrett()
 	{
 		for (int i = 0; i < Brett.BRETTSTØRRELSE; ++i) {
@@ -95,6 +121,11 @@ public class SpilleBrett
 		}
 	}
 
+	/**
+	 * Hent ut rute (GUI element) fra ruter tabellen
+	 * @param sjakkPos sjakkPosisjon som ruten representerer
+	 * @return ruten
+	 */
 	private Rute getRute(String sjakkPos)
 	{
 		int[] koordinater = Koordinater.til_koordinater(sjakkPos);

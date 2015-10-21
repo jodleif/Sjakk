@@ -10,6 +10,11 @@ import javafx.scene.image.ImageView;
  */
 public class HjelpeFunksjoner
 {
+	/**
+	 * For å lage en imageview fra en bildefil på harddisken!
+	 * @param filbane relativ bane til bildefil
+	 * @return ImageView av bildefilen hvis den finnes, ellers null
+	 */
 	public static ImageView lastImageViewFraFil(String filbane)
 	{
 		Image bilde;
@@ -24,13 +29,5 @@ public class HjelpeFunksjoner
 		return bildenode;
 	}
 
-	/**
-	 * Returnerer et tall fra farge
-	 * @param farge farge
-	 * @return 0 for hvit, 1 for svart
-	 */
-	public static int fargeTilTall(Farge farge)
-	{
-		return (farge==Farge.HVIT) ? 0 : 1;
-	}
+
 }

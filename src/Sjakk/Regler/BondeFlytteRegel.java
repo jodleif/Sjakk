@@ -5,9 +5,16 @@ import Sjakk.Brikker.Brikke;
 
 /**
  * Created by Jo Øivind Gjernes on 21.10.2015.
+ *
+ * Utvidet klasse spesifikt for bønder. De angriper kun diagonalt
+ * TODO: Fiks bug - bonde kan angripe skrått "bakover"
  */
 public class BondeFlytteRegel extends FlytteRegel
 {
+	/**
+	 * BondeFlytteRegel - konstruktør
+	 * @param maxAvstand maxavstand bonden kan bevege seg
+	 */
 	public BondeFlytteRegel(int maxAvstand)
 	{
 		super(false, true, false, false, maxAvstand);

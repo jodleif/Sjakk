@@ -1,4 +1,4 @@
-package Sjakk;
+package GUI;
 
 import GUI.HjelpeFunksjoner;
 import GUI.Padding;
@@ -12,6 +12,14 @@ import javafx.stage.Stage;
 
 /**
  * Created by Jo Øivind Gjernes on 20.10.2015.
+ *
+ * Kommentarer til øvingen:
+ *
+ *
+ * Hovedklassen til GUI-applikasjonen.
+ *
+ * Her opprettes hovedvinduet.
+ *
  */
 public class SjakkApp extends Application
 {

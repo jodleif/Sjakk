@@ -17,6 +17,12 @@ public class LogikkKobling
 
 	private static final double celleStørrelse = 80; // Spillets cellestørrelse - 80 piksler
 
+	/**
+	 * Regner fra gridpane koordinater til sjakk-koordinater
+	 * @param x x-pos i gridpane
+	 * @param y y-pos i gridpane
+	 * @return sjakk-koordinat
+	 */
 	public static String fraGridPane(int x, int y)
 	{
 		String str = new String();
@@ -25,6 +31,11 @@ public class LogikkKobling
 		return str;
 	}
 
+	/**
+	 * Fra sjakkposisjon til gridpane-posisjon
+	 * @param sjakkPos sjakk-koordinat
+	 * @return gridpane-koordinat {x, y}
+	 */
 	public static int[] tilGridPane(String sjakkPos)
 	{
 		int[] koord = Koordinater.til_koordinater(sjakkPos);
@@ -32,18 +43,17 @@ public class LogikkKobling
 		return koord;
 	}
 
+	/**
+	 * Omregner pixel-posisjon (fra mousevent på gridpanen)
+	 * @param x musens x-koordinat (0,0 i øvre venstre hjørne på spillbrettet)
+	 * @param y musens y-koordinat
+	 * @return sjakk-koordinat
+	 */
 	public static String pixelTilSjakkPos(double x, double y)
 	{
 		int posX = (int)(x/celleStørrelse);
 		int posY = (int)(y/celleStørrelse);
 		return fraGridPane(posX,posY);
-	}
-
-	public static int[] pixelTilArrPos(double x, double y)
-	{
-		int posX = (int)(x/celleStørrelse);
-		int posY = (int)(y/celleStørrelse);
-		return new int[] {posX,posY};
 	}
 
 }

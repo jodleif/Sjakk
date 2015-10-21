@@ -6,7 +6,7 @@ import sun.rmi.runtime.Log;
 import static org.junit.Assert.*;
 
 /**
- * Created by Jo Øivind Gjernes on 20.10.2015.
+ * Created by Jo Ã˜ivind Gjernes on 20.10.2015.
  */
 public class LogikkKoblingTest
 {

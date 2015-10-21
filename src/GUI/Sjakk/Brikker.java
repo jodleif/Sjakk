@@ -8,6 +8,8 @@ import java.util.ArrayList;
 
 /**
  * Created by Jo Øivind Gjernes on 20.10.2015.
+ *
+ * Klasse som inneholder informasjon om bildefiler til sjakkbrikker.
  */
 public class Brikker
 {
@@ -23,21 +25,29 @@ public class Brikker
 		if(brikketype.length()!=1) return null;
 		switch(brikketype.charAt(0)){
 			case 'B':
-				return BØNDER[HjelpeFunksjoner.fargeTilTall(farge)];
+				return BØNDER[fargeTilTall(farge)];
 			case 'S':
-				return SPRINGERE[HjelpeFunksjoner.fargeTilTall(farge)];
+				return SPRINGERE[fargeTilTall(farge)];
 			case 'K':
-				return KONGER[HjelpeFunksjoner.fargeTilTall(farge)];
+				return KONGER[fargeTilTall(farge)];
 			case 'D':
-				return DRONNINGER[HjelpeFunksjoner.fargeTilTall(farge)];
+				return DRONNINGER[fargeTilTall(farge)];
 			case 'T':
-				return TÅRN[HjelpeFunksjoner.fargeTilTall(farge)];
+				return TÅRN[fargeTilTall(farge)];
 			case 'L':
-				return LØPERE[HjelpeFunksjoner.fargeTilTall(farge)];
+				return LØPERE[fargeTilTall(farge)];
 			default:
 				throw new IllegalArgumentException("[bildestiForBrikke] Ugyldig brikke!");
 		}
 	}
-
+	/**
+	 * Returnerer et tall fra farge
+	 * @param farge farge
+	 * @return 0 for hvit, 1 for svart
+	 */
+	public static int fargeTilTall(Farge farge)
+	{
+		return (farge==Farge.HVIT) ? 0 : 1;
+	}
 
 }
