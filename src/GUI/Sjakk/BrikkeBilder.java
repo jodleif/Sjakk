@@ -7,7 +7,7 @@ import Sjakk.Regler.Farge;
  *
  * Klasse som inneholder informasjon om bildefiler til sjakkbrikker.
  */
-public class Brikker
+public class BrikkeBilder
 {
 	private static final String[] BØNDER = {"img/bondehvit.png","img/bondesvart.png"};
 	private static final String[] SPRINGERE = {"img/springerhvit.png","img/springersvart.png"};

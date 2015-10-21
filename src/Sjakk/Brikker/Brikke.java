@@ -101,4 +101,15 @@ public abstract class Brikke
 		Brikke tmp = brett.getBrikke(sjakkPos);
 		return tmp != null && (tmp.getFarge() == this.getFarge());
 	}
+
+	@Override
+	public boolean equals(Object obj)
+	{
+		if(obj==null)
+			return false;
+		Brikke b = (Brikke)obj;
+		if(b.getFarge()==getFarge()&&b.getRuteNavn().equals(getRuteNavn())&&b.brikkenavn().equals(brikkenavn()))
+			return true;
+		return false;
+	}
 }

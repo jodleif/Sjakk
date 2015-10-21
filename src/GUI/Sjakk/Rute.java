@@ -29,7 +29,7 @@ public class Rute extends Pane
 
 	private void setBrikke(String brikketype, Farge farge) throws IllegalArgumentException
 	{
-		String bildeSti = Brikker.bildestiForBrikke(brikketype, farge);
+		String bildeSti = BrikkeBilder.bildestiForBrikke(brikketype, farge);
 		if (bildeSti != null) {
 			brikkeBilde = HjelpeFunksjoner.lastImageViewFraFil(bildeSti);
 			getChildren().add(brikkeBilde);

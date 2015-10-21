@@ -7,7 +7,7 @@ package Sjakk.Brett;
 import Sjakk.Brikker.*;
 import Sjakk.Regler.Farge;
 import Sjakk.Regler.Koordinater;
-import Sjakk.Regler.PosisjonRegler;
+import Sjakk.Regler.StartPosisjonRegler;
 
 /***
  * Klasse for sjakkbrettet i spill-logikk.
@@ -23,16 +23,29 @@ public class Brett
 	/**
 	 * Opprett et nytt spillbrett
 	 * @param nyttSpillNr nummeret på spillet.
+	 * @param tomtSpillbrett skal vi lage et tomt brett?
 	 */
-	public Brett(int nyttSpillNr)
+	public Brett(int nyttSpillNr, boolean tomtSpillbrett)
 	{
 		this.spillNr = nyttSpillNr;
 		brikkene = new Brikke[BRETTSTØRRELSE][BRETTSTØRRELSE];
-		try {
-			opprettSpillbrikker();
-		} catch (IllegalArgumentException e) {
-			System.out.println("[BRETT] Feil under konstruksjon!\n" + e.getMessage());
+
+		if(!tomtSpillbrett) {
+			try {
+				opprettSpillbrikker();
+			} catch (IllegalArgumentException e) {
+				System.out.println("[BRETT] Feil under konstruksjon!\n" + e.getMessage());
+			}
 		}
+	}
+
+	/**
+	 * "Standard konstruktør" - vanlig startposisjon for brikker
+	 * @param nyttSpillNr spillnr
+	 */
+	public Brett(int nyttSpillNr)
+	{
+		this(nyttSpillNr,false);
 	}
 
 	/**
@@ -72,27 +85,27 @@ public class Brett
 				}
 			}
 		}
-		for (String tårnPos : PosisjonRegler.TÅRNPOSISJONER) {
+		for (String tårnPos : StartPosisjonRegler.TÅRNPOSISJONER) {
 			int[] koord = tilKoordinater(tårnPos);
 			Farge farge = (koord[1] <= 1) ? Farge.HVIT : Farge.SVART; // Hvis rad 1 eller 2 (koordinat 0, 1) Hvite brikker.
 			brikkene[koord[0]][koord[1]] = new Tårn(this, tårnPos, farge);
 		}
-		for (String springerPos : PosisjonRegler.SPRINGERPOSISJONER) {
+		for (String springerPos : StartPosisjonRegler.SPRINGERPOSISJONER) {
 			int[] koord = tilKoordinater(springerPos);
 			Farge farge = (koord[1] <= 1) ? Farge.HVIT : Farge.SVART;
 			brikkene[koord[0]][koord[1]] = new Springer(this, springerPos, farge);
 		}
-		for (String løperPos : PosisjonRegler.LØPERPOSISJONER) {
+		for (String løperPos : StartPosisjonRegler.LØPERPOSISJONER) {
 			int[] koord = tilKoordinater(løperPos);
 			Farge farge = (koord[1] <= 1) ? Farge.HVIT : Farge.SVART;
 			brikkene[koord[0]][koord[1]] = new Løper(this, løperPos, farge);
 		}
-		for (String kongePos : PosisjonRegler.KONGEPOSISJONER) {
+		for (String kongePos : StartPosisjonRegler.KONGEPOSISJONER) {
 			int[] koord = tilKoordinater(kongePos);
 			Farge farge = (koord[1] <= 1) ? Farge.HVIT : Farge.SVART;
 			brikkene[koord[0]][koord[1]] = new Konge(this, kongePos, farge);
 		}
-		for (String dronningPos : PosisjonRegler.DRONNINGPOSISJONER) {
+		for (String dronningPos : StartPosisjonRegler.DRONNINGPOSISJONER) {
 			int[] koord = tilKoordinater(dronningPos);
 			Farge farge = (koord[1] <= 1) ? Farge.HVIT : Farge.SVART;
 			brikkene[koord[0]][koord[1]] = new Dronning(this, dronningPos, farge);
@@ -127,6 +140,13 @@ public class Brett
 
 	}
 
+	public void setBrikke(String rutenavn, Brikke brikke)
+	{
+		int[] koordinater = tilKoordinater(rutenavn);
+		if(koordinater!=null)
+			brikkene[koordinater[0]][koordinater[1]] = brikke;
+	}
+
 	/**
 	 * Metoden flytter en brikke. Sjekker om felter er gyldige, men ikke om et eventuelt sjakktrekk er gyldig
 	 * @param fraRute Ruten man flytter fra
@@ -149,5 +169,33 @@ public class Brett
 		brikkene[koordTil[0]][koordTil[1]] = brikkene[koordFra[0]][koordFra[1]];
 		brikkene[koordFra[0]][koordFra[1]] = null; // Fjern brikken fra gamle posisjon.
 		return true;
+	}
+
+	public Brikke[] getAlleBrikker()
+	{
+		int antallBrikker = antallBrikkerILive();
+		Brikke[] alleBrikker = new Brikke[antallBrikker];
+		int teller = 0;
+		for(int i=0;i<BRETTSTØRRELSE;++i){
+			for(int j=0;j<BRETTSTØRRELSE;++j){
+				Brikke tmp = brikkene[i][j];
+				if(tmp!=null){
+					alleBrikker[teller++] = tmp;
+				}
+			}
+		}
+		return alleBrikker;
+	}
+
+	private int antallBrikkerILive()
+	{
+		int antall = 0;
+		for(int i=0;i<BRETTSTØRRELSE;++i){
+			for(int j=0;j<BRETTSTØRRELSE;++j){
+				if(brikkene[i][j]!=null)
+					++antall;
+			}
+		}
+		return antall;
 	}
 }

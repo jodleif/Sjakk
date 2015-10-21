@@ -2,7 +2,7 @@ package Sjakk.Regler;
 
 /**
  * Created by Jo Øivind Gjernes on 20.10.2015.
- *
+ * <p>
  * Klasse for operasjoner mellom "sjakk koordinater" og "array koordinater"
  */
 public class Koordinater

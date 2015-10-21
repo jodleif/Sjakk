@@ -125,12 +125,12 @@ public class FlytteRegel
 	}
 
 	/**
-	 * Bestemmer retningen flyttingen g�r i
+	 * Bestemmer retningen flyttingen går i
 	 *
 	 * @param fraPos brikkens fra-posisjon
 	 * @param tilPos brikkens til-posisjon
-	 * @param farge  brikkens farge (trengs for � finne ut om man beveger seg fremover eller bakover)
-	 * @return Returnerer hvilken retning bevegelsen vil v�re - (SE enumen Retning)
+	 * @param farge  brikkens farge (trengs for å finne ut om man beveger seg fremover eller bakover)
+	 * @return Returnerer hvilken retning bevegelsen vil være - (SE enumen Retning)
 	 */
 	protected static Retning finnRetning(String fraPos, String tilPos, Farge farge)
 	{
