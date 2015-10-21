@@ -66,5 +66,8 @@ public class Trekk
 	public void setBrett(Brett brett)
 	{
 		this.brett = brett;
+		if(fjernetBrikke!=null){
+			fjernetBrikke.setBrett(brett);
+		}
 	}
 }

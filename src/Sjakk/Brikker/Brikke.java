@@ -126,4 +126,12 @@ public abstract class Brikke
 		--antTrekk;
 		assert(antTrekk>=0);
 	}
+
+	/**
+	 * Brukes for å endre hvilket brett brikken tilhører
+	 * @param brett nytt brett
+	 */
+	public void setBrett(Brett brett){
+		this.brett = brett;
+	}
 }
