@@ -2,7 +2,6 @@ package Sjakk.Regler;
 
 import Sjakk.Brett.Brett;
 import Sjakk.Brikker.Brikke;
-import Sjakk.Brikker.Farge;
 
 /**
  * Created by Jo Øivind Gjernes on 20.10.2015.
@@ -37,11 +36,11 @@ public class FlytteRegel
 
 	/**
 	 * Flytteregel for en brikke som kun kan bevege seg en begrenset lengde
- 	 * @param flytteSidelengs
-	 * @param flytteFremover
-	 * @param flytteBakover
-	 * @param flytteDiagonalt
-	 * @param maxAvstand
+ 	 * @param flytteSidelengs Har brikken lov til å flytte sidelengs
+	 * @param flytteFremover Har brikken lov til å flytte fremover
+	 * @param flytteBakover Har brikken lov til å flytte bakover
+	 * @param flytteDiagonalt Har brikken lov til å flytte diagonalt?
+	 * @param maxAvstand Maksimalt antall ruter brikken kan forflytte seg.
 	 */
 	public FlytteRegel(boolean flytteSidelengs, boolean flytteFremover, boolean flytteBakover, boolean flytteDiagonalt, int maxAvstand)
 	{

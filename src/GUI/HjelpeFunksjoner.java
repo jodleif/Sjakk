@@ -1,7 +1,6 @@
 package GUI;
 
 
-import Sjakk.Brikker.Farge;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 

@@ -2,7 +2,7 @@ package GUI.Sjakk;
 
 import GUI.HjelpeFunksjoner;
 import Sjakk.Brikker.Brikke;
-import Sjakk.Brikker.Farge;
+import Sjakk.Regler.Farge;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;

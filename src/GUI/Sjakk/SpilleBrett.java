@@ -8,7 +8,7 @@ import javafx.scene.layout.GridPane;
 /**
  * Created by Jo Øivind Gjernes on 20.10.2015.
  *
- * Spillebrettets representasjon i gui
+ * Spillebrettets representasjon i GUI
  */
 public class SpilleBrett
 {
@@ -34,7 +34,7 @@ public class SpilleBrett
 	}
 
 	/**
-	 * Opprett ruter i brettet
+	 * Opprett ruter i brettet. Kjøres når spillbrettet opprettes (og skal kun kjøres da)
 	 */
 	public void initBrett()
 	{

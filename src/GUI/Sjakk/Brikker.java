@@ -1,10 +1,6 @@
 package GUI.Sjakk;
 
-import GUI.HjelpeFunksjoner;
-import Sjakk.Brikker.Farge;
-import javafx.scene.image.Image;
-
-import java.util.ArrayList;
+import Sjakk.Regler.Farge;
 
 /**
  * Created by Jo Øivind Gjernes on 20.10.2015.

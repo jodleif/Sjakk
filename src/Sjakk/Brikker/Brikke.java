@@ -1,12 +1,15 @@
 package Sjakk.Brikker;
 
 import Sjakk.Brett.Brett;
+import Sjakk.Regler.Farge;
 import Sjakk.Regler.Koordinater;
 
 import java.util.ArrayList;
 
 /**
  * Created by Jo Øivind Gjernes on 20.10.2015.
+ *
+ * "Prototype" for en spillbrikke
  */
 public abstract class Brikke
 {
@@ -67,6 +70,10 @@ public abstract class Brikke
 		return brett;
 	}
 
+	/**
+	 * Returnerer en array med alle gyldige trekk for brikken.
+	 * @return array med gyldige trekk for brikken.
+	 */
 	public String[] gyldigeTrekk()
 	{
 		ArrayList<String> tmp = new ArrayList<>();
@@ -84,6 +91,11 @@ public abstract class Brikke
 		return str;
 	}
 
+	/**
+	 * Sjekk om en posisjon er "opptatt" av en brikke av samme farge.
+	 * @param sjakkPos posisjon man sjekker
+	 * @return true hvis det er en kollisjon (feltet er ikke tomt og inneholder en brikke av samme farge.
+	 */
 	private boolean sjekkForKollisjoner(String sjakkPos)
 	{
 		Brikke tmp = brett.getBrikke(sjakkPos);

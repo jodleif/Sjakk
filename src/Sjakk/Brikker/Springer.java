@@ -1,10 +1,13 @@
 package Sjakk.Brikker;
 
 import Sjakk.Brett.Brett;
+import Sjakk.Regler.Farge;
 import Sjakk.Regler.FlytteRegel;
 
 /**
  * Created by Jo Øivind Gjernes on 20.10.2015.
+ *
+ * Sjakkbrikken springer.
  */
 public class Springer extends Offiser
 {
