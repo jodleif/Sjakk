@@ -4,10 +4,15 @@ package Sjakk.Brett;
  * Created by Jo Øivind Gjernes on 20.10.2015.
  */
 
+import Sjakk.Brett.Historikk.Trekk;
 import Sjakk.Brikker.*;
 import Sjakk.Regler.Farge;
 import Sjakk.Regler.Koordinater;
 import Sjakk.Regler.StartPosisjonRegler;
+
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Deque;
 
 /***
  * Klasse for sjakkbrettet i spill-logikk.
@@ -19,6 +24,7 @@ public class Brett
 	public static final int BRETTSTØRRELSE = 8; // Vil ha tilgang til denne fra GUI
 	private int spillNr;
 	private Brikke[][] brikkene;
+	private Deque<Trekk> spillTrekk; // Lagrer trekkene i spillet.
 
 	/**
 	 * Opprett et nytt spillbrett
@@ -27,8 +33,10 @@ public class Brett
 	 */
 	public Brett(int nyttSpillNr, boolean tomtSpillbrett)
 	{
+
 		this.spillNr = nyttSpillNr;
 		brikkene = new Brikke[BRETTSTØRRELSE][BRETTSTØRRELSE];
+		spillTrekk = new ArrayDeque<>(); // Spilltrekk.
 
 		if(!tomtSpillbrett) {
 			try {
@@ -143,8 +151,21 @@ public class Brett
 	public void setBrikke(String rutenavn, Brikke brikke)
 	{
 		int[] koordinater = tilKoordinater(rutenavn);
-		if(koordinater!=null)
-			brikkene[koordinater[0]][koordinater[1]] = brikke;
+		if(brikke!=null) {
+			if (koordinater != null) {
+				brikke.setRuteNavn(rutenavn); // Sørg for at brikken har korrekt informasjon
+				brikkene[koordinater[0]][koordinater[1]] = brikke;
+			}
+		} else {
+			System.err.println("[Brett.setBrikke] Prøvde å sette null!");
+		}
+	}
+
+	public void fjernBrikke(String rutenavn){
+		int[] koordinater = tilKoordinater(rutenavn);
+		if(koordinater!=null){
+			brikkene[koordinater[0]][koordinater[1]] = null;
+		}
 	}
 
 	/**
@@ -166,8 +187,18 @@ public class Brett
 			return false;
 		int[] koordFra = tilKoordinater(fraRute);
 		int[] koordTil = tilKoordinater(tilRute);
+
+		Brikke flyttes =  brikkene[koordFra[0]][koordFra[1]];
+		Brikke flyttesTil = brikkene[koordTil[0]][koordTil[1]];
+
+		if(flyttesTil!=null){
+			spillTrekk.push(new Trekk(fraRute,tilRute,flyttes.brikkenavn(), flyttes.getFarge(), this, flyttesTil));
+		} else {
+			spillTrekk.push(new Trekk(fraRute,tilRute,flyttes.brikkenavn(), flyttes.getFarge(), this));
+		}
+
 		brikkene[koordTil[0]][koordTil[1]] = brikkene[koordFra[0]][koordFra[1]];
-		brikkene[koordFra[0]][koordFra[1]] = null; // Fjern brikken fra gamle posisjon.
+		fjernBrikke(fraRute);
 		return true;
 	}
 
@@ -197,5 +228,18 @@ public class Brett
 			}
 		}
 		return antall;
+	}
+
+	public boolean angre() {
+		try {
+			Trekk t = spillTrekk.pop();
+		if (t != null) {
+			t.angre();
+			return true;
+		}
+	} catch (Exception e) {
+			System.err.println("Angre listen er tom");
+		}
+		return false;
 	}
 }

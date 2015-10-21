@@ -16,7 +16,7 @@ public abstract class Brikke
 	private String ruteNavn;
 	private Farge farge;
 	private Brett brett;
-
+	private int antTrekk = 0;
 	public Brikke(Brett brett, String rutenavn, Farge farge) throws IllegalArgumentException {
 		this.farge = farge;
 		this.brett = brett;
@@ -50,6 +50,7 @@ public abstract class Brikke
 		if(brett.getBrikke(ruteNavn) == null || (brett.getBrikke(ruteNavn).getFarge()!=this.getFarge())) {
 			if (brett.flyttBrikke(this.ruteNavn, ruteNavn)) { // Flytt på brettet, hvis false var det ulovlig
 				this.ruteNavn = ruteNavn; // Oppdater posisjon hvis flyttingen ble utført
+				antTrekk++;
 				return true; // Ferdig flyttet!
 			}
 		}
@@ -111,5 +112,18 @@ public abstract class Brikke
 		if(b.getFarge()==getFarge()&&b.getRuteNavn().equals(getRuteNavn())&&b.brikkenavn().equals(brikkenavn()))
 			return true;
 		return false;
+	}
+
+	public void setRuteNavn(String ruteNavn){
+		this.ruteNavn = ruteNavn;
+	}
+
+	public int getAntallTrekk(){
+		return antTrekk;
+	}
+
+	public void reduserAntallTrekk(){
+		--antTrekk;
+		assert(antTrekk>=0);
 	}
 }

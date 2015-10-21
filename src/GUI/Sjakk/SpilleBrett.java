@@ -131,4 +131,13 @@ public class SpilleBrett
 		int[] koordinater = Koordinater.til_koordinater(sjakkPos);
 		return ruter[koordinater[0]][koordinater[1]];
 	}
+
+	public boolean angre() {
+		if(sjakkBrett.angre()){
+
+			oppdaterBrett();
+			return true;
+		}
+		return false;
+	}
 }

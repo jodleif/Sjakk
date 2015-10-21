@@ -6,8 +6,11 @@ import GUI.Sjakk.SpilleBrett;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 /**
@@ -27,6 +30,7 @@ public class SjakkApp extends Application
 	//private Scene scene;
 	private BorderPane borderPane;
 	private SpilleBrett spilleBrett;
+	private VBox bunnPanel;
 	public static final double HEIGHT = 760;
 	public static final double WIDTH = 740;
 
@@ -42,6 +46,7 @@ public class SjakkApp extends Application
 		spilleBrett = new SpilleBrett(0);
 		tegnBakgrunn();
 		byggSpillBrett();
+		leggTilTestKnapp();
 		primaryStage.setScene(scene);
 		primaryStage.show();
 	}
@@ -59,7 +64,12 @@ public class SjakkApp extends Application
 			rot.getChildren().add(iv);
 		}
 	}
-
+	private void leggTilTestKnapp(){
+		Button b = new Button("Angre");
+		b.setPrefHeight(20);
+		b.setOnAction(e -> this.spilleBrett.angre());
+		bunnPanel.getChildren().add(b);
+	}
 
 	private void byggSpillBrett(){
 		borderPane.setPrefSize(WIDTH, HEIGHT);
@@ -69,8 +79,10 @@ public class SjakkApp extends Application
 	}
 	private void leggTilPadding(){
 		borderPane.setTop(new Padding(WIDTH,60));
-		borderPane.setBottom(new Padding(WIDTH,80));
+		bunnPanel = new VBox();
+		borderPane.setBottom(bunnPanel);
 		borderPane.setLeft(new Padding(60,HEIGHT));
 		borderPane.setRight(new Padding(60,HEIGHT));
+		bunnPanel.getChildren().add(new Padding(WIDTH,60));
 	}
 }

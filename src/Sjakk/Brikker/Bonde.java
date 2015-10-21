@@ -14,6 +14,7 @@ public class Bonde extends Brikke
 {
 	private FlytteRegel flytteRegel;
 	private boolean førsteTrekk = true;
+	public static final String BRIKKENAVN = "B";
 
 	/**
 	 * Konstruktør
@@ -48,10 +49,6 @@ public class Bonde extends Brikke
 	public boolean flyttTil(String ruteNavn)
 	{
 		boolean status = super.flyttTil(ruteNavn);
-		if(status && førsteTrekk){
-			førsteTrekk = false;
-			flytteRegel.setMaxAvstand(1);
-		}
 		return status;
 	}
 

@@ -10,7 +10,9 @@ import javafx.scene.shape.Rectangle;
 
 
 /**
- * Created by Jo �ivind Gjernes on 20.10.2015.
+ * Created by Jo Øivind Gjernes on 20.10.2015.
+ *
+ * Grafisk representasjon av en "logisk" rute på sjakkbrettet
  */
 public class Rute extends Pane
 {

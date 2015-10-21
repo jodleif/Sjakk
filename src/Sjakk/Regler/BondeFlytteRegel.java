@@ -30,12 +30,17 @@ public class BondeFlytteRegel extends FlytteRegel
 	 * @return sant hvis gyldig trekk
 	 */
 	@Override
-	public boolean gyldigTrekk(String fraPos, String tilPos, Brikke br, Brett brett)
+	public boolean gyldigTrekk(String fraPos, String tilPos, Brikke br, Brett brett )
 	{
 		Retning retning = finnRetning(fraPos, tilPos, br.getFarge());
+		if(br.getAntallTrekk()<1){
+			maxAvstand = 2;
+		} else {
+			maxAvstand = 1;
+		}
 		if (retning == null) return false;
 
-		if (maxAvstand != 0 && (!gyldigAvstand(fraPos, tilPos))) {
+		if (!gyldigAvstand(fraPos, tilPos)) {
 			return false;
 		}
 
