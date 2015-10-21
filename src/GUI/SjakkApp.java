@@ -1,16 +1,11 @@
 package GUI;
-import GUI.Sjakk.LogikkKobling;
-import GUI.Sjakk.Rute;
+
 import GUI.Sjakk.SpilleBrett;
-import Sjakk.Brett.Brett;
-import Sjakk.Brikker.Brikke;
-import Sjakk.Regler.Koordinater;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 /**
@@ -22,8 +17,9 @@ public class SjakkApp extends Application
 	private Scene scene;
 	private BorderPane borderPane;
 	private SpilleBrett spilleBrett;
-	public static final double HEIGHT = 740;
+	public static final double HEIGHT = 760;
 	public static final double WIDTH = 740;
+
 	@Override
 	public void start(Stage primaryStage) throws Exception
 	{
@@ -56,14 +52,14 @@ public class SjakkApp extends Application
 
 
 	private void byggSpillBrett(){
-		borderPane.setPrefSize(740,740);
+		borderPane.setPrefSize(WIDTH, HEIGHT);
 		leggTilPadding();
 		borderPane.setCenter(spilleBrett.getGridPane());
 		rot.getChildren().add(borderPane);
 	}
 	private void leggTilPadding(){
 		borderPane.setTop(new Padding(WIDTH,60));
-		borderPane.setBottom(new Padding(WIDTH,60));
+		borderPane.setBottom(new Padding(WIDTH,80));
 		borderPane.setLeft(new Padding(60,HEIGHT));
 		borderPane.setRight(new Padding(60,HEIGHT));
 	}

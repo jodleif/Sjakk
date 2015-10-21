@@ -18,13 +18,15 @@ public class SpilleBrett
 	private GridPane gridPane;
 	private Rute sistMerket;
 	private Rute[][] ruter;
+	private String[] gyldigePos;
+
 	public SpilleBrett(int spillnr)
 	{
 		sjakkBrett = new Brett(spillnr);
 		gridPane = new GridPane();
-		gridPane.setPrefSize(620,620);
-		gridPane.setOnMouseClicked(e->mouseClickHandler(e));
-		ruter = new Rute[8][8];
+		gridPane.setPrefSize(620, 620);
+		gridPane.setOnMouseClicked(e -> mouseClickHandler(e));
+		ruter = new Rute[Brett.BRETTSTØRRELSE][Brett.BRETTSTØRRELSE];
 		initBrett();
 		oppdaterBrett();
 	}
@@ -33,35 +35,43 @@ public class SpilleBrett
 	{
 		for (int i = 0; i < Brett.BRETTSTØRRELSE; ++i) {
 			for (int j = 0; j < Brett.BRETTSTØRRELSE; ++j) {
-				Rute tempRute = new Rute(Koordinater.fra_koordinater(new int[] {i,7-j}));
-				ruter[i][7-j]=(tempRute); // Lagre en referanse til ruten.
+				Rute tempRute = new Rute(Koordinater.fra_koordinater(new int[]{i, j}));
+				ruter[i][j] = (tempRute); // Lagre en referanse til ruten.
 				gridPane.add(tempRute, i, 7-j); // OBS: Må tegne "opp ned" siden gridpane starter med (0,0) i øvre venstre hjørne, ikke nedre som sjakk
 			}
 		}
 
 	}
 
-	public GridPane getGridPane() {return gridPane;}
+	public GridPane getGridPane()
+	{
+		return gridPane;
+	}
 
 	private void mouseClickHandler(MouseEvent event)
 	{
-		int[] arrPos = LogikkKobling.pixelTilArrPos(event.getX(),event.getY());
+		String sjakkPos = LogikkKobling.pixelTilSjakkPos(event.getX(),event.getY());
+		Rute r = getRute(sjakkPos);
 
-		Rute r = ruter[arrPos[0]][arrPos[1]];
-
-		if(sistMerket==null){
-			if(r.erSjakkbrikke()) {
+		if (sistMerket == null) {
+			if (r.erSjakkbrikke()) {
 				r.merk();
 				sistMerket = r;
+				gyldigePos = sjakkBrett.getBrikke(r.getPos()).gyldigeTrekk();
+				merkGyldige();
 			}
 		} else if (sistMerket.equals(r)) {
 			r.merk();
+			merkGyldige();
+			gyldigePos = null;
 			sistMerket = null;
 		} else {
-			String pos = Koordinater.fra_koordinater(arrPos);
-			if(sjakkBrett.getBrikke(sistMerket.getPos()).flyttTil(pos)) {
+			System.out.println(sjakkPos);
+			if (sjakkBrett.getBrikke(sistMerket.getPos()).flyttTil(sjakkPos)) {
 				sistMerket.merk();
-				sistMerket=null;
+				merkGyldige();
+				gyldigePos = null;
+				sistMerket = null;
 			} else {
 				System.out.println("Ugyldig trekk!");
 			}
@@ -70,13 +80,26 @@ public class SpilleBrett
 
 		oppdaterBrett();
 	}
-
-	private void oppdaterBrett()
+	private void merkGyldige()
 	{
-		for(int i=0;i<Brett.BRETTSTØRRELSE;++i){
-			for(int j=0;j<Brett.BRETTSTØRRELSE;++j){
-				ruter[i][j].oppdater(sjakkBrett.getBrikke(Koordinater.fra_koordinater(new int[] {i,j})));
+		if(gyldigePos!=null){
+			for(String sjakkPos : gyldigePos){
+				getRute(sjakkPos).merkGrønn();
 			}
 		}
+	}
+	private void oppdaterBrett()
+	{
+		for (int i = 0; i < Brett.BRETTSTØRRELSE; ++i) {
+			for (int j = 0; j < Brett.BRETTSTØRRELSE; ++j) {
+				ruter[i][j].oppdater(sjakkBrett.getBrikke(Koordinater.fra_koordinater(new int[]{i, j})));
+			}
+		}
+	}
+
+	private Rute getRute(String sjakkPos)
+	{
+		int[] koordinater = Koordinater.til_koordinater(sjakkPos);
+		return ruter[koordinater[0]][koordinater[1]];
 	}
 }

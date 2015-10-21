@@ -1,6 +1,9 @@
 package Sjakk.Brikker;
 
 import Sjakk.Brett.Brett;
+import Sjakk.Regler.Koordinater;
+
+import java.util.ArrayList;
 
 /**
  * Created by Jo Øivind Gjernes on 20.10.2015.
@@ -62,5 +65,31 @@ public abstract class Brikke
 	public Brett getBrett()
 	{
 		return brett;
+	}
+
+	public String[] gyldigeTrekk()
+	{
+		ArrayList<String> tmp = new ArrayList<>();
+		String trekk;
+		for(int i=0;i<Brett.BRETTSTØRRELSE;++i){
+			for(int j=0;j<Brett.BRETTSTØRRELSE;++j){
+				trekk = Koordinater.fra_koordinater(new int[]{i,j});
+				if(erLovligTrekk(trekk)&&(!sjekkForKollisjoner(trekk))){
+					tmp.add(trekk);
+				}
+			}
+		}
+		String[] str = new String[tmp.size()];
+		tmp.toArray(str);
+		return str;
+	}
+
+	private boolean sjekkForKollisjoner(String sjakkPos)
+	{
+		Brikke tmp = brett.getBrikke(sjakkPos);
+		if(tmp!=null&&(tmp.getFarge()==this.getFarge())){
+			return true;
+		}
+		return false;
 	}
 }

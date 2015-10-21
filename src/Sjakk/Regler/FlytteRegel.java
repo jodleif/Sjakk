@@ -5,9 +5,9 @@ import Sjakk.Brikker.Brikke;
 import Sjakk.Brikker.Farge;
 
 /**
- * Created by Jo �ivind Gjernes on 20.10.2015.
+ * Created by Jo Øivind Gjernes on 20.10.2015.
  * <p>
- * Skal inneholde et rammeverk for flytteregel
+ * Inneholder definerbare regler for hvordan en brikke skal ha lov til å bevege seg.
  */
 public class FlytteRegel
 {
@@ -48,6 +48,14 @@ public class FlytteRegel
 		this.flytteSpringer = true;
 	}
 
+	/**
+	 * Sjekker om et trekk for en gitt brikke er gyldig på et brett (ift brikkens definerte "egenskaper")
+	 * @param fraPos brikkens utgangspunkt
+	 * @param tilPos brikkens mål
+	 * @param br brikken som flyttes
+	 * @param brett spillbrettet
+	 * @return true hvis trekket er gyldig(lovlig)
+	 */
 	public boolean gyldigTrekk(String fraPos, String tilPos, Brikke br, Brett brett)
 	{
 		Retning retning = finnRetning(fraPos, tilPos, br.getFarge());
@@ -125,13 +133,15 @@ public class FlytteRegel
 		if (diff[0] != 0 && diff[1] == 0) {
 			return Retning.SIDELENGS;
 		}
-		// Diagonalt - TODO: fikse- ikke helt korrekt.
+		// Diagonalt
 		if (Math.abs(diff[0])==Math.abs(diff[1])) {
 			return Retning.DIAGONALT;
 		}
+		// Springer.. 2 frem 1 til siden
 		if(Math.abs(diff[0])==2&&Math.abs(diff[1])==1){
 			return Retning.SPRINGER;
 		}
+		//Springer.. 2 til siden 1 frem
 		if(Math.abs(diff[0])==1&&Math.abs(diff[1])==2){
 			return Retning.SPRINGER;
 		}
@@ -145,6 +155,13 @@ public class FlytteRegel
 		return new int[]{til[0] - fra[0], til[1] - fra[1]};
 	}
 
+	/**
+	 * Finner rutene mellom to sjakkruter f.eks a1 og d4 skal gi oss b2 c3 som resultat - skal brukes til å sjekke for kollisjoner i et sjakktrekk.
+	 * Funksjonen antar at rutene man skal sjekke er vertikal, horisontalt eller diagonalt orientert ift hverandre
+	 * @param fra rute man starter fra
+	 * @param til rute man ender i
+	 * @return navn på rutene mellom fra og til
+	 */
 	public static String[] ruterMellom(String fra, String til)
 	{
 		int[] fraKoord = Koordinater.til_koordinater(fra);

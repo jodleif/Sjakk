@@ -64,6 +64,9 @@ public class Rute extends Pane
 		}
 	}
 
+	/**
+	 * Merk av rute (spillervalgt)
+	 */
 	public void merk()
 	{
 		if(sjakkBrikke) {
@@ -76,7 +79,18 @@ public class Rute extends Pane
 			}
 		}
 	}
-
+	public void merkGrønn()
+	{
+		if(merket){
+			bakgrunn.setOpacity(0.0d);
+			bakgrunn.setFill(Color.RED);
+			merket = false;
+		} else {
+			bakgrunn.setFill(Color.GREEN);
+			bakgrunn.setOpacity(0.5d);
+			merket = true;
+		}
+	}
 	public String getPos() {return rutePos;}
 	public boolean erSjakkbrikke() {return sjakkBrikke;}
 

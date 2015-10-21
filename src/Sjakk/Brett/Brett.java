@@ -99,6 +99,12 @@ public class Brett
 
 	}
 
+	/**
+	 * Metoden flytter en brikke. Sjekker om felter er gyldige, men ikke om et eventuelt sjakktrekk er gyldig
+	 * @param fraRute Ruten man flytter fra
+	 * @param tilRute Ruten man flytter til
+	 * @return Sann hvis vi flyttet brikken
+	 */
         public boolean flyttBrikke(String fraRute, String tilRute)
 	{
 		if (!(erLovligRutenavn(fraRute) && erLovligRutenavn(tilRute))) {
