@@ -8,6 +8,8 @@ import Sjakk.Regler.Farge;
  * Created by Jo Øivind Gjernes on 21.10.2015.
  *
  * Klasse som beskriver et trekk i spillet
+ *
+ * Litt uggen implementasjon... Burde muligens håndtert angringen fra brettet, og behandlet dette kun som en kommandoliste.
  */
 public class Trekk
 {
@@ -39,7 +41,7 @@ public class Trekk
 
 	public void angre() {
 		Brikke tmp = brett.getBrikke(tilPos);
-		if(tmp!=null&&tmp.getFarge()==farge&&tmp.brikkenavn()==brikkeType) {
+		if(tmp!=null&&tmp.getFarge()==farge&&tmp.brikkenavn().equals(brikkeType)) {
 			brett.setBrikke(fraPos, tmp);
 			tmp.reduserAntallTrekk();
 			if (fjernetBrikke != null) {
@@ -54,11 +56,15 @@ public class Trekk
 
 	public void utfør() {
 		Brikke tmp = brett.getBrikke(fraPos);
-		if(tmp!=null&&tmp.getFarge()==farge&&tmp.brikkenavn()==brikkeType){ // Sjekker for å være sikker på at historikken stemmer overens med spillbrettet
+		if(tmp!=null&&tmp.getFarge()==farge&&tmp.brikkenavn().equals(brikkeType)){ // Sjekker for å være sikker på at historikken stemmer overens med spillbrettet
 			brett.setBrikke(tilPos,tmp);
 			brett.fjernBrikke(fraPos);
 		} else {
 			System.err.println("[Trekk.utfør] Feilet!");
 		}
+	}
+	public void setBrett(Brett brett)
+	{
+		this.brett = brett;
 	}
 }

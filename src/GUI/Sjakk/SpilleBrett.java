@@ -132,9 +132,18 @@ public class SpilleBrett
 		return ruter[koordinater[0]][koordinater[1]];
 	}
 
+	/**
+	 * Angre funksjon.
+	 * merk: Sørger for å fjerne eventuelle merkede felter for å unngå bugs.
+	 * @return true hvis angringen gikk bra.
+	 */
 	public boolean angre() {
 		if(sjakkBrett.angre()){
-
+			if(sistMerket!=null){
+				merkGyldige();
+				sistMerket.merk();
+				sistMerket = null;
+			}
 			oppdaterBrett();
 			return true;
 		}

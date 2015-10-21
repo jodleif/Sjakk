@@ -192,9 +192,9 @@ public class Brett
 		Brikke flyttesTil = brikkene[koordTil[0]][koordTil[1]];
 
 		if(flyttesTil!=null){
-			spillTrekk.push(new Trekk(fraRute,tilRute,flyttes.brikkenavn(), flyttes.getFarge(), this, flyttesTil));
+			spillTrekk.push(new Trekk(fraRute, tilRute, flyttes.brikkenavn(), flyttes.getFarge(), this, flyttesTil));
 		} else {
-			spillTrekk.push(new Trekk(fraRute,tilRute,flyttes.brikkenavn(), flyttes.getFarge(), this));
+			spillTrekk.push(new Trekk(fraRute, tilRute, flyttes.brikkenavn(), flyttes.getFarge(), this));
 		}
 
 		brikkene[koordTil[0]][koordTil[1]] = brikkene[koordFra[0]][koordFra[1]];
@@ -239,6 +239,21 @@ public class Brett
 		}
 	} catch (Exception e) {
 			System.err.println("Angre listen er tom");
+		}
+		return false;
+	}
+	public void addTrekk(Trekk tr){
+		spillTrekk.push(tr);
+	}
+	public boolean utfør() {
+		try {
+			Trekk t = spillTrekk.getFirst();
+			if(t!=null){
+				t.utfør();
+				return true;
+			}
+		}catch(Exception e){
+			System.err.println("Error: Angre listen er tom");
 		}
 		return false;
 	}
