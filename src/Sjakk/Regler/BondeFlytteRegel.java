@@ -51,16 +51,12 @@ public class BondeFlytteRegel extends FlytteRegel
 			if (retning == Retning.FREM) {
 				return false; // KAN ikke angripe fremover
 			} else if (retning == Retning.DIAGONALT) {
-				if (Koordinater.avstand(fraPos, tilPos) == 1) {
-					return true; // Angriper kun diagonalt!
-				} else {
-					return false;
-				}
+				// Angriper kun diagonalt!
+				return Koordinater.avstand(fraPos, tilPos) == 1;
 			}
 		}
 
-		if (retning == Retning.FREM) return true;
+		return retning == Retning.FREM;
 
-		return false;
 	}
 }

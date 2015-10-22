@@ -11,7 +11,6 @@ import Sjakk.Regler.Koordinater;
 import Sjakk.Regler.StartPosisjonRegler;
 
 import java.util.ArrayDeque;
-import java.util.ArrayList;
 import java.util.Deque;
 
 /***
@@ -41,7 +40,7 @@ public class Brett
 			try {
 				opprettSpillbrikker();
 			} catch (IllegalArgumentException e) {
-				System.out.println("[BRETT] Feil under konstruksjon!\n" + e.getMessage());
+				System.err.println("[BRETT] Feil under konstruksjon!\n" + e.getMessage());
 			}
 		}
 	}
@@ -54,6 +53,18 @@ public class Brett
 	public Brett(int nyttSpillNr)
 	{
 		this(nyttSpillNr, false);
+	}
+
+	/**
+	 * Er rutenavnet et gyldig rutenavn?
+	 * merk: flyttet ut i en separat "hjelpeklasse" metoden kan fjernes, men dette krever noen endringer i koden i andre metoder
+	 *
+	 * @param rutenavn er dette rutenavnet gyldig?
+	 * @return true hvis det er et gyldig rutenavn (a1-h8)
+	 */
+	public static boolean erLovligRutenavn(String rutenavn)
+	{
+		return Koordinater.erLovligRutenavn(rutenavn);
 	}
 
 	/**
@@ -81,6 +92,7 @@ public class Brett
 
 	/**
 	 * Opprett spillbrikker- og plasser dem på sine startsposisjoner
+	 * Startposisjoner er beskrevet i klassen StartPosisjonsRegler.
 	 *
 	 * @throws IllegalArgumentException
 	 */
@@ -89,51 +101,42 @@ public class Brett
 
 		for (int j = 1; j < BRETTSTØRRELSE; j += (BRETTSTØRRELSE - 3)) { // Andre rad og sjette rad.
 			for (int i = 0; i < BRETTSTØRRELSE; ++i) {
-				Farge farge = (j == 1) ? Farge.HVIT : Farge.SVART;
+				Farge farge = finnFargeFraRad(j);
 				String nyRuteNavn = fraKoordinater(new int[]{i, j});
-				if (nyRuteNavn != null) {
-					brikkene[i][j] = new Bonde(this, nyRuteNavn, farge);
-				}
+				brikkene[i][j] = new Bonde(this, nyRuteNavn, farge);
 			}
 		}
 		for (String tårnPos : StartPosisjonRegler.TÅRNPOSISJONER) {
 			int[] koord = tilKoordinater(tårnPos);
-			Farge farge = (koord[1] <= 1) ? Farge.HVIT : Farge.SVART; // Hvis rad 1 eller 2 (koordinat 0, 1) Hvite brikker.
+			Farge farge = finnFargeFraRad(koord[1]); // Hvis rad 1 eller 2 (koordinat 0, 1) Hvite brikker.
 			brikkene[koord[0]][koord[1]] = new Tårn(this, tårnPos, farge);
 		}
 		for (String springerPos : StartPosisjonRegler.SPRINGERPOSISJONER) {
 			int[] koord = tilKoordinater(springerPos);
-			Farge farge = (koord[1] <= 1) ? Farge.HVIT : Farge.SVART;
+			Farge farge = finnFargeFraRad(koord[1]);
 			brikkene[koord[0]][koord[1]] = new Springer(this, springerPos, farge);
 		}
 		for (String løperPos : StartPosisjonRegler.LØPERPOSISJONER) {
 			int[] koord = tilKoordinater(løperPos);
-			Farge farge = (koord[1] <= 1) ? Farge.HVIT : Farge.SVART;
+			Farge farge = finnFargeFraRad(koord[1]);
 			brikkene[koord[0]][koord[1]] = new Løper(this, løperPos, farge);
 		}
 		for (String kongePos : StartPosisjonRegler.KONGEPOSISJONER) {
 			int[] koord = tilKoordinater(kongePos);
-			Farge farge = (koord[1] <= 1) ? Farge.HVIT : Farge.SVART;
+			Farge farge = finnFargeFraRad(koord[1]);
 			brikkene[koord[0]][koord[1]] = new Konge(this, kongePos, farge);
 		}
 		for (String dronningPos : StartPosisjonRegler.DRONNINGPOSISJONER) {
 			int[] koord = tilKoordinater(dronningPos);
-			Farge farge = (koord[1] <= 1) ? Farge.HVIT : Farge.SVART;
+			Farge farge = finnFargeFraRad(koord[1]);
 			brikkene[koord[0]][koord[1]] = new Dronning(this, dronningPos, farge);
 		}
 
 	}
 
-	/**
-	 * Er rutenavnet et gyldig rutenavn?
-	 * merk: flyttet ut i en separat "hjelpeklasse" metoden kan fjernes, men dette krever noen endringer i koden i andre metoder
-	 *
-	 * @param rutenavn er dette rutenavnet gyldig?
-	 * @return true hvis det er et gyldig rutenavn (a1-h8)
-	 */
-	public static boolean erLovligRutenavn(String rutenavn)
+	private Farge finnFargeFraRad(int rad)
 	{
-		return Koordinater.erLovligRutenavn(rutenavn);
+		return rad <= 1 ? Farge.HVIT : Farge.SVART;
 	}
 
 	/**

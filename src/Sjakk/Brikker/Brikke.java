@@ -65,6 +65,11 @@ public abstract class Brikke
 		return ruteNavn;
 	}
 
+	public void setRuteNavn(String ruteNavn)
+	{
+		this.ruteNavn = ruteNavn;
+	}
+
 	public Farge getFarge()
 	{
 		return farge;
@@ -73,6 +78,15 @@ public abstract class Brikke
 	public Brett getBrett()
 	{
 		return brett;
+	}
+
+	/**
+	 * Brukes for å endre hvilket brett brikken tilhører
+	 * @param brett nytt brett
+	 */
+	public void setBrett(Brett brett)
+	{
+		this.brett = brett;
 	}
 
 	/**
@@ -113,13 +127,7 @@ public abstract class Brikke
 		if(obj==null)
 			return false;
 		Brikke b = (Brikke)obj;
-		if(b.getFarge()==getFarge()&&b.getRuteNavn().equals(getRuteNavn())&&b.brikkenavn().equals(brikkenavn()))
-			return true;
-		return false;
-	}
-
-	public void setRuteNavn(String ruteNavn){
-		this.ruteNavn = ruteNavn;
+		return b.getFarge() == getFarge() && b.getRuteNavn().equals(getRuteNavn()) && b.brikkenavn().equals(brikkenavn());
 	}
 
 	public int getAntallTrekk(){
@@ -129,14 +137,6 @@ public abstract class Brikke
 	public void reduserAntallTrekk(){
 		--antTrekk;
 		assert(antTrekk>=0);
-	}
-
-	/**
-	 * Brukes for å endre hvilket brett brikken tilhører
-	 * @param brett nytt brett
-	 */
-	public void setBrett(Brett brett){
-		this.brett = brett;
 	}
 
 	protected void setAntTrekk(int antallTrekk){

@@ -1,7 +1,5 @@
 package GUI;
 
-import GUI.HjelpeFunksjoner;
-import GUI.Padding;
 import GUI.Replay.Test;
 import GUI.Sjakk.SpilleBrett;
 import javafx.application.Application;
@@ -27,13 +25,19 @@ import javafx.stage.Stage;
  */
 public class SjakkApp extends Application
 {
+	public static final double HEIGHT = 770;
+	public static final double WIDTH = 740;
 	private Group rot;
 	//private Scene scene;
 	private BorderPane borderPane;
 	private SpilleBrett spilleBrett;
 	private VBox bunnPanel;
-	public static final double HEIGHT = 760;
-	public static final double WIDTH = 740;
+
+	public static void main(String[] args)
+	{
+		launch(args);
+		System.exit(0);
+	}
 
 	@Override
 	public void start(Stage primaryStage) throws Exception
@@ -52,12 +56,6 @@ public class SjakkApp extends Application
 		primaryStage.show();
 	}
 
-	public static void main(String[] args)
-	{
-		launch(args);
-		System.exit(0);
-	}
-
 	private void tegnBakgrunn()
 	{
 		ImageView iv = HjelpeFunksjoner.lastImageViewFraFil("img/sjakkbrett.png");
@@ -67,11 +65,11 @@ public class SjakkApp extends Application
 	}
 	private void leggTilTestKnapp(){
 		HBox hbox = new HBox();
-
+		hbox.setMaxHeight(30);
 		Button b = new Button("Angre");
 		Button b2 = new Button("Spill av");
-		b.setPrefHeight(15);
-		b2.setPrefHeight(15);
+		b.setPrefHeight(30);
+		b2.setPrefHeight(30);
 		b.setOnAction(e -> this.spilleBrett.angre());
 		b2.setOnAction(e -> this.spilleBrett.spillAvNesteTrekk());
 		bunnPanel.getChildren().add(hbox);
