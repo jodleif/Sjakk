@@ -29,4 +29,12 @@ public class Løper extends Offiser
 	{
 		return "L";
 	}
+
+	@Override
+	public Brikke kopierBrikken()
+	{
+		Brikke b = new Løper(getBrett(), getRuteNavn(), getFarge());
+		b.setAntTrekk(getAntallTrekk());
+		return b;
+	}
 }

@@ -14,4 +14,5 @@ public abstract class Offiser extends Brikke
 	{
 		super(brett, rutenavn, farge);
 	}
+
 }

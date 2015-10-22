@@ -21,17 +21,7 @@ public class PGNTest
 	@Test
 	public void testPgnOrdTilTrekk() throws Exception
 	{
-		Brett brett = new Brett(0);
-		Brett brett2 = new Brett(1);
-		Trekk tr = PGN.pgnOrdTilTrekk("e4",brett, Farge.HVIT);
-		Trekk tr2 = PGN.pgnOrdTilTrekk("e4", brett2, Farge.HVIT);
-		tr2.utfør();
-		brett.addTrekk(tr);
-		brett.utfør();
-		Brikke br = brett.getBrikke("e4");
-		Brikke br2 = brett2.getBrikke("e4");
-		assertTrue(br.brikkenavn()=="B"&&br.getFarge()==Farge.HVIT);
-		assertTrue(br.brikkenavn().equals(br2.brikkenavn())&&br2.getFarge()==br.getFarge());
+
 	}
 
 	@Test
@@ -42,7 +32,11 @@ public class PGNTest
 		trekkListe.add("e5");
 		trekkListe.add("Nf3");
 		trekkListe.add("Nc6");
+		trekkListe.add("Bb3");
+		trekkListe.add("a6");
+		trekkListe.add("Ba4");
+		trekkListe.add("Nf6");
 		ArrayList<Trekk> trekk = PGN.pgnListeTilTrekk(trekkListe);
-		assertTrue(trekk.size()==4);
+		assertTrue(trekk.size()==9); // Startsposisjon også et trekk.
 	}
 }

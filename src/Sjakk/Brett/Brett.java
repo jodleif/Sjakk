@@ -19,8 +19,6 @@ import java.util.Deque;
  */
 public class Brett
 {
-
-
 	public static final int BRETTSTØRRELSE = 8; // Vil ha tilgang til denne fra GUI
 	private int spillNr;
 	private Brikke[][] brikkene;
@@ -28,7 +26,8 @@ public class Brett
 
 	/**
 	 * Opprett et nytt spillbrett
-	 * @param nyttSpillNr nummeret på spillet.
+	 *
+	 * @param nyttSpillNr    nummeret på spillet.
 	 * @param tomtSpillbrett skal vi lage et tomt brett?
 	 */
 	public Brett(int nyttSpillNr, boolean tomtSpillbrett)
@@ -38,7 +37,7 @@ public class Brett
 		brikkene = new Brikke[BRETTSTØRRELSE][BRETTSTØRRELSE];
 		spillTrekk = new ArrayDeque<>(); // Spilltrekk.
 
-		if(!tomtSpillbrett) {
+		if (!tomtSpillbrett) {
 			try {
 				opprettSpillbrikker();
 			} catch (IllegalArgumentException e) {
@@ -49,15 +48,17 @@ public class Brett
 
 	/**
 	 * "Standard konstruktør" - vanlig startposisjon for brikker
+	 *
 	 * @param nyttSpillNr spillnr
 	 */
 	public Brett(int nyttSpillNr)
 	{
-		this(nyttSpillNr,false);
+		this(nyttSpillNr, false);
 	}
 
 	/**
 	 * regner fra sjakk koordinater til array koordinater
+	 *
 	 * @param rutenavn sjakk-koordinat
 	 * @return array-koordinat
 	 */
@@ -69,6 +70,7 @@ public class Brett
 	/**
 	 * regner fra array-koordinater til sjakk-koordinater
 	 * merk: kan fjernes- og erstattes med Koordinater.fraKoordinater
+	 *
 	 * @param koordinater
 	 * @return
 	 */
@@ -79,6 +81,7 @@ public class Brett
 
 	/**
 	 * Opprett spillbrikker- og plasser dem på sine startsposisjoner
+	 *
 	 * @throws IllegalArgumentException
 	 */
 	private void opprettSpillbrikker() throws IllegalArgumentException
@@ -124,6 +127,7 @@ public class Brett
 	/**
 	 * Er rutenavnet et gyldig rutenavn?
 	 * merk: flyttet ut i en separat "hjelpeklasse" metoden kan fjernes, men dette krever noen endringer i koden i andre metoder
+	 *
 	 * @param rutenavn er dette rutenavnet gyldig?
 	 * @return true hvis det er et gyldig rutenavn (a1-h8)
 	 */
@@ -134,6 +138,7 @@ public class Brett
 
 	/**
 	 * Hent spillbrikken i den spesifiserte ruten.
+	 *
 	 * @param rutenavn navnet på ruten
 	 * @return brikken i rutenavn, null dersom ruten er tom.
 	 */
@@ -151,7 +156,7 @@ public class Brett
 	public void setBrikke(String rutenavn, Brikke brikke)
 	{
 		int[] koordinater = tilKoordinater(rutenavn);
-		if(brikke!=null) {
+		if (brikke != null) {
 			if (koordinater != null) {
 				brikke.setRuteNavn(rutenavn); // Sørg for at brikken har korrekt informasjon
 				brikkene[koordinater[0]][koordinater[1]] = brikke;
@@ -161,20 +166,22 @@ public class Brett
 		}
 	}
 
-	public void fjernBrikke(String rutenavn){
+	public void fjernBrikke(String rutenavn)
+	{
 		int[] koordinater = tilKoordinater(rutenavn);
-		if(koordinater!=null){
+		if (koordinater != null) {
 			brikkene[koordinater[0]][koordinater[1]] = null;
 		}
 	}
 
 	/**
 	 * Metoden flytter en brikke. Sjekker om felter er gyldige, men ikke om et eventuelt sjakktrekk er gyldig
+	 *
 	 * @param fraRute Ruten man flytter fra
 	 * @param tilRute Ruten man flytter til
 	 * @return Sann hvis vi flyttet brikken
 	 */
-        public boolean flyttBrikke(String fraRute, String tilRute)
+	public boolean flyttBrikke(String fraRute, String tilRute)
 	{
 		if (!(erLovligRutenavn(fraRute) && erLovligRutenavn(tilRute))) {
 			return false;
@@ -183,22 +190,15 @@ public class Brett
 		Brikke br = getBrikke(fraRute);
 		if (br == null)
 			return false;
-		if(!br.erLovligTrekk(tilRute))
+		if (!br.erLovligTrekk(tilRute))
 			return false;
-		int[] koordFra = tilKoordinater(fraRute);
-		int[] koordTil = tilKoordinater(tilRute);
+		//Lagre snapshot
+		lagreTrekk();
 
-		Brikke flyttes =  brikkene[koordFra[0]][koordFra[1]];
-		Brikke flyttesTil = brikkene[koordTil[0]][koordTil[1]];
-
-		if(flyttesTil!=null){
-			spillTrekk.push(new Trekk(fraRute, tilRute, flyttes.brikkenavn(), flyttes.getFarge(), this, flyttesTil));
-		} else {
-			spillTrekk.push(new Trekk(fraRute, tilRute, flyttes.brikkenavn(), flyttes.getFarge(), this));
-		}
-
-		brikkene[koordTil[0]][koordTil[1]] = brikkene[koordFra[0]][koordFra[1]];
+		// utfør trekk
+		setBrikke(tilRute, getBrikke(fraRute));
 		fjernBrikke(fraRute);
+
 		return true;
 	}
 
@@ -207,10 +207,10 @@ public class Brett
 		int antallBrikker = antallBrikkerILive();
 		Brikke[] alleBrikker = new Brikke[antallBrikker];
 		int teller = 0;
-		for(int i=0;i<BRETTSTØRRELSE;++i){
-			for(int j=0;j<BRETTSTØRRELSE;++j){
+		for (int i = 0; i < BRETTSTØRRELSE; ++i) {
+			for (int j = 0; j < BRETTSTØRRELSE; ++j) {
 				Brikke tmp = brikkene[i][j];
-				if(tmp!=null){
+				if (tmp != null) {
 					alleBrikker[teller++] = tmp;
 				}
 			}
@@ -221,40 +221,87 @@ public class Brett
 	private int antallBrikkerILive()
 	{
 		int antall = 0;
-		for(int i=0;i<BRETTSTØRRELSE;++i){
-			for(int j=0;j<BRETTSTØRRELSE;++j){
-				if(brikkene[i][j]!=null)
+		for (int i = 0; i < BRETTSTØRRELSE; ++i) {
+			for (int j = 0; j < BRETTSTØRRELSE; ++j) {
+				if (brikkene[i][j] != null)
 					++antall;
 			}
 		}
 		return antall;
 	}
 
-	public boolean angre() {
-		try {
-			Trekk t = spillTrekk.pop();
-		if (t != null) {
-			t.angre();
-			return true;
-		}
-	} catch (Exception e) {
-			System.err.println("Angre listen er tom");
-		}
-		return false;
-	}
-	public void addTrekk(Trekk tr){
+	public void addTrekk(Trekk tr)
+	{
 		spillTrekk.push(tr);
 	}
-	public boolean utfør() {
-		try {
-			Trekk t = spillTrekk.getFirst();
-			if(t!=null){
-				t.utfør();
-				return true;
+
+	/**
+	 * Henter det "nyligeste" (forrige) trekket og setter spillbrettet til det.
+	 * @return
+	 */
+	public boolean angre()
+	{
+		if(spillTrekk.size()==0)
+			return false;
+		Trekk tr = spillTrekk.pop();
+		brikkene = tr.getSnapshot();
+		return true;
+	}
+
+	/**
+	 * Starter fra det første elementet man la til i dequeuen.
+	 * @return
+	 */
+	public boolean spillAvNesteTrekk()
+	{
+		if(spillTrekk.size() == 0)
+			return false;
+		Trekk tr = spillTrekk.pollLast();
+		brikkene = tr.getSnapshot();
+		return true;
+	}
+
+	public void lagreTrekk(){
+		spillTrekk.push(new Trekk(brikkene));
+	}
+
+	public Trekk seSisteTrekk()
+	{
+		return spillTrekk.peek();
+	}
+
+	/**
+	 * Rokkering - ikke for spill, for avspilling av "replays"
+	 * @param kongeside hvis kongeside rokkering
+	 * @param farge spiller.
+	 * TODO: implementer inkrementering av trekk.
+	 */
+	public void Rokker(boolean kongeside, Farge farge){
+		lagreTrekk();
+		if(kongeside){
+			if(farge == Farge.HVIT){
+				setBrikke("g1", getBrikke("e1"));
+				fjernBrikke("e1");
+				setBrikke("f1", getBrikke("h1"));
+				fjernBrikke("h1");
+			} else {
+				setBrikke("g8",getBrikke("e8"));
+				fjernBrikke("e8");
+				setBrikke("f8",getBrikke("h8"));
+				fjernBrikke("h8");
 			}
-		}catch(Exception e){
-			System.err.println("Error: Angre listen er tom");
+		} else {
+			if(farge==Farge.HVIT){
+				setBrikke("c1",getBrikke("e1"));
+				fjernBrikke("e1");
+				setBrikke("d1",getBrikke("a1"));
+				fjernBrikke("a1");
+			} else {
+				setBrikke("c8",getBrikke("e8"));
+				fjernBrikke("e8");
+				setBrikke("d8",getBrikke("a8"));
+				fjernBrikke("a8");
+			}
 		}
-		return false;
 	}
 }

@@ -2,6 +2,7 @@ package GUI;
 
 import GUI.HjelpeFunksjoner;
 import GUI.Padding;
+import GUI.Replay.Test;
 import GUI.Sjakk.SpilleBrett;
 import javafx.application.Application;
 import javafx.scene.Group;
@@ -43,7 +44,7 @@ public class SjakkApp extends Application
 		borderPane = new BorderPane();
 		rot = new Group();
 		Scene scene = new Scene(rot,WIDTH,HEIGHT);
-		spilleBrett = new SpilleBrett(0);
+		spilleBrett = new SpilleBrett(Test.getSjakkBrettMedHistorikk());
 		tegnBakgrunn();
 		byggSpillBrett();
 		leggTilTestKnapp();
@@ -65,10 +66,17 @@ public class SjakkApp extends Application
 		}
 	}
 	private void leggTilTestKnapp(){
+		HBox hbox = new HBox();
+
 		Button b = new Button("Angre");
-		b.setPrefHeight(20);
+		Button b2 = new Button("Spill av");
+		b.setPrefHeight(15);
+		b2.setPrefHeight(15);
 		b.setOnAction(e -> this.spilleBrett.angre());
-		bunnPanel.getChildren().add(b);
+		b2.setOnAction(e -> this.spilleBrett.spillAvNesteTrekk());
+		bunnPanel.getChildren().add(hbox);
+		hbox.getChildren().add(b);
+		hbox.getChildren().add(b2);
 	}
 
 	private void byggSpillBrett(){

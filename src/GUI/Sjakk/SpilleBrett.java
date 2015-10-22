@@ -33,6 +33,12 @@ public class SpilleBrett
 		oppdaterBrett();
 	}
 
+	public SpilleBrett(Brett b)
+	{
+		this(0);
+		sjakkBrett = b;
+	}
+
 	/**
 	 * Opprett ruter i brettet. Kjøres når spillbrettet opprettes (og skal kun kjøres da)
 	 */
@@ -143,6 +149,19 @@ public class SpilleBrett
 				merkGyldige();
 				sistMerket.merk();
 				sistMerket = null;
+			}
+			oppdaterBrett();
+			return true;
+		}
+		return false;
+	}
+
+	public boolean spillAvNesteTrekk() {
+		if(sjakkBrett.spillAvNesteTrekk()){
+			if(sistMerket!=null){
+				merkGyldige();
+				sistMerket.merk();
+				sistMerket=null;
 			}
 			oppdaterBrett();
 			return true;

@@ -17,6 +17,8 @@ public abstract class Brikke
 	private Farge farge;
 	private Brett brett;
 	private int antTrekk = 0;
+
+
 	public Brikke(Brett brett, String rutenavn, Farge farge) throws IllegalArgumentException {
 		this.farge = farge;
 		this.brett = brett;
@@ -27,6 +29,8 @@ public abstract class Brikke
 		}
 	}
 
+
+	public abstract Brikke kopierBrikken();
 	/***
 	 * Implementeres i underklasser- unike regler for hver "brikketype"
 	 * @param rutenavn navnet på ruten brikken skal flyttes til. på sjakkformat i.e. a1
@@ -133,5 +137,9 @@ public abstract class Brikke
 	 */
 	public void setBrett(Brett brett){
 		this.brett = brett;
+	}
+
+	protected void setAntTrekk(int antallTrekk){
+		this.antTrekk = antallTrekk;
 	}
 }

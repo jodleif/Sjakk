@@ -45,4 +45,12 @@ public class Dronning extends Offiser
 	{
 		return "D";
 	}
+
+	@Override
+	public Brikke kopierBrikken()
+	{
+		Brikke b = new Dronning(getBrett(), getRuteNavn(), getFarge());
+		b.setAntTrekk(getAntallTrekk());
+		return b;
+	}
 }

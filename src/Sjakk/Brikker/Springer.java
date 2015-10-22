@@ -28,4 +28,12 @@ public class Springer extends Offiser
 	{
 		return "S";
 	}
+
+	@Override
+	public Brikke kopierBrikken()
+	{
+		Brikke b = new Springer(getBrett(), getRuteNavn(), getFarge());
+		b.setAntTrekk(getAntallTrekk());
+		return b;
+	}
 }

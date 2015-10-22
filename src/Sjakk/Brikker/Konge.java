@@ -30,4 +30,12 @@ public class Konge extends Offiser
 	{
 		return "K";
 	}
+
+	@Override
+	public Brikke kopierBrikken()
+	{
+		Brikke b = new Konge(getBrett(), getRuteNavn(), getFarge());
+		b.setAntTrekk(getAntallTrekk());
+		return b;
+	}
 }

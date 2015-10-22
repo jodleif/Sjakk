@@ -61,4 +61,12 @@ public class Bonde extends Brikke
 	{
 		return "B"; // Bonde
 	}
+
+	@Override
+	public Brikke kopierBrikken()
+	{
+		Brikke b = new Bonde(getBrett(), getRuteNavn(), getFarge());
+		b.setAntTrekk(getAntallTrekk());
+		return b;
+	}
 }

@@ -30,4 +30,12 @@ public class Tårn extends Offiser
 	{
 		return BRIKKENAVN;
 	}
+
+	@Override
+	public Brikke kopierBrikken()
+	{
+		Brikke b = new Tårn(getBrett(), getRuteNavn(), getFarge());
+		b.setAntTrekk(getAntallTrekk());
+		return b;
+	}
 }
