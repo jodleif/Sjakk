@@ -11,11 +11,12 @@ import Sjakk.Regler.FlytteRegel;
  */
 public class Løper extends Offiser
 {
-	private static final FlytteRegel flytteRegel = new FlytteRegel(false,false,false,true);
+	private static FlytteRegel flytteRegel;
 
 	public Løper(Brett brett, String rutenavn, Farge farge) throws IllegalArgumentException
 	{
 		super(brett, rutenavn, farge);
+		flytteRegel = new FlytteRegel(false,false,false,true);
 	}
 
 	@Override

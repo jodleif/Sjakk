@@ -75,7 +75,7 @@ public class PGN
 				}
 			}
 		} catch (Exception e) {
-			System.err.println("Tolking feilet!");
+			System.err.println("Tolking feilet!: " + e.getMessage());
 		}
 	}
 
@@ -92,14 +92,22 @@ public class PGN
 		} else if (pgnTrekk.equals("O-O-O")) {
 			return new String[]{"QUEENSIDE"};
 		}
+		if(pgnTrekk.charAt(pgnTrekk.length()-1)=='+'){
+			pgnTrekk = pgnTrekk.substring(0,pgnTrekk.length()-1);
+		}
+		//SjakkAngrep BRIKKETYPE x rute
 		if(pgnTrekk.charAt(1)=='x') {
 			if(Character.isUpperCase(pgnTrekk.charAt(0))) {
-				brikkeType = String.valueOf(SpråkKonvertering.KonverterFraPGN(pgnTrekk.charAt(0)));
-				pgnTrekk = brikkeType + pgnTrekk.substring(2);
+				brikkeType = String.valueOf(pgnTrekk.charAt(0));
+				pgnTrekk = brikkeType + pgnTrekk.substring(2,4);
 			} else {
-				pgnTrekk = pgnTrekk.substring(2);
+				brikkeType = "B";
+				String brikkeKol = String.valueOf(pgnTrekk.charAt(0));
+				sluttPos=pgnTrekk.substring(2,4);
+				return new String[]{brikkeType,brikkeKol,sluttPos};
 			}
 		}
+		//Vanlige trekk format: BRIKKETYPE rute f.eks Ne5, eler kun rute = bonde til rute ex: e5
 		if (pgnTrekk.length()==2){ // Ingen info om brikketype
 			brikkeType = "B"; // Bonde!
 			sluttPos = pgnTrekk;
@@ -134,6 +142,7 @@ public class PGN
 				}
 			}
 		}
+		if ((startPos.length() == 0)) throw new IllegalArgumentException("[finnBrikkeStartPos] fant ikke startposisjon for brikke: " + brikkeType + " til " + sluttPos);
 		return startPos;
 	}
 
@@ -143,19 +152,19 @@ public class PGN
 		{
 			switch (tilPGN) {
 				case 'B':
-					return 'P';
+					return 'P'; // Peasant
 				case 'D':
-					return 'Q';
+					return 'Q'; // Queen
 				case 'K':
-					return tilPGN;
+					return tilPGN; // King
 				case 'S':
-					return 'N';
+					return 'N'; // kNight
 				case 'L':
-					return 'S';
+					return 'B'; // Bishop
 				case 'T':
-					return 'R';
+					return 'R'; // Rook
 				default:
-					return ' ';
+					return ' '; // INVALID
 			}
 		}
 
@@ -163,17 +172,17 @@ public class PGN
 		{
 			switch (fraPGN) {
 				case 'P':
-					return 'B';
+					return 'B'; // Bonde
 				case 'Q':
-					return 'D';
+					return 'D'; // Dronning
 				case 'K':
-					return fraPGN;
-				case 'S':
-					return 'L';
+					return fraPGN; // Konge
 				case 'N':
-					return 'S';
+					return 'S'; // Springer / hest
 				case 'R':
-					return 'T';
+					return 'T'; // Tårn
+				case 'B':
+					return 'L'; // Løper
 				default:
 					return ' ';
 			}
