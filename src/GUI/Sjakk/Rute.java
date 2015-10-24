@@ -1,8 +1,8 @@
 package GUI.Sjakk;
 
-import GUI.HjelpeFunksjoner;
 import Sjakk.Brikker.Brikke;
 import Sjakk.Regler.Farge;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -18,24 +18,26 @@ public class Rute extends Pane
 {
 	private Rectangle bakgrunn;
 	private ImageView brikkeBilde;
+	private BildeListe bildeCache;
 	private String rutePos;
 	private boolean merket = false;
 	private boolean sjakkBrikke;
 
-	public Rute(String pos)
+	public Rute(String pos, BildeListe cache)
 	{
 		setPrefSize(80, 80);
 		initBakgrunn();
+		bildeCache = cache;
 		rutePos = pos;
 	}
 
-	private void setBrikke(String brikketype, Farge farge) throws IllegalArgumentException
+	private void setBilde(String brikketype, Farge farge) throws IllegalArgumentException
 	{
-		String bildeSti = BrikkeBilder.bildestiForBrikke(brikketype, farge);
-		if (bildeSti != null) {
-			brikkeBilde = HjelpeFunksjoner.lastImageViewFraFil(bildeSti);
-			getChildren().add(brikkeBilde);
-		}
+		Image temp = bildeCache.getBilde(brikketype, farge);
+		brikkeBilde = new ImageView(temp);
+		if (brikkeBilde == null)
+			throw new IllegalArgumentException("[setBilde] Fant ikke ImageView");
+		getChildren().add(brikkeBilde);
 	}
 
 	public void fjernBilde()
@@ -60,7 +62,7 @@ public class Rute extends Pane
 
 		if (brikke != null) {
 			sjakkBrikke = true;
-			setBrikke(brikke.brikkenavn(), brikke.getFarge());
+			setBilde(brikke.brikkenavn(), brikke.getFarge());
 		} else {
 			sjakkBrikke = false;
 		}

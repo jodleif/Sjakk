@@ -6,6 +6,8 @@ import javafx.scene.image.ImageView;
 
 /**
  * Created by Jo Øivind Gjernes on 20.10.2015.
+ * <p>
+ * Hjelpefunksjoner til GUI.
  */
 public class HjelpeFunksjoner
 {
@@ -16,16 +18,27 @@ public class HjelpeFunksjoner
 	 */
 	public static ImageView lastImageViewFraFil(String filbane)
 	{
+
+		ImageView bildenode = new ImageView();
+		Image bilde = lastImageFraFil(filbane);
+		if (bilde != null) {
+			bildenode.setImage(bilde);
+			return bildenode;
+		}
+		System.err.println("ERROR: Kunne ikke laste bildet.");
+		return null;
+	}
+
+	public static Image lastImageFraFil(String filbane)
+	{
 		Image bilde;
 		try {
 			bilde = new Image(filbane);
-		} catch (Exception e){
-			System.out.println("[lastImageViewFraFil] ERROR: "  + e.getMessage() + "\nFIL: " + filbane);
+		} catch (Exception e) {
+			System.out.println("[lastImageViewFraFil] ERROR: " + e.getMessage() + "\nFIL: " + filbane);
 			return null;
 		}
-		ImageView bildenode = new ImageView();
-		bildenode.setImage(bilde);
-		return bildenode;
+		return bilde;
 	}
 
 

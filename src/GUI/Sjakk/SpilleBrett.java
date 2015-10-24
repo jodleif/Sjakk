@@ -17,6 +17,7 @@ public class SpilleBrett
 	private Rute sistMerket; // Her lagres den siste merkede ruten - for interaksjon med musepeker!
 	private Rute[][] ruter; // Her lagres GUI representasjonen av spillruter.
 	private String[] gyldigePos; // Lagres for å kunne fjerne avmerkinger. Kunne eventuelt søkt gjennom rutene for å fjerne.
+	private BildeListe bildeCache; // Lagrer imageviews for alle brikker.
 
 	/**
 	 * Oppretter et nytt GUI-brett
@@ -25,6 +26,7 @@ public class SpilleBrett
 	public SpilleBrett(int spillnr)
 	{
 		sjakkBrett = new Brett(spillnr);
+		bildeCache = new BildeListe();
 		gridPane = new GridPane();
 		gridPane.setPrefSize(620, 620);
 		gridPane.setOnMouseClicked(e -> mouseClickHandler(e));
@@ -46,7 +48,7 @@ public class SpilleBrett
 	{
 		for (int i = 0; i < Brett.BRETTSTØRRELSE; ++i) {
 			for (int j = 0; j < Brett.BRETTSTØRRELSE; ++j) {
-				Rute tempRute = new Rute(Koordinater.fra_koordinater(new int[]{i, j}));
+				Rute tempRute = new Rute(Koordinater.fra_koordinater(new int[]{i, j}), bildeCache);
 				ruter[i][j] = (tempRute); // Lagre en referanse til ruten.
 				gridPane.add(tempRute, i, 7-j); // OBS: Må tegne "opp ned" siden gridpane starter med (0,0) i øvre venstre hjørne, ikke nedre som sjakk
 			}

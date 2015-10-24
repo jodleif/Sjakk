@@ -44,10 +44,7 @@ public class FlytteRegel
 	 */
 	public FlytteRegel(boolean flytteSidelengs, boolean flytteFremover, boolean flytteBakover, boolean flytteDiagonalt, int maxAvstand)
 	{
-		this.flytteSidelengs = flytteSidelengs;
-		this.flytteFremover = flytteFremover;
-		this.flytteBakover = flytteBakover;
-		this.flytteDiagonalt = flytteDiagonalt;
+		this(flytteSidelengs, flytteFremover, flytteBakover, flytteDiagonalt);
 		this.maxAvstand = maxAvstand;
 	}
 
@@ -64,44 +61,6 @@ public class FlytteRegel
 		this.flytteBakover = false;
 		this.flytteDiagonalt = false;
 		this.flytteSpringer = true;
-	}
-
-	/**
-	 * Sjekker om et trekk for en gitt brikke er gyldig på et brett (ift brikkens definerte "egenskaper")
-	 * @param fraPos brikkens utgangspunkt
-	 * @param tilPos brikkens mål
-	 * @param br brikken som flyttes
-	 * @param brett spillbrettet
-	 * @return true hvis trekket er gyldig(lovlig)
-	 */
-	public boolean gyldigTrekk(String fraPos, String tilPos, Brikke br, Brett brett)
-	{
-		Retning retning = finnRetning(fraPos, tilPos, br.getFarge());
-		if (retning == null) return false;
-
-		if(maxAvstand!=0&&(!gyldigAvstand(fraPos,tilPos))){
-			return false;
-		}
-
-		if(!hoppOverAndre){ // Hvis den ikke kan hoppe over andre brikker!
-			if(kollisjonsSjekk(fraPos,tilPos,brett)){
-				return false; // Hvis kollisjon - ugyldig trekk!
-			}
-		}
-		switch (retning) {
-			case FREM:
-				return flytteFremover;
-			case BAKOVER:
-				return flytteBakover;
-			case DIAGONALT:
-				return flytteDiagonalt;
-			case SIDELENGS:
-				return flytteSidelengs;
-			case SPRINGER:
-				return flytteSpringer;
-			default:
-				return false;
-		}
 	}
 
 	/**
@@ -165,8 +124,6 @@ public class FlytteRegel
 		return null;
 	}
 
-
-
 	/**
 	 * Finner rutene mellom to sjakkruter f.eks a1 og d4 skal gi oss b2 c3 som resultat - skal brukes til å sjekke for kollisjoner i et sjakktrekk.
 	 * Funksjonen antar at rutene man skal sjekke er vertikal, horisontalt eller diagonalt orientert ift hverandre
@@ -191,6 +148,45 @@ public class FlytteRegel
 			ruterMellom[i]=Koordinater.fra_koordinater(fraKoord);
 		}
 		return ruterMellom;
+	}
+
+	/**
+	 * Sjekker om et trekk for en gitt brikke er gyldig på et brett (ift brikkens definerte "egenskaper")
+	 *
+	 * @param fraPos brikkens utgangspunkt
+	 * @param tilPos brikkens mål
+	 * @param br     brikken som flyttes
+	 * @param brett  spillbrettet
+	 * @return true hvis trekket er gyldig(lovlig)
+	 */
+	public boolean gyldigTrekk(String fraPos, String tilPos, Brikke br, Brett brett)
+	{
+		Retning retning = finnRetning(fraPos, tilPos, br.getFarge());
+		if (retning == null) return false;
+
+		if (maxAvstand != 0 && (!gyldigAvstand(fraPos, tilPos))) {
+			return false;
+		}
+
+		if (!hoppOverAndre) { // Hvis den ikke kan hoppe over andre brikker!
+			if (kollisjonsSjekk(fraPos, tilPos, brett)) {
+				return false; // Hvis kollisjon - ugyldig trekk!
+			}
+		}
+		switch (retning) {
+			case FREM:
+				return flytteFremover;
+			case BAKOVER:
+				return flytteBakover;
+			case DIAGONALT:
+				return flytteDiagonalt;
+			case SIDELENGS:
+				return flytteSidelengs;
+			case SPRINGER:
+				return flytteSpringer;
+			default:
+				return false;
+		}
 	}
 
 	protected boolean gyldigAvstand(String fraPos, String tilPos)

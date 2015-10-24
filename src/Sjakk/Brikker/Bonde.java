@@ -12,9 +12,8 @@ import Sjakk.Regler.FlytteRegel;
  */
 public class Bonde extends Brikke
 {
-	private FlytteRegel flytteRegel;
-	private boolean førsteTrekk = true;
 	public static final String BRIKKENAVN = "B";
+	private FlytteRegel flytteRegel;
 
 	/**
 	 * Konstruktør
@@ -32,7 +31,7 @@ public class Bonde extends Brikke
 	/**
 	 * Implementasjon av erLovligTrekk - sjekker brikkens flytteregel om det foreslåtte trekket er lovlig!
 	 * @param rutenavn navnet på ruten brikken skal flyttes til. på sjakkformat i.e. a1
-	 * @return
+	 * @return rutenavn
 	 */
 	@Override
 	public boolean erLovligTrekk(String rutenavn)
@@ -59,7 +58,7 @@ public class Bonde extends Brikke
 	@Override
 	public String brikkenavn()
 	{
-		return "B"; // Bonde
+		return BRIKKENAVN; // Bonde
 	}
 
 	@Override
