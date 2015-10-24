@@ -1,6 +1,5 @@
 package GUI;
 
-import GUI.Replay.Test;
 import GUI.Sjakk.SpilleBrett;
 import javafx.application.Application;
 import javafx.scene.Group;
@@ -48,7 +47,7 @@ public class SjakkApp extends Application
 		borderPane = new BorderPane();
 		rot = new Group();
 		Scene scene = new Scene(rot,WIDTH,HEIGHT);
-		spilleBrett = new SpilleBrett(Test.getSjakkBrettMedHistorikk());
+		spilleBrett = new SpilleBrett(0 /*Test.getSjakkBrettMedHistorikk()*/);
 		tegnBakgrunn();
 		byggSpillBrett();
 		leggTilTestKnapp();

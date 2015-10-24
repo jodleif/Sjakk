@@ -11,6 +11,7 @@ import Sjakk.Regler.Koordinater;
 import Sjakk.Regler.StartPosisjonRegler;
 
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Deque;
 
 /***
@@ -22,7 +23,6 @@ public class Brett
 	private int spillNr;
 	private Brikke[][] brikkene;
 	private Deque<Trekk> spillTrekk; // Lagrer trekkene i spillet.
-
 	/**
 	 * Opprett et nytt spillbrett
 	 *
@@ -162,6 +162,7 @@ public class Brett
 		if (brikke != null) {
 			if (koordinater != null) {
 				brikke.setRuteNavn(rutenavn); // Sørg for at brikken har korrekt informasjon
+				brikke.økAntallTrekk();
 				brikkene[koordinater[0]][koordinater[1]] = brikke;
 			}
 		} else {
@@ -219,6 +220,19 @@ public class Brett
 			}
 		}
 		return alleBrikker;
+	}
+
+	public ArrayList<Brikke> getAlleBrikker(Farge f)
+	{
+		ArrayList<Brikke> brikker = new ArrayList<>();
+		for (int i = 0; i < BRETTSTØRRELSE; ++i) {
+			for (int j = 0; j < BRETTSTØRRELSE; ++j) {
+				Brikke tmp = brikkene[i][j];
+				if (tmp != null && tmp.getFarge() == f)
+					brikker.add(tmp);
+			}
+		}
+		return brikker;
 	}
 
 	private int antallBrikkerILive()

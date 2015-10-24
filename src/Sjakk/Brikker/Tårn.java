@@ -12,17 +12,11 @@ import Sjakk.Regler.FlytteRegel;
 public class Tårn extends Offiser
 {
 	private static final String BRIKKENAVN = "T";
-	private static final FlytteRegel flytteRegel = new FlytteRegel(true,true,true,false);
 
 	public Tårn(Brett brett, String rutenavn, Farge farge) throws IllegalArgumentException
 	{
 		super(brett, rutenavn, farge);
-	}
-
-	@Override
-	public boolean erLovligTrekk(String rutenavn)
-	{
-		return flytteRegel.gyldigTrekk(getRuteNavn(), rutenavn, this, getBrett());
+		flytteRegel = new FlytteRegel(true, true, true, false);
 	}
 
 	@Override

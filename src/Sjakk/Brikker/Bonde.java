@@ -3,7 +3,6 @@ package Sjakk.Brikker;
 import Sjakk.Brett.Brett;
 import Sjakk.Regler.BondeFlytteRegel;
 import Sjakk.Regler.Farge;
-import Sjakk.Regler.FlytteRegel;
 
 /**
  * Created by Jo Øivind Gjernes on 20.10.2015.
@@ -13,7 +12,6 @@ import Sjakk.Regler.FlytteRegel;
 public class Bonde extends Brikke
 {
 	public static final String BRIKKENAVN = "B";
-	private FlytteRegel flytteRegel;
 
 	/**
 	 * Konstruktør
@@ -28,15 +26,10 @@ public class Bonde extends Brikke
 		flytteRegel = new BondeFlytteRegel(2); // Kan kun flytte fremover. 2 i første trekk
 	}
 
-	/**
-	 * Implementasjon av erLovligTrekk - sjekker brikkens flytteregel om det foreslåtte trekket er lovlig!
-	 * @param rutenavn navnet på ruten brikken skal flyttes til. på sjakkformat i.e. a1
-	 * @return rutenavn
-	 */
 	@Override
-	public boolean erLovligTrekk(String rutenavn)
+	public boolean erLovligAngrep(String rutenavn)
 	{
-		return flytteRegel.gyldigTrekk(getRuteNavn(), rutenavn, this, getBrett());
+		return flytteRegel.gyldigAngrep(getRuteNavn(), rutenavn, this, getBrett());
 	}
 
 	/**

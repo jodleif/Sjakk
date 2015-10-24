@@ -5,7 +5,7 @@ import Sjakk.Brikker.Brikke;
 
 /**
  * Created by Jo Øivind Gjernes on 21.10.2015.
- *
+ * <p>
  * Utvidet klasse spesifikt for bønder. De angriper kun diagonalt
  * TODO: Fiks bug - bonde kan angripe skrått "bakover"
  */
@@ -13,6 +13,7 @@ public class BondeFlytteRegel extends FlytteRegel
 {
 	/**
 	 * BondeFlytteRegel - konstruktør
+	 *
 	 * @param maxAvstand maxavstand bonden kan bevege seg
 	 */
 	public BondeFlytteRegel(int maxAvstand)
@@ -30,10 +31,10 @@ public class BondeFlytteRegel extends FlytteRegel
 	 * @return sant hvis gyldig trekk
 	 */
 	@Override
-	public boolean gyldigTrekk(String fraPos, String tilPos, Brikke br, Brett brett )
+	public boolean gyldigTrekk(String fraPos, String tilPos, Brikke br, Brett brett)
 	{
 		Retning retning = finnRetning(fraPos, tilPos, br.getFarge());
-		if(br.getAntallTrekk()<1){
+		if (br.getAntallTrekk() < 1) {
 			maxAvstand = 2;
 		} else {
 			maxAvstand = 1;
@@ -44,7 +45,7 @@ public class BondeFlytteRegel extends FlytteRegel
 			return false;
 		}
 
-		if (kollisjonsSjekk(fraPos, tilPos, brett)) return false;
+		if (kollisjonsSjekk(fraPos, tilPos, br, brett)) return false;
 
 		Brikke tmp = brett.getBrikke(tilPos);
 		if (tmp != null && brett.getBrikke(tilPos).getFarge() != br.getFarge()) {
@@ -57,6 +58,15 @@ public class BondeFlytteRegel extends FlytteRegel
 		}
 
 		return retning == Retning.FREM;
+
+	}
+
+	@Override
+	public boolean gyldigAngrep(String fraPos, String tilPos, Brikke brikke, Brett brett)
+	{
+		Retning retning = finnRetning(fraPos, tilPos, brikke.getFarge());
+		if (retning == null) return false;
+		return retning == Retning.DIAGONALT && Koordinater.avstand(fraPos, tilPos) == 1 && Koordinater.radRetning(fraPos, tilPos, brikke.getFarge()) == Retning.FREM;
 
 	}
 }

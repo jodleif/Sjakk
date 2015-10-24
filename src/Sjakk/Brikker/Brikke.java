@@ -2,6 +2,7 @@ package Sjakk.Brikker;
 
 import Sjakk.Brett.Brett;
 import Sjakk.Regler.Farge;
+import Sjakk.Regler.FlytteRegel;
 import Sjakk.Regler.Koordinater;
 
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import java.util.ArrayList;
  */
 public abstract class Brikke
 {
+	protected FlytteRegel flytteRegel;
 	private String ruteNavn;
 	private Farge farge;
 	private Brett brett;
@@ -36,7 +38,15 @@ public abstract class Brikke
 	 * @param rutenavn navnet på ruten brikken skal flyttes til. på sjakkformat i.e. a1
 	 * @return returnerer true hvis trekket er gyldig.
 	 */
-	public abstract boolean erLovligTrekk(String rutenavn);
+	public boolean erLovligTrekk(String rutenavn)
+	{
+		return flytteRegel.gyldigTrekk(getRuteNavn(), rutenavn, this, brett);
+	}
+
+	public boolean erLovligAngrep(String rutenavn)
+	{
+		return erLovligTrekk(rutenavn);
+	}
 
 	/***
 	 * Implementeres i underklasse.
@@ -136,7 +146,13 @@ public abstract class Brikke
 
 	public void reduserAntallTrekk(){
 		--antTrekk;
-		assert(antTrekk>=0);
+		//assert(antTrekk>=0);
+	}
+
+	public void økAntallTrekk()
+	{
+		++antTrekk;
+		//assert(antTrekk>=0);
 	}
 
 	protected void setAntTrekk(int antallTrekk){

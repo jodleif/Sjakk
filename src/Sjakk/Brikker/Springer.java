@@ -11,18 +11,14 @@ import Sjakk.Regler.FlytteRegel;
  */
 public class Springer extends Offiser
 {
-	private static final FlytteRegel flytteRegel = new FlytteRegel(true,true);
 
 	public Springer(Brett brett, String rutenavn, Farge farge) throws IllegalArgumentException
 	{
 		super(brett, rutenavn, farge);
+		flytteRegel = new FlytteRegel(true, true);
 	}
 
-	@Override
-	public boolean erLovligTrekk(String rutenavn)
-	{
-		return flytteRegel.gyldigTrekk(getRuteNavn(), rutenavn, this, getBrett());
-	}
+
 	@Override
 	public String brikkenavn()
 	{

@@ -8,5 +8,11 @@ package Sjakk.Regler;
 public enum Farge
 {
 	SVART,
-	HVIT
+	HVIT;
+
+	public Farge motsatt()
+	{
+		return (this == Farge.HVIT) ? Farge.SVART : Farge.HVIT;
+	}
 }
+

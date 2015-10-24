@@ -71,15 +71,21 @@ public class FlytteRegel
 	 * @param brett  spillbrettet
 	 * @return true hvis det oppst�r kollisjoner.
 	 */
-	protected static boolean kollisjonsSjekk(String fraPos, String tilPos, Brett brett)
+	protected static boolean kollisjonsSjekk(String fraPos, String tilPos, Brikke brikke, Brett brett)
 	{
+		/*Brikke tmp = brett.getBrikke(tilPos);
+		if(tmp!=null&&tmp.getFarge()== brikke.getFarge()){
+			return true;
+		}*/
 		String[] diff = ruterMellom(fraPos, tilPos);
 		if(diff==null)
 			return false;
 		for(String mellomPos : diff){
-			if(brett.getBrikke(mellomPos)!=null) // Hvis feltet ikke er null inneholder det en brikke.
+			if (brett.getBrikke(mellomPos) != null) { // Hvis feltet ikke er null inneholder det en brikke.
 				return true;
+			}
 		}
+
 		return false;
 	}
 
@@ -169,7 +175,7 @@ public class FlytteRegel
 		}
 
 		if (!hoppOverAndre) { // Hvis den ikke kan hoppe over andre brikker!
-			if (kollisjonsSjekk(fraPos, tilPos, brett)) {
+			if (kollisjonsSjekk(fraPos, tilPos, br, brett)) {
 				return false; // Hvis kollisjon - ugyldig trekk!
 			}
 		}
@@ -187,6 +193,11 @@ public class FlytteRegel
 			default:
 				return false;
 		}
+	}
+
+	public boolean gyldigAngrep(String fraPos, String tilPos, Brikke brikke, Brett brett)
+	{
+		return gyldigTrekk(fraPos, tilPos, brikke, brett);
 	}
 
 	protected boolean gyldigAvstand(String fraPos, String tilPos)
