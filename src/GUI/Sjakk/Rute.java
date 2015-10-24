@@ -18,7 +18,7 @@ public class Rute extends Pane
 {
 	private Rectangle bakgrunn;
 	private ImageView brikkeBilde;
-	private BildeListe bildeCache;
+	private BildeListe bildeCache; // Referanse til bildeCache.
 	private String rutePos;
 	private boolean merket = false;
 	private boolean sjakkBrikke;
@@ -33,11 +33,12 @@ public class Rute extends Pane
 
 	private void setBilde(String brikketype, Farge farge) throws IllegalArgumentException
 	{
-		Image temp = bildeCache.getBilde(brikketype, farge);
+		Image temp = bildeCache.getBilde(brikketype, farge); // Slår opp bilde.
 		brikkeBilde = new ImageView(temp);
 		if (brikkeBilde == null)
 			throw new IllegalArgumentException("[setBilde] Fant ikke ImageView");
-		getChildren().add(brikkeBilde);
+		else
+			getChildren().add(brikkeBilde);
 	}
 
 	public void fjernBilde()
@@ -83,6 +84,10 @@ public class Rute extends Pane
 			}
 		}
 	}
+
+	/**
+	 * Merk av rute (grønn farge - gyldige trekk)
+	 */
 	public void merkGrønn()
 	{
 		if(merket){
@@ -95,7 +100,17 @@ public class Rute extends Pane
 			merket = true;
 		}
 	}
-	public String getPos() {return rutePos;}
+
+	/**
+	 * Rutens posisjon på sjakkbrettet
+	 * @return sjakk-koordinat for ruten.
+	 */
+	public String getPos() {return rutePos;
+	}
+
+	/**
+	 * @return True hvis det er en sjakkbrikke i ruten.
+	 */
 	public boolean erSjakkbrikke() {return sjakkBrikke;}
 
 

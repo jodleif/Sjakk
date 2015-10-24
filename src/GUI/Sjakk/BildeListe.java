@@ -21,7 +21,7 @@ public class BildeListe
 
 	public void leggTil(String brikkeType, Farge farge, String unikId)
 	{
-		Image element = HjelpeFunksjoner.lastImageFraFil(BrikkeBilder.bildestiForBrikke(brikkeType, farge));
+		Image element = HjelpeFunksjoner.lastBildeFraFil(BrikkeBilder.bildestiForBrikke(brikkeType, farge));
 		sjakkBrikkeBilder.put(unikId, element);
 	}
 

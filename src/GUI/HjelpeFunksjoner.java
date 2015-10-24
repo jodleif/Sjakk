@@ -20,7 +20,7 @@ public class HjelpeFunksjoner
 	{
 
 		ImageView bildenode = new ImageView();
-		Image bilde = lastImageFraFil(filbane);
+		Image bilde = lastBildeFraFil(filbane);
 		if (bilde != null) {
 			bildenode.setImage(bilde);
 			return bildenode;
@@ -29,7 +29,7 @@ public class HjelpeFunksjoner
 		return null;
 	}
 
-	public static Image lastImageFraFil(String filbane)
+	public static Image lastBildeFraFil(String filbane)
 	{
 		Image bilde;
 		try {
