@@ -10,9 +10,7 @@ import Sjakk.Regler.Farge;
 import Sjakk.Regler.Koordinater;
 import Sjakk.Regler.StartPosisjonRegler;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Deque;
+import java.util.*;
 
 /***
  * Klasse for sjakkbrettet i spill-logikk.
@@ -22,7 +20,10 @@ public class Brett
 	public static final int BRETTSTØRRELSE = 8; // Vil ha tilgang til denne fra GUI
 	private int spillNr;
 	private Brikke[][] brikkene;
+	private Brikke hvitKonge;
+	private Brikke sortKonge;
 	private Deque<Trekk> spillTrekk; // Lagrer trekkene i spillet.
+	private Farge nesteTrekk = Farge.HVIT;
 	/**
 	 * Opprett et nytt spillbrett
 	 *
@@ -125,6 +126,14 @@ public class Brett
 			int[] koord = tilKoordinater(kongePos);
 			Farge farge = finnFargeFraRad(koord[1]);
 			brikkene[koord[0]][koord[1]] = new Konge(this, kongePos, farge);
+
+			// Beholde en referanse direkte til kongen, slik at vi kan sjekke for sjakk
+			// + når kongen forsvinner.
+			if (farge == Farge.HVIT) {
+				hvitKonge = brikkene[koord[0]][koord[1]];
+			} else {
+				sortKonge = brikkene[koord[0]][koord[1]];
+			}
 		}
 		for (String dronningPos : StartPosisjonRegler.DRONNINGPOSISJONER) {
 			int[] koord = tilKoordinater(dronningPos);
@@ -194,6 +203,8 @@ public class Brett
 		Brikke br = getBrikke(fraRute);
 		if (br == null)
 			return false;
+
+
 		if (!br.erLovligTrekk(tilRute))
 			return false;
 		//Lagre snapshot
@@ -202,8 +213,18 @@ public class Brett
 		// utfør trekk
 		setBrikke(tilRute, getBrikke(fraRute));
 		fjernBrikke(fraRute);
-
+		nesteTrekk = nesteTrekk.motsatt();
 		return true;
+	}
+
+	public boolean sjekkSjakk(Farge f)
+	{
+		if (hvitKonge == null || sortKonge == null) return true;
+		if (f == Farge.HVIT) {
+			return hvitKonge.sjekkSjakk();
+		} else {
+			return sortKonge.sjekkSjakk();
+		}
 	}
 
 	public Brikke[] getAlleBrikker()
@@ -220,6 +241,41 @@ public class Brett
 			}
 		}
 		return alleBrikker;
+	}
+
+	public HashMap<String, ArrayList<String>> getAlleGyldigeTrekk(Farge f)
+	{
+		boolean spillerISjakk = sjekkSjakk(f);
+		HashMap<String, ArrayList<String>> listeOverGyldigeTrekk = new HashMap<>();
+		ArrayList<Brikke> fargeBrikker = getAlleBrikker(f);
+		for (Brikke brikke : fargeBrikker) {
+			ArrayList<String> liste;
+			String[] trekk = brikke.gyldigeTrekk();
+			if (trekk != null) {
+				if (spillerISjakk) {
+					liste = new ArrayList<String>();
+					for (String string : trekk) {
+						if (!simulerSjakkTest(brikke, string))
+							liste.add(string);
+					}
+				} else {
+					liste = new ArrayList<>(Arrays.asList(trekk));
+				}
+				if (liste.size() != 0) {
+					listeOverGyldigeTrekk.put(brikke.getRuteNavn(), liste);
+				}
+			}
+		}
+		return listeOverGyldigeTrekk;
+
+	}
+
+	private boolean simulerSjakkTest(Brikke br, String tilRute)
+	{
+		boolean flyttet = flyttBrikke(br.getRuteNavn(), tilRute);
+		boolean sjakk = sjekkSjakk(br.getFarge());
+		if (flyttet) angre();
+		return sjakk;
 	}
 
 	public ArrayList<Brikke> getAlleBrikker(Farge f)
@@ -247,10 +303,12 @@ public class Brett
 		return antall;
 	}
 
+	/*
 	public void addTrekk(Trekk tr)
 	{
 		spillTrekk.push(tr);
 	}
+	*/
 
 	/**
 	 * Henter det "nyligeste" (forrige) trekket og setter spillbrettet til det.
@@ -262,6 +320,7 @@ public class Brett
 			return false;
 		Trekk tr = spillTrekk.pop();
 		brikkene = tr.getSnapshot();
+		nesteTrekk = tr.getSpillerSittTrekk();
 		return true;
 	}
 
@@ -275,11 +334,12 @@ public class Brett
 			return false;
 		Trekk tr = spillTrekk.pollLast();
 		brikkene = tr.getSnapshot();
+		nesteTrekk = tr.getSpillerSittTrekk();
 		return true;
 	}
 
 	public void lagreTrekk(){
-		spillTrekk.push(new Trekk(brikkene));
+		spillTrekk.push(new Trekk(brikkene, nesteTrekk));
 	}
 
 	public Trekk seSisteTrekk()
@@ -320,5 +380,11 @@ public class Brett
 				fjernBrikke("a8");
 			}
 		}
+		nesteTrekk = nesteTrekk.motsatt();
+	}
+
+	public Farge getSpillerSinTur()
+	{
+		return nesteTrekk;
 	}
 }

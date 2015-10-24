@@ -65,6 +65,7 @@ public abstract class Brikke
 			if (brett.flyttBrikke(this.ruteNavn, ruteNavn)) { // Flytt på brettet, hvis false var det ulovlig
 				this.ruteNavn = ruteNavn; // Oppdater posisjon hvis flyttingen ble utført
 				antTrekk++;
+				System.out.println("FLYTTER" + this.brikkenavn());
 				return true; // Ferdig flyttet!
 			}
 		}
@@ -118,6 +119,11 @@ public abstract class Brikke
 		String[] str = new String[tmp.size()];
 		tmp.toArray(str);
 		return str;
+	}
+
+	public boolean sjekkSjakk()
+	{
+		return false;
 	}
 
 	/**

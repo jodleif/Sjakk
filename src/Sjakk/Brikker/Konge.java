@@ -33,6 +33,10 @@ public class Konge extends Offiser
 	 */
 	private boolean sjekkSjakk(String rutenavn)
 	{
+
+		/**
+		 * Tungvindt metode- brikken "flyttes" på brettet hvis feltet er åpent, så sjekkes det om den (kongen) fortsatt står i sjakk.
+		 */
 		if (getBrett().getBrikke(rutenavn) == null) {
 			String backup = getRuteNavn();
 			getBrett().setBrikke(rutenavn, this);
@@ -59,7 +63,8 @@ public class Konge extends Offiser
 		}
 	}
 
-	private boolean sjekkSjakk()
+	@Override
+	public boolean sjekkSjakk()
 	{
 		//return sjekkSjakk(this.getRuteNavn());
 		ArrayList<Brikke> brikker = getBrett().getAlleBrikker(getFarge().motsatt());
