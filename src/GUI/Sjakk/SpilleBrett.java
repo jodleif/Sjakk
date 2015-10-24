@@ -78,7 +78,7 @@ public class SpilleBrett
 			if (r.erSjakkbrikke()) {
 				r.merk();
 				sistMerket = r;
-				gyldigePos = sjakkBrett.getBrikke(r.getPos()).gyldigeTrekk();
+				gyldigePos = sjakkBrett.getLovligeTrekk(sjakkPos);
 				merkGyldige();
 			}
 		} else if (sistMerket.equals(r)) {

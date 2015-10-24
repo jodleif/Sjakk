@@ -15,10 +15,10 @@ public class Trekk
 
 	private Brikke[][] snapshot;
 
-	public Trekk(Brikke[][] brett)
+	public Trekk(Brett brett)
 	{
 		snapshot = new Brikke[Brett.BRETTSTØRRELSE][Brett.BRETTSTØRRELSE];
-		kopierBrett(brett);
+		kopierBrett(brett.getBrikkene());
 	}
 
 	private void kopierBrett(Brikke[][] brett)
@@ -34,4 +34,5 @@ public class Trekk
 	}
 
 	public Brikke[][] getSnapshot(){return snapshot;}
+
 }

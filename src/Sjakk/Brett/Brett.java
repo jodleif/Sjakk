@@ -21,6 +21,7 @@ public class Brett
 	public static final int BRETTSTØRRELSE = 8; // Vil ha tilgang til denne fra GUI
 	private int spillNr;
 	private Brikke[][] brikkene;
+	private LovligeTrekk lTrekk;
 	private Deque<Trekk> spillTrekk; // Lagrer trekkene i spillet.
 
 	/**
@@ -39,6 +40,7 @@ public class Brett
 		if (!tomtSpillbrett) {
 			try {
 				opprettSpillbrikker();
+				lTrekk = new LovligeTrekk(this);
 			} catch (IllegalArgumentException e) {
 				System.err.println("[BRETT] Feil under konstruksjon!\n" + e.getMessage());
 			}
@@ -193,15 +195,16 @@ public class Brett
 		Brikke br = getBrikke(fraRute);
 		if (br == null)
 			return false;
-		if (!br.erLovligTrekk(tilRute))
+		if (!(lTrekk.erLovlig(br, tilRute))) {
 			return false;
+		}
 		//Lagre snapshot
 		lagreTrekk();
 
 		// utfør trekk
 		setBrikke(tilRute, getBrikke(fraRute));
 		fjernBrikke(fraRute);
-
+		lTrekk = new LovligeTrekk(this); // Oppdater.
 		return true;
 	}
 
@@ -248,6 +251,7 @@ public class Brett
 			return false;
 		Trekk tr = spillTrekk.pop();
 		brikkene = tr.getSnapshot();
+		lTrekk = new LovligeTrekk(this);
 		return true;
 	}
 
@@ -261,11 +265,12 @@ public class Brett
 			return false;
 		Trekk tr = spillTrekk.pollLast();
 		brikkene = tr.getSnapshot();
+		lTrekk = new LovligeTrekk(this);
 		return true;
 	}
 
 	public void lagreTrekk(){
-		spillTrekk.push(new Trekk(brikkene));
+		spillTrekk.push(new Trekk(this));
 	}
 
 	public Trekk seSisteTrekk()
@@ -306,5 +311,20 @@ public class Brett
 				fjernBrikke("a8");
 			}
 		}
+	}
+
+	public Brikke[][] getBrikkene()
+	{
+		return brikkene;
+	}
+
+	public LovligeTrekk getLovligeTrekk()
+	{
+		return lTrekk;
+	}
+
+	public String[] getLovligeTrekk(String fraPos)
+	{
+		return lTrekk.getTrekk(getBrikke(fraPos));
 	}
 }
