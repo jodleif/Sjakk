@@ -6,7 +6,6 @@ import Sjakk.Brikker.Brikke;
 import Sjakk.Regler.Farge;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 
 /**
  * Created by Jo Øivind Gjernes on 21.10.2015.
@@ -63,10 +62,12 @@ public class PGN
 			String[] brikkeInfo = hentInfoFraPGNtrekk(pgnTrekk); // [0] brikketype, [1] sluttPos
 			if(brikkeInfo.length == 2) {
 				String startPos = finnBrikkeStartPos(brikkeInfo[0], brikkeInfo[1], brett, farge);
-				brett.flyttBrikke(startPos, brikkeInfo[1]);
+				//brett.flyttBrikke(startPos, brikkeInfo[1]);
+				brett.getBrikke(startPos).flyttTil(brikkeInfo[1]);
 			} else if (brikkeInfo.length == 3) {
 				String startPos = finnBrikkeStartPos(brikkeInfo[0], brikkeInfo[1], brikkeInfo[2], brett, farge);
-				brett.flyttBrikke(startPos, brikkeInfo[2]);
+				//brett.flyttBrikke(startPos, brikkeInfo[2]);
+				brett.getBrikke(startPos).flyttTil(brikkeInfo[2]);
 			} else {
 				if(brikkeInfo[0].equals("KINGSIDE")){
 					brett.Rokker(true,farge);
@@ -132,7 +133,7 @@ public class PGN
 	private static String finnBrikkeStartPos(String brikkeType, String startKol, String sluttPos, Brett brett, Farge farge) throws IllegalArgumentException {
 		String startPos = new String();
 
-		Brikke[] brikker = brett.getAlleBrikker();
+		Brikke[] brikker = brett.getLovligeTrekk().kanFlytteTil(sluttPos, farge);
 		for(Brikke b : brikker){
 			if(startKol==null || b.getRuteNavn().charAt(0)==startKol.charAt(0)) {
 				if (b.brikkenavn().equals(brikkeType) && b.getFarge() == farge) {

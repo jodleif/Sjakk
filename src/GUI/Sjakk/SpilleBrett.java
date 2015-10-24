@@ -93,8 +93,6 @@ public class SpilleBrett
 				merkGyldige();
 				gyldigePos = null;
 				sistMerket = null;
-
-
 				oppdaterBrett(); // Brikke flyttet, oppdater brett!!
 			} else {
 				System.out.println("Ugyldig trekk!");

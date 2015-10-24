@@ -204,7 +204,6 @@ public class Brett
 		// utfør trekk
 		setBrikke(tilRute, getBrikke(fraRute));
 		fjernBrikke(fraRute);
-		lTrekk = new LovligeTrekk(this); // Oppdater.
 		return true;
 	}
 
@@ -311,6 +310,7 @@ public class Brett
 				fjernBrikke("a8");
 			}
 		}
+		oppdatterLovligeTrekk();
 	}
 
 	public Brikke[][] getBrikkene()
@@ -326,5 +326,10 @@ public class Brett
 	public String[] getLovligeTrekk(String fraPos)
 	{
 		return lTrekk.getTrekk(getBrikke(fraPos));
+	}
+
+	public void oppdatterLovligeTrekk()
+	{
+		lTrekk = new LovligeTrekk(this);
 	}
 }

@@ -78,6 +78,17 @@ public class Koordinater
 		return antallRuter;
 	}
 
+	public static Retning radRetning(String fraPos, String tilPos, Farge f)
+	{
+		int[] koordFra = til_koordinater(fraPos);
+		int[] koordTil = til_koordinater(tilPos);
+		int[] diff = differanse(koordFra, koordTil);
+		if (f == Farge.HVIT) {
+			return (diff[1] > 0) ? Retning.FREM : Retning.BAKOVER;
+		}
+		return (diff[1] < 0) ? Retning.FREM : Retning.BAKOVER;
+	}
+
 	/**
 	 * Gir en differanse mellom to array-koordinater
 	 * @param fra array-koordinat fra rute

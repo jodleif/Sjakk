@@ -55,6 +55,7 @@ public abstract class Brikke
 			if (brett.flyttBrikke(this.ruteNavn, ruteNavn)) { // Flytt på brettet, hvis false var det ulovlig
 				this.ruteNavn = ruteNavn; // Oppdater posisjon hvis flyttingen ble utført
 				antTrekk++;
+				brett.oppdatterLovligeTrekk();
 				return true; // Ferdig flyttet!
 			}
 		}
