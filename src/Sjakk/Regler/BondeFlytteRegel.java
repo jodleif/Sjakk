@@ -50,9 +50,9 @@ public class BondeFlytteRegel extends FlytteRegel
 		if (tmp != null && brett.getBrikke(tilPos).getFarge() != br.getFarge()) {
 			if (retning == Retning.FREM) {
 				return false; // KAN ikke angripe fremover
-			} else if (retning == Retning.DIAGONALT) {
-				// Angriper kun diagonalt!
-				return Koordinater.avstand(fraPos, tilPos) == 1;
+			} else if (retning == Retning.DIAGONALT && Koordinater.avstand(fraPos, tilPos) == 1 && Koordinater.radRetning(fraPos, tilPos, br.getFarge()) == Retning.FREM) {
+				// Angriper kun diagonalt og frem
+				return true;
 			}
 		}
 
