@@ -148,10 +148,12 @@ public class FlytteRegel
 		String[] ruterMellom = new String[avstand-1];
 		int stegKol = diff[0]/(avstand);
 		int stegRad = diff[1]/(avstand);
-
+		int[] test = new int[]{fraKoord[0], fraKoord[1]};
+		//test = Arrays.copyOf(diff, 2);
 		for(int i=0;i<avstand-1;++i){
-			fraKoord[0]+=stegKol;fraKoord[1]+=stegRad; // Flytt til neste posisjon
-			ruterMellom[i]=Koordinater.fra_koordinater(fraKoord);
+			test[0] += stegKol;
+			test[1] += stegRad; // Flytt til neste posisjon
+			ruterMellom[i] = Koordinater.fra_koordinater(test);
 		}
 		return ruterMellom;
 	}

@@ -46,7 +46,6 @@ public class KoordinaterTest
 	@Test
 	public void testKoordinater() throws Exception
 	{
-		Koordinater.preBuild();
 		Koordinater.stringTilKoord.forEach((integer, ints) -> {
 			String str = Koordinater.koordTilString.get(Arrays.hashCode(ints));
 			assertTrue(integer.hashCode() == str.hashCode());

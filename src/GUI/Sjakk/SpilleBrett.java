@@ -2,6 +2,7 @@ package GUI.Sjakk;
 
 import Sjakk.AI.MiniMax;
 import Sjakk.Brett.Brett;
+import Sjakk.Brikker.Brikke;
 import Sjakk.Regler.Farge;
 import Sjakk.Regler.Koordinater;
 import javafx.scene.input.MouseEvent;
@@ -142,7 +143,9 @@ public class SpilleBrett
 			System.err.println("Sjakk matt! Vinner: " + sjakkBrett.getSpillerSinTur().motsatt());
 		for (int i = 0; i < Brett.BRETTSTØRRELSE; ++i) {
 			for (int j = 0; j < Brett.BRETTSTØRRELSE; ++j) {
-				ruter[i][j].oppdater(sjakkBrett.getBrikke(Koordinater.fra_koordinater(new int[]{i, j})));
+				Brikke tmp = sjakkBrett.getBrikke(String.valueOf((char) (i + 'a')) + String.valueOf((char) (j + '1')));
+				if (tmp != null)
+					ruter[i][j].oppdater(tmp.brikkenavn(), tmp.getFarge());
 			}
 		}
 	}

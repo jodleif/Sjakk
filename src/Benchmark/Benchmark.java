@@ -3,7 +3,6 @@ package Benchmark;
 import Sjakk.AI.MiniMax;
 import Sjakk.Brett.Brett;
 import Sjakk.Regler.Farge;
-import Sjakk.Regler.Koordinater;
 import javafx.util.Pair;
 
 import java.util.ArrayList;
@@ -16,7 +15,7 @@ public class Benchmark
 	public static void main(String[] args)
 	{
 		ArrayList<Pair<Long, Integer>> liste = new ArrayList<>();
-		for (int i = 0; i < 10; ++i) {
+		for (int i = 0; i < 100; ++i) {
 			Brett b = new Brett(0);
 			MiniMax aiTest = new MiniMax(3, Farge.HVIT);
 			long startTime = System.currentTimeMillis();
@@ -24,7 +23,7 @@ public class Benchmark
 			int trekk = aiTest.getAntallTrekk();
 			long time = System.currentTimeMillis() - startTime;
 			liste.add(new Pair<Long, Integer>(time, trekk));
-			Koordinater.resetTables();
+			//Koordinater.resetTables();
 		}
 		displayBenchmarkStats(liste);
 	}

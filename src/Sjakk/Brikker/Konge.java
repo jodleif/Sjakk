@@ -50,11 +50,11 @@ public class Konge extends Offiser
 
 			ArrayList<Brikke> brikker = getBrett().getAlleBrikker(getFarge().motsatt());
 			ArrayList<Brikke> setterISjakk = new ArrayList<>();
-			brikker.forEach((brikke) -> {
+			for (Brikke brikke : brikker) {
 				if (brikke.erLovligAngrep(rutenavn)) {
 					setterISjakk.add(brikke);
 				}
-			});
+			}
 			if (setterISjakk.size() > 1) {
 				return true;
 			} else if (setterISjakk.size() == 1) {
@@ -70,11 +70,10 @@ public class Konge extends Offiser
 		//return sjekkSjakk(this.getRuteNavn());
 		ArrayList<Brikke> brikker = getBrett().getAlleBrikker(getFarge().motsatt());
 		ArrayList<Brikke> setterISjakk = new ArrayList<>();
-		brikker.forEach((brikke) -> {
+		for (Brikke brikke : brikker)
 			if (brikke.erLovligAngrep(getRuteNavn())) {
 				setterISjakk.add(brikke);
 			}
-		});
 		return setterISjakk.size() != 0;
 	}
 

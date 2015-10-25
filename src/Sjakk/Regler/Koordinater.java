@@ -1,6 +1,5 @@
 package Sjakk.Regler;
 
-import java.util.Arrays;
 import java.util.HashMap;
 
 /**
@@ -15,7 +14,7 @@ public class Koordinater
 	 * @param rutenavn et rutenavn. Format: bokstav tall eks: d1
 	 * @return True hvis gyldig
 	 */
-	public static HashMap<Integer, int[]> stringTilKoord = new HashMap<>();
+	public static HashMap<String, int[]> stringTilKoord = new HashMap<>();
 	public static HashMap<Integer, String> koordTilString = new HashMap<>();
 
 	public static boolean erLovligRutenavn(String rutenavn)
@@ -38,47 +37,19 @@ public class Koordinater
 	 */
 	public static int[] til_koordinater(String rutenavn)
 	{
-		int[] tmp = stringTilKoord.get(rutenavn.hashCode());
-		if (tmp != null) return tmp;
+		//int[] tmp = stringTilKoord.get(rutenavn);
+		//if (tmp != null) return tmp;
 		if (erLovligRutenavn(rutenavn)) {
 			int[] koordinater = new int[2];
 			koordinater[0] = rutenavn.charAt(0) - 'a';
 			koordinater[1] = rutenavn.charAt(1) - '1';
-			//stringTilKoord.put(rutenavn.hashCode(), Arrays.copyOf(koordinater, 2));
+			//	stringTilKoord.put(rutenavn, koordinater);
 			return koordinater;
 		}
 		return null;
 	}
 
-	public static void preBuild()
-	{
-		for (int i = 0; i < 8; ++i) {
-			for (int j = 0; j < 8; j++) {
-				fraKoordinater(new int[]{i, j});
-				tilKoordinater(String.valueOf((char) (i + 'a')) + String.valueOf((char) (j + '1')));
-			}
-		}
-	}
 
-	private static void tilKoordinater(String rutenavn)
-	{
-		if (erLovligRutenavn(rutenavn)) {
-			int[] koordinater = new int[2];
-			koordinater[0] = rutenavn.charAt(0) - 'a';
-			koordinater[1] = rutenavn.charAt(1) - '1';
-			stringTilKoord.put(rutenavn.hashCode(), koordinater);
-		}
-	}
-
-	private static void fraKoordinater(int[] koordinater)
-	{
-		String str = new String();
-		str += (char) (koordinater[0] + 'a');
-		str += (char) (koordinater[1] + '1');
-		if (erLovligRutenavn(str)) { // Sjekk om lovlig rutenavn.
-			koordTilString.put(Arrays.hashCode(koordinater), str);
-		}
-	}
 
 	/**
 	 * Regner ut et sjakk-koordinat fra et array-koordinat
@@ -87,8 +58,8 @@ public class Koordinater
 	 */
 	public static String fra_koordinater(int[] koordinater)
 	{
-		String tmp = koordTilString.get(Arrays.hashCode(koordinater));
-		if (tmp != null) return tmp;
+		//String tmp = koordTilString.get(Arrays.hashCode(koordinater));
+		//if (tmp != null) return tmp;
 		if (koordinater.length != 2)
 			return null; // Avbryt.
 
@@ -144,9 +115,4 @@ public class Koordinater
 		return new int[]{til[0] - fra[0], til[1] - fra[1]};
 	}
 
-	public static void resetTables()
-	{
-		stringTilKoord = new HashMap<>();
-		koordTilString = new HashMap<>();
-	}
 }
