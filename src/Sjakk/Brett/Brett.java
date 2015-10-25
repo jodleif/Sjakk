@@ -24,6 +24,7 @@ public class Brett
 	private Brikke sortKonge;
 	private Deque<Trekk> spillTrekk; // Lagrer trekkene i spillet.
 	private Farge nesteTrekk = Farge.HVIT;
+	private int poeng;
 	/**
 	 * Opprett et nytt spillbrett
 	 *
@@ -170,6 +171,14 @@ public class Brett
 		int[] koordinater = tilKoordinater(rutenavn);
 		if (brikke != null) {
 			if (koordinater != null) {
+				Brikke tmp = getBrikke(rutenavn);
+				if (tmp != null) {
+					if (tmp.getFarge() == Farge.SVART) { // Sjekker om hvit fjerner svart brikke = + poeng for hvit
+						poeng += tmp.getPoeng();
+					} else {
+						poeng -= tmp.getPoeng(); // Svart dreper hvit, trekk fra poeng!
+					}
+				}
 				brikke.setRuteNavn(rutenavn); // Sørg for at brikken har korrekt informasjon
 				brikke.økAntallTrekk();
 				brikkene[koordinater[0]][koordinater[1]] = brikke;
@@ -321,6 +330,7 @@ public class Brett
 		Trekk tr = spillTrekk.pop();
 		brikkene = tr.getSnapshot();
 		nesteTrekk = tr.getSpillerSittTrekk();
+		poeng = tr.getPoeng();
 		return true;
 	}
 
@@ -339,7 +349,7 @@ public class Brett
 	}
 
 	public void lagreTrekk(){
-		spillTrekk.push(new Trekk(brikkene, nesteTrekk));
+		spillTrekk.push(new Trekk(brikkene, nesteTrekk, poeng));
 	}
 
 	public Trekk seSisteTrekk()
@@ -386,5 +396,14 @@ public class Brett
 	public Farge getSpillerSinTur()
 	{
 		return nesteTrekk;
+	}
+
+	public int getPoeng(Farge spiller)
+	{
+		if (spiller == Farge.HVIT) {
+			return poeng;
+		} else {
+			return 0 - poeng;
+		}
 	}
 }

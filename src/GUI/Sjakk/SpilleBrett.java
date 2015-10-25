@@ -1,6 +1,8 @@
 package GUI.Sjakk;
 
+import Sjakk.AI.MiniMax;
 import Sjakk.Brett.Brett;
+import Sjakk.Regler.Farge;
 import Sjakk.Regler.Koordinater;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
@@ -21,6 +23,8 @@ public class SpilleBrett
 	private Rute[][] ruter; // Her lagres GUI representasjonen av spillruter.
 	private HashMap<String, ArrayList<String>> gyldigePos; // Lagres for å kunne fjerne avmerkinger. Kunne eventuelt søkt gjennom rutene for å fjerne.
 	private BildeListe bildeCache; // Lagrer imageviews for alle brikker.
+	private MiniMax aiSpiller;
+	private Farge spillerFarge;
 
 	/**
 	 * Oppretter et nytt GUI-brett
@@ -34,6 +38,8 @@ public class SpilleBrett
 		gridPane.setPrefSize(620, 620);
 		gridPane.setOnMouseClicked(e -> mouseClickHandler(e));
 		ruter = new Rute[Brett.BRETTSTØRRELSE][Brett.BRETTSTØRRELSE];
+		spillerFarge = Farge.HVIT;
+		aiSpiller = new MiniMax(3, spillerFarge.motsatt());
 		initBrett();
 		oppdaterBrett();
 	}
@@ -59,6 +65,13 @@ public class SpilleBrett
 
 	}
 
+	public void aiSpillerSinTur()
+	{
+		if (sjakkBrett.getSpillerSinTur() == spillerFarge.motsatt()) {
+			aiSpiller.nesteAiTrekk(sjakkBrett);
+			oppdaterBrett();
+		}
+	}
 	/**
 	 * Returner GridPane for spillbrettet
 	 * @return gridpane
@@ -103,7 +116,6 @@ public class SpilleBrett
 			}
 
 		}
-
 	}
 
 	/**

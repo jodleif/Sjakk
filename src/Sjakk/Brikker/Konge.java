@@ -17,6 +17,7 @@ public class Konge extends Offiser
 	{
 		super(brett, rutenavn, farge);
 		flytteRegel = new FlytteRegel(true, true, true, true, 1);
+		poeng = 1000;
 	}
 
 	@Override

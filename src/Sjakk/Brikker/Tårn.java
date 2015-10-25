@@ -17,6 +17,7 @@ public class Tårn extends Offiser
 	{
 		super(brett, rutenavn, farge);
 		flytteRegel = new FlytteRegel(true, true, true, false);
+		poeng = 5;
 	}
 
 	@Override

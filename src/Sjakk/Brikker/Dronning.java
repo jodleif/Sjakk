@@ -22,6 +22,7 @@ public class Dronning extends Offiser
 	{
 		super(brett, rutenavn, farge);
 		flytteRegel = new FlytteRegel(true, true, true, true);
+		poeng = 10;
 	}
 	/**
 	 * Brikkens type

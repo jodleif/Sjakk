@@ -15,6 +15,7 @@ import java.util.ArrayList;
 public abstract class Brikke
 {
 	protected FlytteRegel flytteRegel;
+	protected int poeng = 1;
 	private String ruteNavn;
 	private Farge farge;
 	private Brett brett;
@@ -159,6 +160,11 @@ public abstract class Brikke
 	{
 		++antTrekk;
 		//assert(antTrekk>=0);
+	}
+
+	public int getPoeng()
+	{
+		return poeng;
 	}
 
 	protected void setAntTrekk(int antallTrekk){

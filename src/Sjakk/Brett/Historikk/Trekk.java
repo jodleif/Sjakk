@@ -16,12 +16,14 @@ public class Trekk
 
 	private Brikke[][] snapshot;
 	private Farge spillerSittTrekk;
+	private int poeng;
 
-	public Trekk(Brikke[][] brett, Farge spillerSittTrekk)
+	public Trekk(Brikke[][] brett, Farge spillerSittTrekk, int poeng)
 	{
 		snapshot = new Brikke[Brett.BRETTSTØRRELSE][Brett.BRETTSTØRRELSE];
 		this.spillerSittTrekk = spillerSittTrekk;
 		kopierBrett(brett);
+		this.poeng = poeng;
 
 	}
 
@@ -38,6 +40,11 @@ public class Trekk
 	}
 
 	public Brikke[][] getSnapshot(){return snapshot;}
+
+	public int getPoeng()
+	{
+		return poeng;
+	}
 
 	public Farge getSpillerSittTrekk()
 	{

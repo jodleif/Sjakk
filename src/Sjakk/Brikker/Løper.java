@@ -15,6 +15,7 @@ public class Løper extends Offiser
 	{
 		super(brett, rutenavn, farge);
 		flytteRegel = new FlytteRegel(false,false,false,true);
+		poeng = 5;
 	}
 
 	@Override
