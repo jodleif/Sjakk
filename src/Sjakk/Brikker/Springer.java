@@ -16,7 +16,7 @@ public class Springer extends Offiser
 	{
 		super(brett, rutenavn, farge);
 		flytteRegel = new FlytteRegel(true, true);
-		poeng = 7;
+		poeng = 5;
 	}
 
 

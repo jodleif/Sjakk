@@ -7,8 +7,8 @@ import Sjakk.Brett.Brett;
  */
 public class SpillTrekk
 {
-	private String fraPos;
-	private String tilPos;
+	private String fraPos = "a2";
+	private String tilPos = "a1";
 	private int poeng;
 
 	public SpillTrekk(String fraPos, String tilPos)
