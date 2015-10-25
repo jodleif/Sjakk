@@ -39,7 +39,7 @@ public class SpilleBrett
 		gridPane.setOnMouseClicked(e -> mouseClickHandler(e));
 		ruter = new Rute[Brett.BRETTSTØRRELSE][Brett.BRETTSTØRRELSE];
 		spillerFarge = Farge.HVIT;
-		aiSpiller = new MiniMax(3, spillerFarge.motsatt());
+		aiSpiller = new MiniMax(4, spillerFarge.motsatt());
 		initBrett();
 		oppdaterBrett();
 	}
