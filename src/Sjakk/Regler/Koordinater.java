@@ -1,5 +1,7 @@
 package Sjakk.Regler;
 
+import Sjakk.Brett.Brett;
+
 import java.util.HashMap;
 
 /**
@@ -30,6 +32,10 @@ public class Koordinater
 
 	}
 
+	public static int fraXY(int x, int y)
+	{
+		return (y * Brett.BRETTSTØRRELSE + x);
+	}
 	/**
 	 * Gjør om et sjakk-koordinat til array koordinat
 	 * @param rutenavn sjakk-koordinat
@@ -47,6 +53,11 @@ public class Koordinater
 			return koordinater;
 		}
 		return null;
+	}
+
+	public static int tilRuteid(String rutenavn)
+	{
+		return (rutenavn.charAt(0) - 'a') * Brett.BRETTSTØRRELSE + rutenavn.charAt(1) - '1';
 	}
 
 
@@ -82,24 +93,25 @@ public class Koordinater
 	 * @param tilPos sjakk-koordinat til
 	 * @return avstand (antall ruter)
 	 */
-	public static int avstand(String fraPos, String tilPos)
+	public static int avstand(int fraPos, int tilPos)
 	{
-		int[] koordFra = Koordinater.til_koordinater(fraPos);
-		int[] koordTil = Koordinater.til_koordinater(tilPos);
-		int[] diff = differanse(koordFra,koordTil);
-		int antallRuter = Math.max(Math.abs(diff[0]),Math.abs(diff[1]));
+		int fray = fraPos / Brett.BRETTSTØRRELSE;
+		int frax = fraPos - fray;
+		int tily = tilPos / Brett.BRETTSTØRRELSE;
+		int tilx = tilPos - tily;
+		int diffx = tilx - frax;
+		int diffy = tily - fray;
+		int antallRuter = Math.max(Math.abs(diffx), Math.abs(diffy));
 		return antallRuter;
 	}
 
-	public static Retning radRetning(String fraPos, String tilPos, Farge f)
+	public static Retning radRetning(int fraPos, int tilPos, Farge f)
 	{
-		int[] koordFra = til_koordinater(fraPos);
-		int[] koordTil = til_koordinater(tilPos);
-		int[] diff = differanse(koordFra, koordTil);
+		int diffy = (tilPos - fraPos) / Brett.BRETTSTØRRELSE;
 		if (f == Farge.HVIT) {
-			return (diff[1] > 0) ? Retning.FREM : Retning.BAKOVER;
+			return (diffy > 0) ? Retning.FREM : Retning.BAKOVER;
 		}
-		return (diff[1] < 0) ? Retning.FREM : Retning.BAKOVER;
+		return (diffy < 0) ? Retning.FREM : Retning.BAKOVER;
 	}
 
 	/**

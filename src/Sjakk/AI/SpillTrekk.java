@@ -7,17 +7,17 @@ import Sjakk.Brett.Brett;
  */
 public class SpillTrekk
 {
-	private String fraPos;
-	private String tilPos;
+	private int fraPos;
+	private int tilPos;
 	private int poeng;
 
-	public SpillTrekk(String fraPos, String tilPos)
+	public SpillTrekk(int fraPos, int tilPos)
 	{
 		this.fraPos = fraPos;
 		this.tilPos = tilPos;
 	}
 
-	public SpillTrekk(String fraPos, String tilPos, int poeng)
+	public SpillTrekk(int fraPos, int tilPos, int poeng)
 	{
 		this.fraPos = fraPos;
 		this.tilPos = tilPos;
@@ -34,7 +34,7 @@ public class SpillTrekk
 		b.flyttBrikke(fraPos, tilPos);
 	}
 
-	public void setTrekk(String fraPos, String tilPos)
+	public void setTrekk(int fraPos, int tilPos)
 	{
 		this.fraPos = fraPos;
 		this.tilPos = tilPos;

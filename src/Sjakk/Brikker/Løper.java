@@ -11,9 +11,9 @@ import Sjakk.Regler.FlytteRegel;
  */
 public class Løper extends Offiser
 {
-	public Løper(Brett brett, String rutenavn, Farge farge) throws IllegalArgumentException
+	public Løper(Brett brett, int ruteid, Farge farge) throws IllegalArgumentException
 	{
-		super(brett, rutenavn, farge);
+		super(brett, ruteid, farge);
 		flytteRegel = new FlytteRegel(false,false,false,true);
 		poeng = 5;
 	}
@@ -27,7 +27,7 @@ public class Løper extends Offiser
 	@Override
 	public Brikke kopierBrikken()
 	{
-		Brikke b = new Løper(getBrett(), getRuteNavn(), getFarge());
+		Brikke b = new Løper(getBrett(), getRuteid(), getFarge());
 		b.setAntTrekk(getAntallTrekk());
 		return b;
 	}

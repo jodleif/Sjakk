@@ -31,7 +31,7 @@ public class BondeFlytteRegel extends FlytteRegel
 	 * @return sant hvis gyldig trekk
 	 */
 	@Override
-	public boolean gyldigTrekk(String fraPos, String tilPos, Brikke br, Brett brett)
+	public boolean gyldigTrekk(int fraPos, int tilPos, Brikke br, Brett brett)
 	{
 		Retning retning = finnRetning(fraPos, tilPos, br.getFarge());
 		if (br.getAntallTrekk() < 1) {
@@ -62,7 +62,7 @@ public class BondeFlytteRegel extends FlytteRegel
 	}
 
 	@Override
-	public boolean gyldigAngrep(String fraPos, String tilPos, Brikke brikke, Brett brett)
+	public boolean gyldigAngrep(int fraPos, int tilPos, Brikke brikke, Brett brett)
 	{
 		Retning retning = finnRetning(fraPos, tilPos, brikke.getFarge());
 		if (retning == null) return false;

@@ -10,9 +10,9 @@ import Sjakk.Regler.Farge;
  */
 public abstract class Offiser extends Brikke
 {
-	public Offiser(Brett brett, String rutenavn, Farge farge) throws IllegalArgumentException
+	public Offiser(Brett brett, int ruteid, Farge farge) throws IllegalArgumentException
 	{
-		super(brett, rutenavn, farge);
+		super(brett, ruteid, farge);
 	}
 
 }

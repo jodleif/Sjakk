@@ -14,32 +14,35 @@ import Sjakk.Regler.Farge;
 public class Trekk
 {
 
-	private Brikke[][] snapshot;
+	private Brikke[] snapshot;
 	private Farge spillerSittTrekk;
 	private int poeng;
 
-	public Trekk(Brikke[][] brett, Farge spillerSittTrekk, int poeng)
+	public Trekk(Brikke[] brett, Farge spillerSittTrekk, int poeng)
 	{
-		snapshot = new Brikke[Brett.BRETTSTØRRELSE][Brett.BRETTSTØRRELSE];
+		snapshot = new Brikke[Brett.BRETTSTØRRELSE * Brett.BRETTSTØRRELSE];
 		this.spillerSittTrekk = spillerSittTrekk;
 		kopierBrett(brett);
 		this.poeng = poeng;
 
 	}
 
-	private void kopierBrett(Brikke[][] brett)
+	private void kopierBrett(Brikke[] brett)
 	{
-		for (int i = 0; i < Brett.BRETTSTØRRELSE; ++i) {
-			for (int j = 0; j < Brett.BRETTSTØRRELSE; j++) {
-				Brikke tmp = brett[i][j];
-				if (tmp != null) {
-					snapshot[i][j] = tmp.kopierBrikken();
-				}
+
+		int len = Brett.BRETTSTØRRELSE * Brett.BRETTSTØRRELSE;
+		for (int i = 0; i < len; ++i) {
+			Brikke tmp = brett[i];
+			if (tmp != null) {
+				snapshot[i] = tmp.kopierBrikken();
 			}
 		}
 	}
 
-	public Brikke[][] getSnapshot(){return snapshot;}
+	public Brikke[] getSnapshot()
+	{
+		return snapshot;
+	}
 
 	public int getPoeng()
 	{

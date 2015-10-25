@@ -16,31 +16,31 @@ public class Bonde extends Brikke
 	/**
 	 * Konstruktør
 	 * @param brett brettet brikken er plassert på
-	 * @param rutenavn rutenavnet der brikken er plassert
+	 * @param ruteid rutenavnet der brikken er plassert
 	 * @param farge brikkens farge
 	 * @throws IllegalArgumentException
 	 */
-	public Bonde(Brett brett, String rutenavn, Farge farge) throws IllegalArgumentException
+	public Bonde(Brett brett, int ruteid, Farge farge) throws IllegalArgumentException
 	{
-		super(brett, rutenavn, farge);
+		super(brett, ruteid, farge);
 		flytteRegel = new BondeFlytteRegel(2); // Kan kun flytte fremover. 2 i første trekk
 	}
 
 	@Override
-	public boolean erLovligAngrep(String rutenavn)
+	public boolean erLovligAngrep(int ruteid)
 	{
-		return flytteRegel.gyldigAngrep(getRuteNavn(), rutenavn, this, getBrett());
+		return flytteRegel.gyldigAngrep(getRuteid(), ruteid, this, getBrett());
 	}
 
 	/**
 	 * Sørger for at den flytter seg kun 2 på første trekk.
-	 * @param ruteNavn ruten brikken skal flyttes til.
+	 * @param tilRuteid ruten brikken skal flyttes til.
 	 * @return
 	 */
 	@Override
-	public boolean flyttTil(String ruteNavn)
+	public boolean flyttTil(int tilRuteid)
 	{
-		boolean status = super.flyttTil(ruteNavn);
+		boolean status = super.flyttTil(tilRuteid);
 		return status;
 	}
 
@@ -57,7 +57,7 @@ public class Bonde extends Brikke
 	@Override
 	public Brikke kopierBrikken()
 	{
-		Brikke b = new Bonde(getBrett(), getRuteNavn(), getFarge());
+		Brikke b = new Bonde(getBrett(), getRuteid(), getFarge());
 		b.setAntTrekk(getAntallTrekk());
 		return b;
 	}

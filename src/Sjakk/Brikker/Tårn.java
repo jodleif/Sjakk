@@ -13,9 +13,9 @@ public class Tårn extends Offiser
 {
 	private static final String BRIKKENAVN = "T";
 
-	public Tårn(Brett brett, String rutenavn, Farge farge) throws IllegalArgumentException
+	public Tårn(Brett brett, int ruteid, Farge farge) throws IllegalArgumentException
 	{
-		super(brett, rutenavn, farge);
+		super(brett, ruteid, farge);
 		flytteRegel = new FlytteRegel(true, true, true, false);
 		poeng = 5;
 	}
@@ -29,7 +29,7 @@ public class Tårn extends Offiser
 	@Override
 	public Brikke kopierBrikken()
 	{
-		Brikke b = new Tårn(getBrett(), getRuteNavn(), getFarge());
+		Brikke b = new Tårn(getBrett(), getRuteid(), getFarge());
 		b.setAntTrekk(getAntallTrekk());
 		return b;
 	}

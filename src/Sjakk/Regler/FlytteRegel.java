@@ -3,6 +3,8 @@ package Sjakk.Regler;
 import Sjakk.Brett.Brett;
 import Sjakk.Brikker.Brikke;
 
+import java.util.ArrayList;
+
 /**
  * Created by Jo Øivind Gjernes on 20.10.2015.
  * <p>
@@ -71,17 +73,17 @@ public class FlytteRegel
 	 * @param brett  spillbrettet
 	 * @return true hvis det oppst�r kollisjoner.
 	 */
-	protected static boolean kollisjonsSjekk(String fraPos, String tilPos, Brikke brikke, Brett brett)
+	protected static boolean kollisjonsSjekk(int fraPos, int tilPos, Brikke brikke, Brett brett)
 	{
 		/*Brikke tmp = brett.getBrikke(tilPos);
 		if(tmp!=null&&tmp.getFarge()== brikke.getFarge()){
 			return true;
 		}*/
-		String[] diff = ruterMellom(fraPos, tilPos);
+		ArrayList<Integer> diff = ruterMellom(fraPos, tilPos);
 		if(diff==null)
 			return false;
-		for(String mellomPos : diff){
-			if (brett.getBrikke(mellomPos) != null) { // Hvis feltet ikke er null inneholder det en brikke.
+		for (Integer ruteid : diff) {
+			if (brett.getBrikke(ruteid) != null) {
 				return true;
 			}
 		}
@@ -92,39 +94,42 @@ public class FlytteRegel
 	/**
 	 * Bestemmer retningen flyttingen går i
 	 *
-	 * @param fraPos brikkens fra-posisjon
-	 * @param tilPos brikkens til-posisjon
+	 * @param fraRute brikkens fra-posisjon
+	 * @param tilRute brikkens til-posisjon
 	 * @param farge  brikkens farge (trengs for å finne ut om man beveger seg fremover eller bakover)
 	 * @return Returnerer hvilken retning bevegelsen vil være - (SE enumen Retning)
 	 */
-	protected static Retning finnRetning(String fraPos, String tilPos, Farge farge)
+	protected static Retning finnRetning(int fraRute, int tilRute, Farge farge)
 	{
-		int[] koordFra = Koordinater.til_koordinater(fraPos);
-		int[] koordTil = Koordinater.til_koordinater(tilPos);
-		int[] diff = Koordinater.differanse(koordFra, koordTil);
+		int fraRutey = fraRute / Brett.BRETTSTØRRELSE;
+		int fraRutex = fraRute - fraRutey * Brett.BRETTSTØRRELSE;
+		int tilRutey = tilRute / Brett.BRETTSTØRRELSE;
+		int tilRutex = tilRute - tilRutey * Brett.BRETTSTØRRELSE; // Skal være raskere enn tilRUte%Brettstørrelse (x retning går aldri opp i 8 (0-7))
+		int diffx = tilRutex - fraRutex;
+		int diffy = tilRutey - fraRutey;
 		// Frem og tilbake
-		if (diff[0] == 0 && diff[1] != 0) {
-			if (diff[1] > 0) {
+		if (diffx == 0 && diffy != 0) {
+			if (diffy > 0) {
 				return (farge == Farge.HVIT) ? Retning.FREM : Retning.BAKOVER;
 			}
-			if (diff[1] < 0) {
+			if (diffy < 0) {
 				return (farge == Farge.HVIT) ? Retning.BAKOVER : Retning.FREM;
 			}
 		}
 		// Sidelengs
-		if (diff[0] != 0 && diff[1] == 0) {
+		if (diffx != 0 && diffy == 0) {
 			return Retning.SIDELENGS;
 		}
 		// Diagonalt
-		if (Math.abs(diff[0])==Math.abs(diff[1])) {
+		if (Math.abs(diffx) == Math.abs(diffy)) {
 			return Retning.DIAGONALT;
 		}
 		// Springer.. 2 frem 1 til siden
-		if(Math.abs(diff[0])==2&&Math.abs(diff[1])==1){
+		if (Math.abs(diffx) == 2 && Math.abs(diffy) == 1) {
 			return Retning.SPRINGER;
 		}
 		//Springer.. 2 til siden 1 frem
-		if(Math.abs(diff[0])==1&&Math.abs(diff[1])==2){
+		if (Math.abs(diffx) == 1 && Math.abs(diffy) == 2) {
 			return Retning.SPRINGER;
 		}
 		return null;
@@ -137,23 +142,25 @@ public class FlytteRegel
 	 * @param til rute man ender i
 	 * @return navn på rutene mellom fra og til
 	 */
-	protected static String[] ruterMellom(String fra, String til)
+	protected static ArrayList<Integer> ruterMellom(int fra, int til)
 	{
-		int[] fraKoord = Koordinater.til_koordinater(fra);
-		int[] tilKoord = Koordinater.til_koordinater(til);
-		int[] diff = Koordinater.differanse(fraKoord, tilKoord);
+
+		int fraRutey = fra / Brett.BRETTSTØRRELSE;
+		int fraRutex = fra % Brett.BRETTSTØRRELSE;
+		int tilRutey = til / Brett.BRETTSTØRRELSE;
+		int tilRutex = til % Brett.BRETTSTØRRELSE;
+		int diffx = tilRutex - fraRutex;
+		int diffy = tilRutey - fraRutey;
 		int avstand = Koordinater.avstand(fra,til);
 		if(avstand<=1) return null;
 
-		String[] ruterMellom = new String[avstand-1];
-		int stegKol = diff[0]/(avstand);
-		int stegRad = diff[1]/(avstand);
-		int[] test = new int[]{fraKoord[0], fraKoord[1]};
-		//test = Arrays.copyOf(diff, 2);
+		int stegKol = diffx / (avstand);
+		int stegRad = diffx / (avstand);
+		ArrayList<Integer> ruterMellom = new ArrayList<>();
 		for(int i=0;i<avstand-1;++i){
-			test[0] += stegKol;
-			test[1] += stegRad; // Flytt til neste posisjon
-			ruterMellom[i] = Koordinater.fra_koordinater(test);
+			fraRutex += stegKol;
+			fraRutey += stegRad; // Flytt til neste posisjon
+			ruterMellom.add(Koordinater.fraXY(fraRutex, fraRutey));
 		}
 		return ruterMellom;
 	}
@@ -167,7 +174,7 @@ public class FlytteRegel
 	 * @param brett  spillbrettet
 	 * @return true hvis trekket er gyldig(lovlig)
 	 */
-	public boolean gyldigTrekk(String fraPos, String tilPos, Brikke br, Brett brett)
+	public boolean gyldigTrekk(int fraPos, int tilPos, Brikke br, Brett brett)
 	{
 		Retning retning = finnRetning(fraPos, tilPos, br.getFarge());
 		if (retning == null) return false;
@@ -197,12 +204,12 @@ public class FlytteRegel
 		}
 	}
 
-	public boolean gyldigAngrep(String fraPos, String tilPos, Brikke brikke, Brett brett)
+	public boolean gyldigAngrep(int fraPos, int tilPos, Brikke brikke, Brett brett)
 	{
 		return gyldigTrekk(fraPos, tilPos, brikke, brett);
 	}
 
-	protected boolean gyldigAvstand(String fraPos, String tilPos)
+	protected boolean gyldigAvstand(int fraPos, int tilPos)
 	{
 		return Koordinater.avstand(fraPos,tilPos)<=maxAvstand;
 	}
