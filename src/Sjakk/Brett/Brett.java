@@ -33,7 +33,8 @@ public class Brett
 	 */
 	public Brett(int nyttSpillNr, boolean tomtSpillbrett)
 	{
-
+		Koordinater.resetTables();
+		Koordinater.preBuild();
 		this.spillNr = nyttSpillNr;
 		brikkene = new Brikke[BRETTSTØRRELSE][BRETTSTØRRELSE];
 		spillTrekk = new ArrayDeque<>(); // Spilltrekk.

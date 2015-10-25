@@ -2,7 +2,10 @@ package Sjakk.Regler;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import java.util.Arrays;
+
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by Jo Øivind Gjernes on 20.10.2015.
@@ -34,7 +37,21 @@ public class KoordinaterTest
 		int[] koordint2 = {4,0};
 		String test = Koordinater.fra_koordinater(koordint);
 		String test2 = Koordinater.fra_koordinater(koordint2);
+		String test3 = Koordinater.fra_koordinater(new int[]{koordint[0], koordint[1]});
 		assertTrue(test.equals(forventet));
 		assertTrue(test2.equals(forventet2));
+		assertTrue(test3.equals(forventet));
+	}
+
+	@Test
+	public void testKoordinater() throws Exception
+	{
+		Koordinater.preBuild();
+		Koordinater.stringTilKoord.forEach((integer, ints) -> {
+			String str = Koordinater.koordTilString.get(Arrays.hashCode(ints));
+			assertTrue(integer.hashCode() == str.hashCode());
+			System.out.println(str + " = " + ints[0] + "," + ints[1]);
+
+		});
 	}
 }
