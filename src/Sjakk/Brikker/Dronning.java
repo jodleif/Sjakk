@@ -11,8 +11,6 @@ import Sjakk.Regler.FlytteRegel;
  */
 public class Dronning extends Offiser
 {
-	private static final FlytteRegel flytteRegel = new FlytteRegel(true, true, true, true);
-
 	/**
 	 * Lag en ny dronning
 	 * @param brett spillbrettet dronningen er på
@@ -23,19 +21,9 @@ public class Dronning extends Offiser
 	public Dronning(Brett brett, String rutenavn, Farge farge) throws IllegalArgumentException
 	{
 		super(brett, rutenavn, farge);
+		flytteRegel = new FlytteRegel(true, true, true, true);
+		poeng = 10;
 	}
-
-	/**
-	 * Implementasjon av erLovligTrekk. Sjekker om trekket er lovlig (i brikkens spillregler)
-	 * @param rutenavn navnet på ruten brikken skal flyttes til. på sjakkformat i.e. a1
-	 * @return true hvis trekket er tillat
-	 */
-	@Override
-	public boolean erLovligTrekk(String rutenavn)
-	{
-		return flytteRegel.gyldigTrekk(getRuteNavn(), rutenavn, this, getBrett());
-	}
-
 	/**
 	 * Brikkens type
 	 * @return D for dronning.

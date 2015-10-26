@@ -1,6 +1,5 @@
 package GUI;
 
-import GUI.Replay.Test;
 import GUI.Sjakk.SpilleBrett;
 import javafx.application.Application;
 import javafx.scene.Group;
@@ -48,7 +47,7 @@ public class SjakkApp extends Application
 		borderPane = new BorderPane();
 		rot = new Group();
 		Scene scene = new Scene(rot,WIDTH,HEIGHT);
-		spilleBrett = new SpilleBrett(Test.getSjakkBrettMedHistorikk());
+		spilleBrett = new SpilleBrett(0);
 		tegnBakgrunn();
 		byggSpillBrett();
 		leggTilTestKnapp();
@@ -71,7 +70,7 @@ public class SjakkApp extends Application
 		b.setPrefHeight(30);
 		b2.setPrefHeight(30);
 		b.setOnAction(e -> this.spilleBrett.angre());
-		b2.setOnAction(e -> this.spilleBrett.spillAvNesteTrekk());
+		b2.setOnAction(e -> this.spilleBrett.aiSpillerSinTur());
 		bunnPanel.getChildren().add(hbox);
 		hbox.getChildren().add(b);
 		hbox.getChildren().add(b2);

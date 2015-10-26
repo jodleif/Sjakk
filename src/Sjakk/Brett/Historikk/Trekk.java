@@ -2,6 +2,7 @@ package Sjakk.Brett.Historikk;
 
 import Sjakk.Brett.Brett;
 import Sjakk.Brikker.Brikke;
+import Sjakk.Regler.Farge;
 
 /**
  * Created by Jo Øivind Gjernes on 21.10.2015.
@@ -14,11 +15,16 @@ public class Trekk
 {
 
 	private Brikke[][] snapshot;
+	private Farge spillerSittTrekk;
+	private int poeng;
 
-	public Trekk(Brett brett)
+	public Trekk(Brikke[][] brett, Farge spillerSittTrekk, int poeng)
 	{
 		snapshot = new Brikke[Brett.BRETTSTØRRELSE][Brett.BRETTSTØRRELSE];
-		kopierBrett(brett.getBrikkene());
+		this.spillerSittTrekk = spillerSittTrekk;
+		kopierBrett(brett);
+		this.poeng = poeng;
+
 	}
 
 	private void kopierBrett(Brikke[][] brett)
@@ -35,4 +41,13 @@ public class Trekk
 
 	public Brikke[][] getSnapshot(){return snapshot;}
 
+	public int getPoeng()
+	{
+		return poeng;
+	}
+
+	public Farge getSpillerSittTrekk()
+	{
+		return spillerSittTrekk;
+	}
 }

@@ -1,9 +1,14 @@
 package GUI.Sjakk;
 
+import Sjakk.AI.MiniMax;
 import Sjakk.Brett.Brett;
+import Sjakk.Regler.Farge;
 import Sjakk.Regler.Koordinater;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by Jo Øivind Gjernes on 20.10.2015.
@@ -16,8 +21,10 @@ public class SpilleBrett
 	private GridPane gridPane; // GridPane - til å knytte opp mot hovedvinduet
 	private Rute sistMerket; // Her lagres den siste merkede ruten - for interaksjon med musepeker!
 	private Rute[][] ruter; // Her lagres GUI representasjonen av spillruter.
-	private String[] gyldigePos; // Lagres for å kunne fjerne avmerkinger. Kunne eventuelt søkt gjennom rutene for å fjerne.
+	private HashMap<String, ArrayList<String>> gyldigePos; // Lagres for å kunne fjerne avmerkinger. Kunne eventuelt søkt gjennom rutene for å fjerne.
 	private BildeListe bildeCache; // Lagrer imageviews for alle brikker.
+	private MiniMax aiSpiller;
+	private Farge spillerFarge;
 
 	/**
 	 * Oppretter et nytt GUI-brett
@@ -31,6 +38,8 @@ public class SpilleBrett
 		gridPane.setPrefSize(620, 620);
 		gridPane.setOnMouseClicked(e -> mouseClickHandler(e));
 		ruter = new Rute[Brett.BRETTSTØRRELSE][Brett.BRETTSTØRRELSE];
+		spillerFarge = Farge.HVIT;
+		aiSpiller = new MiniMax(3, spillerFarge.motsatt());
 		initBrett();
 		oppdaterBrett();
 	}
@@ -56,6 +65,13 @@ public class SpilleBrett
 
 	}
 
+	public void aiSpillerSinTur()
+	{
+		if (sjakkBrett.getSpillerSinTur() == spillerFarge.motsatt()) {
+			aiSpiller.nesteAiTrekk(sjakkBrett);
+			oppdaterBrett();
+		}
+	}
 	/**
 	 * Returner GridPane for spillbrettet
 	 * @return gridpane
@@ -76,22 +92,23 @@ public class SpilleBrett
 
 		if (sistMerket == null) {
 			if (r.erSjakkbrikke()) {
-				r.merk();
-				sistMerket = r;
-				gyldigePos = sjakkBrett.getLovligeTrekk(sjakkPos);
-				merkGyldige();
+				if (sjakkBrett.getBrikke(sjakkPos).getFarge() == sjakkBrett.getSpillerSinTur()) {
+					r.merk();
+					sistMerket = r;
+					merkGyldige();
+				} else {
+					System.err.println("Andre spiller sin tur!");
+				}
 			}
 		} else if (sistMerket.equals(r)) {
 			r.merk();
 			merkGyldige();
-			gyldigePos = null;
 			sistMerket = null;
 		} else {
 			System.out.println(sjakkPos);
 			if (sjakkBrett.getBrikke(sistMerket.getPos()).flyttTil(sjakkPos)) {
 				sistMerket.merk();
 				merkGyldige();
-				gyldigePos = null;
 				sistMerket = null;
 				oppdaterBrett(); // Brikke flyttet, oppdater brett!!
 			} else {
@@ -99,7 +116,6 @@ public class SpilleBrett
 			}
 
 		}
-
 	}
 
 	/**
@@ -107,11 +123,12 @@ public class SpilleBrett
 	 */
 	private void merkGyldige()
 	{
-		if(gyldigePos!=null){
-			for(String sjakkPos : gyldigePos){
+		if (gyldigePos != null && gyldigePos.get(sistMerket.getPos()) != null) {
+			for (String sjakkPos : gyldigePos.get(sistMerket.getPos())) {
 				getRute(sjakkPos).merkGrønn();
 			}
 		}
+
 	}
 
 	/**
@@ -120,6 +137,9 @@ public class SpilleBrett
 	 */
 	private void oppdaterBrett()
 	{
+		gyldigePos = sjakkBrett.getAlleGyldigeTrekk(sjakkBrett.getSpillerSinTur());
+		if (gyldigePos.size() == 0)
+			System.err.println("Sjakk matt! Vinner: " + sjakkBrett.getSpillerSinTur().motsatt());
 		for (int i = 0; i < Brett.BRETTSTØRRELSE; ++i) {
 			for (int j = 0; j < Brett.BRETTSTØRRELSE; ++j) {
 				ruter[i][j].oppdater(sjakkBrett.getBrikke(Koordinater.fra_koordinater(new int[]{i, j})));

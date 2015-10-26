@@ -4,6 +4,7 @@ import Sjakk.Brett.Brett;
 import Sjakk.FileIO.PGN;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 
 /**
@@ -51,5 +52,16 @@ public class Test
 		ArrayList<String> trekkListe = new ArrayList<String>();
 		Collections.addAll(trekkListe, test);
 		return PGN.pgnListeTilBrett(trekkListe);
+	}
+
+	public static Brett getSjakkBrettTest()
+	{
+		String[] test = new String[]{
+			"e4", "e5", "f4", "d5", "exd5", "Qxd5", "Nc3", "Qe6", "Nf3", "exf4+", "Kf2",
+			"Bc5+", "d4", "Bd6", "Bb5+", "Kf8", "Re1", "Qf5", "Re8"
+		};
+		ArrayList<String> trekkListe = new ArrayList<>(Arrays.asList(test));
+		return PGN.pgnListeTilBrett(trekkListe);
+
 	}
 }
