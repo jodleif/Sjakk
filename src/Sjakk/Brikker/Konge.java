@@ -58,7 +58,7 @@ public class Konge extends Offiser
 			if (setterISjakk.size() > 1) {
 				return true;
 			} else if (setterISjakk.size() == 1) {
-				return !setterISjakk.get(0).getRuteNavn().equals(ruteid);
+				return !(setterISjakk.get(0).getRuteid() == ruteid);
 			}
 			return false;
 		}
@@ -71,7 +71,7 @@ public class Konge extends Offiser
 		ArrayList<Brikke> brikker = getBrett().getAlleBrikker(getFarge().motsatt());
 		ArrayList<Brikke> setterISjakk = new ArrayList<>();
 		for (Brikke brikke : brikker)
-			if (brikke.erLovligAngrep(getRuteNavn())) {
+			if (brikke.erLovligAngrep(getRuteid())) {
 				setterISjakk.add(brikke);
 			}
 		return setterISjakk.size() != 0;
@@ -86,7 +86,7 @@ public class Konge extends Offiser
 	@Override
 	public Brikke kopierBrikken()
 	{
-		Brikke b = new Konge(getBrett(), getRuteNavn(), getFarge());
+		Brikke b = new Konge(getBrett(), getRuteid(), getFarge());
 		b.setAntTrekk(getAntallTrekk());
 		return b;
 	}

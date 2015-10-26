@@ -75,10 +75,10 @@ public class FlytteRegel
 	 */
 	protected static boolean kollisjonsSjekk(int fraPos, int tilPos, Brikke brikke, Brett brett)
 	{
-		/*Brikke tmp = brett.getBrikke(tilPos);
+		Brikke tmp = brett.getBrikke(tilPos);
 		if(tmp!=null&&tmp.getFarge()== brikke.getFarge()){
 			return true;
-		}*/
+		}
 		ArrayList<Integer> diff = ruterMellom(fraPos, tilPos);
 		if(diff==null)
 			return false;
@@ -155,7 +155,7 @@ public class FlytteRegel
 		if(avstand<=1) return null;
 
 		int stegKol = diffx / (avstand);
-		int stegRad = diffx / (avstand);
+		int stegRad = diffy / (avstand);
 		ArrayList<Integer> ruterMellom = new ArrayList<>();
 		for(int i=0;i<avstand-1;++i){
 			fraRutex += stegKol;
@@ -212,10 +212,6 @@ public class FlytteRegel
 	protected boolean gyldigAvstand(int fraPos, int tilPos)
 	{
 		return Koordinater.avstand(fraPos,tilPos)<=maxAvstand;
-	}
-
-	public void setMaxAvstand(int maxAvstand){
-		this.maxAvstand=maxAvstand;
 	}
 
 }

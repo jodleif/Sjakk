@@ -57,7 +57,16 @@ public class Koordinater
 
 	public static int tilRuteid(String rutenavn)
 	{
-		return (rutenavn.charAt(0) - 'a') * Brett.BRETTSTØRRELSE + rutenavn.charAt(1) - '1';
+		// x + y * Bredde = koord
+		return (rutenavn.charAt(0) - 'a') + (rutenavn.charAt(1) - '1') * Brett.BRETTSTØRRELSE;
+	}
+
+	public static String fraRuteid(int ruteid)
+	{
+		String s = new String();
+		s += (char) (ruteid % Brett.BRETTSTØRRELSE + 'a');
+		s += (char) (ruteid / Brett.BRETTSTØRRELSE + '1');
+		return s;
 	}
 
 
@@ -96,9 +105,9 @@ public class Koordinater
 	public static int avstand(int fraPos, int tilPos)
 	{
 		int fray = fraPos / Brett.BRETTSTØRRELSE;
-		int frax = fraPos - fray;
+		int frax = fraPos - fray * Brett.BRETTSTØRRELSE;
 		int tily = tilPos / Brett.BRETTSTØRRELSE;
-		int tilx = tilPos - tily;
+		int tilx = tilPos - tily * Brett.BRETTSTØRRELSE;
 		int diffx = tilx - frax;
 		int diffy = tily - fray;
 		int antallRuter = Math.max(Math.abs(diffx), Math.abs(diffy));

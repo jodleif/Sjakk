@@ -22,7 +22,7 @@ public class SpilleBrett
 	private GridPane gridPane; // GridPane - til å knytte opp mot hovedvinduet
 	private Rute sistMerket; // Her lagres den siste merkede ruten - for interaksjon med musepeker!
 	private Rute[][] ruter; // Her lagres GUI representasjonen av spillruter.
-	private HashMap<String, ArrayList<String>> gyldigePos; // Lagres for å kunne fjerne avmerkinger. Kunne eventuelt søkt gjennom rutene for å fjerne.
+	private HashMap<Integer, ArrayList<Integer>> gyldigePos; // Lagres for å kunne fjerne avmerkinger. Kunne eventuelt søkt gjennom rutene for å fjerne.
 	private BildeListe bildeCache; // Lagrer imageviews for alle brikker.
 	private MiniMax aiSpiller;
 	private Farge spillerFarge;
@@ -124,9 +124,9 @@ public class SpilleBrett
 	 */
 	private void merkGyldige()
 	{
-		if (gyldigePos != null && gyldigePos.get(sistMerket.getPos()) != null) {
-			for (String sjakkPos : gyldigePos.get(sistMerket.getPos())) {
-				getRute(sjakkPos).merkGrønn();
+		if (gyldigePos != null && gyldigePos.get(Koordinater.tilRuteid(sistMerket.getPos())) != null) {
+			for (Integer sjakkPos : gyldigePos.get(Koordinater.tilRuteid(sistMerket.getPos()))) {
+				getRute(Koordinater.fraRuteid(sjakkPos)).merkGrønn();
 			}
 		}
 
@@ -139,7 +139,7 @@ public class SpilleBrett
 	private void oppdaterBrett()
 	{
 		gyldigePos = sjakkBrett.getAlleGyldigeTrekk(sjakkBrett.getSpillerSinTur());
-		if (gyldigePos.size() == 0)
+		if (gyldigePos == null || gyldigePos.size() == 0)
 			System.err.println("Sjakk matt! Vinner: " + sjakkBrett.getSpillerSinTur().motsatt());
 		for (int i = 0; i < Brett.BRETTSTØRRELSE; ++i) {
 			for (int j = 0; j < Brett.BRETTSTØRRELSE; ++j) {

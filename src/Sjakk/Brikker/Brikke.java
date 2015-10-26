@@ -3,6 +3,7 @@ package Sjakk.Brikker;
 import Sjakk.Brett.Brett;
 import Sjakk.Regler.Farge;
 import Sjakk.Regler.FlytteRegel;
+import Sjakk.Regler.Koordinater;
 
 import java.util.ArrayList;
 
@@ -74,6 +75,15 @@ public abstract class Brikke
 		return false; // "noe" gikk galt, men har ikke endret noe!
 	}
 
+	public boolean flyttTil(String rutenavn)
+	{
+		if (rutenavn != null) {
+			int ruteid = Koordinater.tilRuteid(rutenavn);
+			return flyttTil(ruteid);
+		}
+		return false;
+	}
+
 
 	public int getRuteid()
 	{
@@ -114,8 +124,8 @@ public abstract class Brikke
 		for(int i=0;i<Brett.BRETTSTØRRELSE;++i){
 			for(int j=0;j<Brett.BRETTSTØRRELSE;++j){
 				int ruteSjekk = i * Brett.BRETTSTØRRELSE + j;
-				if (erLovligTrekk(ruteid) && (!sjekkForKollisjoner(ruteid))) {
-					tmp.add(ruteid);
+				if (erLovligTrekk(ruteSjekk) && (!sjekkForKollisjoner(ruteSjekk))) {
+					tmp.add(ruteSjekk);
 				}
 			}
 		}

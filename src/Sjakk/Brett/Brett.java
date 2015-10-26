@@ -26,6 +26,7 @@ public class Brett
 	private Deque<Trekk> spillTrekk; // Lagrer trekkene i spillet.
 	private Farge nesteTrekk = Farge.HVIT;
 	private int poeng;
+
 	/**
 	 * Opprett et nytt spillbrett
 	 *
@@ -143,39 +144,65 @@ public class Brett
 	/**
 	 * Hent spillbrikken i den spesifiserte ruten.
 	 *
-	 * @param rutenavn navnet på ruten
+	 * @param ruteid navnet på ruten
 	 * @return brikken i rutenavn, null dersom ruten er tom.
 	 */
 	public Brikke getBrikke(int ruteid)
 	{
-		return brikkene[ruteid]
+		return brikkene[ruteid];
 	}
 
+	public Brikke getBrikke(String rutenavn)
+	{
+		if (rutenavn != null) {
+			int ruteid = Koordinater.tilRuteid(rutenavn);
+			return getBrikke(ruteid);
+		}
+		return null;
+	}
 	public void setBrikke(int ruteid, Brikke brikke)
 	{
 		if (brikke != null) {
 			Brikke tmp = getBrikke(ruteid);
-				if (tmp != null) {
-					if (tmp.getFarge() == Farge.SVART) { // Sjekker om hvit fjerner svart brikke = + poeng for hvit
-						poeng += tmp.getPoeng();
-					} else {
-						poeng -= tmp.getPoeng(); // Svart dreper hvit, trekk fra poeng!
-					}
+			if (tmp != null) {
+				if (tmp.getFarge() == Farge.SVART) { // Sjekker om hvit fjerner svart brikke = + poeng for hvit
+					poeng += tmp.getPoeng();
+				} else {
+					poeng -= tmp.getPoeng(); // Svart dreper hvit, trekk fra poeng!
 				}
-			brikke.setRuteId(ruteid); // Sørg for at brikken har korrekt informasjon
-				brikke.økAntallTrekk();
+			}
+			brikke.setRuteid(ruteid); // Sørg for at brikken har korrekt informasjon
+			brikke.økAntallTrekk();
 			brikkene[ruteid] = brikke;
 		} else {
 			System.err.println("[Brett.setBrikke] Prøvde å sette null!");
 		}
 	}
 
+	public void setBrikke(String rutenavn, Brikke brikke)
+	{
+		if (rutenavn != null) {
+			int ruteid = Koordinater.tilRuteid(rutenavn);
+			setBrikke(ruteid, brikke);
+		}
+
+	}
+
 	public void fjernBrikke(int ruteid)
+
 	{
 		brikkene[ruteid] = null;
 	}
 
-	/**
+	public void fjernBrikke(String rutenavn)
+	{
+		if (rutenavn != null) {
+			int ruteid = Koordinater.tilRuteid(rutenavn);
+			fjernBrikke(ruteid);
+		}
+	}
+
+	/*
 	 * Metoden flytter en brikke. Sjekker om felter er gyldige, men ikke om et eventuelt sjakktrekk er gyldig
 	 *
 	 * @param fraRute Ruten man flytter fra
@@ -206,6 +233,14 @@ public class Brett
 		return true;
 	}
 	*/
+
+	/**
+	 * Flyttbrikke vha ruteid.
+	 *
+	 * @param fraRuteid
+	 * @param tilRuteid
+	 * @return
+	 */
 	public boolean flyttBrikke(int fraRuteid, int tilRuteid)
 	{
 		if (!(erLovligRutenavn(fraRuteid) && erLovligRutenavn(tilRuteid))) {
@@ -241,17 +276,17 @@ public class Brett
 	{
 		return false;
 	}
+
 	public Brikke[] getAlleBrikker()
 	{
 		int antallBrikker = antallBrikkerILive();
 		Brikke[] alleBrikker = new Brikke[antallBrikker];
 		int teller = 0;
-		for (int i = 0; i < BRETTSTØRRELSE; ++i) {
-			for (int j = 0; j < BRETTSTØRRELSE; ++j) {
-				Brikke tmp = brikkene[i][j];
-				if (tmp != null) {
-					alleBrikker[teller++] = tmp;
-				}
+		int len = BRETTSTØRRELSE * BRETTSTØRRELSE;
+		for (int i = 0; i < len; ++i) {
+			Brikke tmp = brikkene[i];
+			if (tmp != null) {
+				alleBrikker[teller++] = tmp;
 			}
 		}
 		return alleBrikker;
@@ -311,7 +346,7 @@ public class Brett
 		int len = BRETTSTØRRELSE * BRETTSTØRRELSE;
 		for (int i = 0; i < len; ++i) {
 			if (brikkene[i] != null)
-					++antall;
+				++antall;
 
 		}
 		return antall;
@@ -326,11 +361,12 @@ public class Brett
 
 	/**
 	 * Henter det "nyligeste" (forrige) trekket og setter spillbrettet til det.
+	 *
 	 * @return
 	 */
 	public boolean angre()
 	{
-		if(spillTrekk.size()==0)
+		if (spillTrekk.size() == 0)
 			return false;
 		Trekk tr = spillTrekk.pop();
 		brikkene = tr.getSnapshot();
@@ -341,11 +377,12 @@ public class Brett
 
 	/**
 	 * Starter fra det første elementet man la til i dequeuen.
+	 *
 	 * @return
 	 */
 	public boolean spillAvNesteTrekk()
 	{
-		if(spillTrekk.size() == 0)
+		if (spillTrekk.size() == 0)
 			return false;
 		Trekk tr = spillTrekk.pollLast();
 		brikkene = tr.getSnapshot();
@@ -353,7 +390,8 @@ public class Brett
 		return true;
 	}
 
-	public void lagreTrekk(){
+	public void lagreTrekk()
+	{
 		spillTrekk.push(new Trekk(brikkene, nesteTrekk, poeng));
 	}
 
@@ -364,34 +402,36 @@ public class Brett
 
 	/**
 	 * Rokkering - ikke for spill, for avspilling av "replays"
+	 *
 	 * @param kongeside hvis kongeside rokkering
-	 * @param farge spiller.
-	 * TODO: implementer inkrementering av trekk.
+	 * @param farge     spiller.
+	 *                  TODO: implementer inkrementering av trekk.
 	 */
-	public void Rokker(boolean kongeside, Farge farge){
+	public void Rokker(boolean kongeside, Farge farge)
+	{
 		lagreTrekk();
-		if(kongeside){
-			if(farge == Farge.HVIT){
+		if (kongeside) {
+			if (farge == Farge.HVIT) {
 				setBrikke("g1", getBrikke("e1"));
 				fjernBrikke("e1");
 				setBrikke("f1", getBrikke("h1"));
 				fjernBrikke("h1");
 			} else {
-				setBrikke("g8",getBrikke("e8"));
+				setBrikke("g8", getBrikke("e8"));
 				fjernBrikke("e8");
-				setBrikke("f8",getBrikke("h8"));
+				setBrikke("f8", getBrikke("h8"));
 				fjernBrikke("h8");
 			}
 		} else {
-			if(farge==Farge.HVIT){
-				setBrikke("c1",getBrikke("e1"));
+			if (farge == Farge.HVIT) {
+				setBrikke("c1", getBrikke("e1"));
 				fjernBrikke("e1");
-				setBrikke("d1",getBrikke("a1"));
+				setBrikke("d1", getBrikke("a1"));
 				fjernBrikke("a1");
 			} else {
-				setBrikke("c8",getBrikke("e8"));
+				setBrikke("c8", getBrikke("e8"));
 				fjernBrikke("e8");
-				setBrikke("d8",getBrikke("a8"));
+				setBrikke("d8", getBrikke("a8"));
 				fjernBrikke("a8");
 			}
 		}

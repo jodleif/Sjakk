@@ -1,13 +1,5 @@
 package Sjakk.FileIO;
 
-import Sjakk.Brett.Brett;
-import Sjakk.Brett.Historikk.Trekk;
-import Sjakk.Brikker.Brikke;
-import Sjakk.Regler.Farge;
-
-import java.util.ArrayList;
-import java.util.Scanner;
-
 /**
  * Created by Jo Øivind Gjernes on 21.10.2015.
  * <p>
@@ -22,7 +14,7 @@ import java.util.Scanner;
  */
 public class PGN
 {
-
+/*
 	private static String fjernEkstraInformasjon(String pgnTekst){
 		int start = pgnTekst.indexOf("1. ");
 		return pgnTekst.substring(start);
@@ -187,5 +179,5 @@ public class PGN
 					return ' ';
 			}
 		}
-	}
+	}*/
 }
