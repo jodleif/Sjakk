@@ -4,7 +4,7 @@ import org.junit.Test;
 
 /**
  * Created by Jo Øivind Gjernes on 21.10.2015.
- *
+ * <p>
  * test
  */
 public class PGNTest

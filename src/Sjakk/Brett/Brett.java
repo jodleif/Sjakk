@@ -162,6 +162,7 @@ public class Brett
 		}
 		return null;
 	}
+
 	public void setBrikke(int ruteid, Brikke brikke)
 	{
 		if (brikke != null) {
@@ -433,7 +434,7 @@ public class Brett
 
 	public void lagreTrekk()
 	{
-		spillTrekk.push(new Trekk(null,0, null, nesteTrekk, poeng));
+		spillTrekk.push(new Trekk(null, 0, null, nesteTrekk, poeng));
 	}
 
 	public void lagreTrekk(int fraruteid, int tilruteid)

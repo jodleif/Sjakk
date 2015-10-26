@@ -108,7 +108,7 @@ public abstract class Brikke
 		for (int y = yMin; y <= yMax; ++y) {
 			for (int x = xMin; x <= xMax; ++x) {
 				int ruteid = (y * 8) + x;
-				if (erLovligTrekk(ruteid)&&(!sjekkForKollisjoner(ruteid))){
+				if (erLovligTrekk(ruteid) && (!sjekkForKollisjoner(ruteid))) {
 					tmp.add(ruteid);
 				}
 			}
@@ -135,9 +135,9 @@ public abstract class Brikke
 	@Override
 	public boolean equals(Object obj)
 	{
-		if(obj==null)
+		if (obj == null)
 			return false;
-		Brikke b = (Brikke)obj;
+		Brikke b = (Brikke) obj;
 		return b.getFarge() == getFarge() && b.getRuteid() == getRuteid() && b.brikkenavn().equals(brikkenavn());
 	}
 
