@@ -44,6 +44,7 @@ public class Rute extends Pane
 	{
 		getChildren().remove(brikkeBilde);
 		brikkeBilde = null;
+		sjakkBrikke = false;
 	}
 
 	private void initBakgrunn()

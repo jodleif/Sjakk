@@ -63,8 +63,7 @@ public class Koordinater
 
 	public static String fraRuteid(int ruteid)
 	{
-		String s = new String();
-		s += (char) (ruteid % Brett.BRETTSTØRRELSE + 'a');
+		String s = "" + (char) (ruteid % Brett.BRETTSTØRRELSE + 'a');
 		s += (char) (ruteid / Brett.BRETTSTØRRELSE + '1');
 		return s;
 	}
@@ -83,8 +82,7 @@ public class Koordinater
 		if (koordinater.length != 2)
 			return null; // Avbryt.
 
-		String str = new String();
-		str += (char) (koordinater[0] + 'a');
+		String str = "" + (char) (koordinater[0] + 'a');
 		str += (char) (koordinater[1] + '1');
 		if (erLovligRutenavn(str)) { // Sjekk om lovlig rutenavn.
 			//koordTilString.put(Arrays.hashCode(koordinater), str);

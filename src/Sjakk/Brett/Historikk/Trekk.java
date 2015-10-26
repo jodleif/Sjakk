@@ -1,6 +1,5 @@
 package Sjakk.Brett.Historikk;
 
-import Sjakk.Brett.Brett;
 import Sjakk.Brikker.Brikke;
 import Sjakk.Regler.Farge;
 
@@ -14,34 +13,37 @@ import Sjakk.Regler.Farge;
 public class Trekk
 {
 
-	private Brikke[] snapshot;
+	private Brikke flyttetBrikke;
+	private int flyttTil;
+	private Brikke fjernetBrikke;
 	private Farge spillerSittTrekk;
 	private int poeng;
 
-	public Trekk(Brikke[] brett, Farge spillerSittTrekk, int poeng)
+	public Trekk(Brikke flyttetBrikke, int flyttTil, Brikke fjernetBrikke, Farge spillerSittTrekk, int poeng)
 	{
-		snapshot = new Brikke[Brett.BRETTSTØRRELSE * Brett.BRETTSTØRRELSE];
+		if (flyttetBrikke != null)
+			this.flyttetBrikke = flyttetBrikke.kopierBrikken();
+		this.flyttTil = flyttTil;
+		if (fjernetBrikke != null)
+			this.fjernetBrikke = fjernetBrikke.kopierBrikken();
 		this.spillerSittTrekk = spillerSittTrekk;
-		kopierBrett(brett);
 		this.poeng = poeng;
 
 	}
 
-	private void kopierBrett(Brikke[] brett)
+	public Brikke getFlyttetBrikke()
 	{
-
-		int len = Brett.BRETTSTØRRELSE * Brett.BRETTSTØRRELSE;
-		for (int i = 0; i < len; ++i) {
-			Brikke tmp = brett[i];
-			if (tmp != null) {
-				snapshot[i] = tmp.kopierBrikken();
-			}
-		}
+		return flyttetBrikke;
 	}
 
-	public Brikke[] getSnapshot()
+	public Brikke getFjernetBrikke()
 	{
-		return snapshot;
+		return fjernetBrikke;
+	}
+
+	public int getFlyttTil()
+	{
+		return flyttTil;
 	}
 
 	public int getPoeng()

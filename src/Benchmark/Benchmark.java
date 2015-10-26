@@ -17,13 +17,22 @@ public class Benchmark
 	public static void main(String[] args)
 	{
 		ArrayList<Pair<Long, Integer>> liste = new ArrayList<>();
-		for (int i = 0; i < 1; ++i) {
-			Brett b = new Brett(0);
-			MiniMax aiTest = new MiniMax(4, Farge.HVIT);
+
+		Brett b = new Brett(0);
+		MiniMax aiTest = new MiniMax(4, Farge.HVIT);
+		MiniMax aiTest2 = new MiniMax(4, Farge.SVART);
+
+		for (int i = 0; i < 10; ++i) {
+
 			long startTime = System.currentTimeMillis();
 			aiTest.nesteAiTrekk(b);
-			int trekk = aiTest.getAntallTrekk();
 			long time = System.currentTimeMillis() - startTime;
+			int trekk = aiTest.getAntallTrekk();
+			liste.add(new Pair<Long, Integer>(time, trekk));
+			startTime = System.currentTimeMillis();
+			aiTest2.nesteAiTrekk(b);
+			time = System.currentTimeMillis() - startTime;
+			trekk = aiTest2.getAntallTrekk();
 			liste.add(new Pair<Long, Integer>(time, trekk));
 		}
 		displayBenchmarkStats(liste);
@@ -37,7 +46,8 @@ public class Benchmark
 			avgTime += par.getKey();
 			avgTrekk += par.getValue();
 		}
-		long avgTimePerTrekk = avgTrekk * 1000 / (avgTime);
+		long avgTimePerTrekk = avgTrekk / (avgTime);
+		avgTimePerTrekk *= 1000;
 		avgTime = avgTime / (stats.size());
 		avgTrekk = avgTrekk / (stats.size());
 		System.out.println("Utførelsen tok i snitt: " + avgTime + " for " + avgTrekk + " og gjorde " + avgTimePerTrekk + " per sek");

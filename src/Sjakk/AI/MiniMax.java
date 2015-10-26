@@ -74,6 +74,7 @@ public class MiniMax
 	}
 	public void nesteAiTrekk(Brett b)
 	{
+		trekkVurdert = 0;
 		SpillTrekk nesteTrekk = minimax(aiDybde, aiFarge, b);
 		nesteTrekk.utfør(b);
 	}

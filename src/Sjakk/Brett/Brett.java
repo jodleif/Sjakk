@@ -27,6 +27,9 @@ public class Brett
 	private Farge nesteTrekk = Farge.HVIT;
 	private int poeng;
 
+	private Brikke hvitKonge;
+	private Brikke sortKonge;
+
 	/**
 	 * Opprett et nytt spillbrett
 	 *
@@ -46,6 +49,7 @@ public class Brett
 				System.err.println("[BRETT] Feil under konstruksjon!\n" + e.getMessage());
 			}
 		}
+		lagreTrekk(); // Tomt snapshot - representerer startsbrettet.
 	}
 
 	/**
@@ -127,6 +131,11 @@ public class Brett
 			int ruteid = Koordinater.tilRuteid(kongePos);
 			Farge farge = finnFargeFraRad(ruteid / BRETTSTØRRELSE);
 			brikkene[ruteid] = new Konge(this, ruteid, farge);
+			if (farge == Farge.HVIT) {
+				hvitKonge = brikkene[ruteid];
+			} else {
+				sortKonge = brikkene[ruteid];
+			}
 		}
 		for (String dronningPos : StartPosisjonRegler.DRONNINGPOSISJONER) {
 			int ruteid = Koordinater.tilRuteid(dronningPos);
@@ -253,14 +262,22 @@ public class Brett
 		if (!br.erLovligTrekk(tilRuteid))
 			return false;
 		//Lagre snapshot
-		lagreTrekk();
+		lagreTrekk(fraRuteid, tilRuteid);
 
 		setBrikke(tilRuteid, br);
 		fjernBrikke(fraRuteid);
 		nesteTrekk = nesteTrekk.motsatt();
 		return true;
 	}
-/*
+
+	public boolean flyttBrikke(String fraRute, String tilRute)
+	{
+		if (fraRute != null && tilRute != null)
+			return flyttBrikke(Koordinater.tilRuteid(fraRute), Koordinater.tilRuteid(tilRute));
+		return false;
+	}
+
+	/*
 	public boolean sjekkSjakk(Farge f)
 	{
 		if (hvitKonge == null || sortKonge == null) return true;
@@ -274,7 +291,12 @@ public class Brett
 
 	public boolean sjekkSjakk(Farge f)
 	{
-		return false;
+		if (hvitKonge == null || sortKonge == null) return true;
+		if (f == Farge.HVIT) {
+			return hvitKonge.sjekkSjakk();
+		} else {
+			return sortKonge.sjekkSjakk();
+		}
 	}
 
 	public Brikke[] getAlleBrikker()
@@ -307,7 +329,7 @@ public class Brett
 						if (!simulerSjakkTest(brikke, ruteid))
 							liste.add(ruteid);
 					}
-				} else {
+				} else { // Spiller ikke i sjakk
 					liste = trekk;
 				}
 				if (liste.size() != 0) {
@@ -319,12 +341,16 @@ public class Brett
 
 	}
 
-	private boolean simulerSjakkTest(Brikke br, int tilRute)
+	public boolean simulerSjakkTest(Brikke br, int tilRute)
 	{
 		boolean flyttet = flyttBrikke(br.getRuteid(), tilRute);
-		boolean sjakk = sjekkSjakk(br.getFarge());
-		if (flyttet) angre();
-		return sjakk;
+		if (flyttet) {
+			boolean sjakk = sjekkSjakk(br.getFarge());
+			angre(); // Angre simulering
+			return sjakk;
+		}
+		//System.out.println("Skal ikke være mulig å nå dette! [simulersjakk]");
+		return false;
 	}
 
 	public ArrayList<Brikke> getAlleBrikker(Farge f)
@@ -369,30 +395,64 @@ public class Brett
 		if (spillTrekk.size() == 0)
 			return false;
 		Trekk tr = spillTrekk.pop();
-		brikkene = tr.getSnapshot();
+
+
+		Brikke fjernetBrikke = tr.getFjernetBrikke();
+		Brikke flyttetBrikke = tr.getFlyttetBrikke();
+		if (flyttetBrikke == null) // TOMT SPILLBRETT
+		{
+			brikkene = new Brikke[BRETTSTØRRELSE * BRETTSTØRRELSE];
+			opprettSpillbrikker();
+		}
+		if (fjernetBrikke == null && flyttetBrikke != null) {
+			angreSetBrikke(flyttetBrikke);
+			fjernBrikke(tr.getFlyttTil());
+		} else if (fjernetBrikke != null && flyttetBrikke != null) {
+			angreSetBrikke(flyttetBrikke);
+			angreSetBrikkeFjernet(fjernetBrikke);
+		}
+
 		nesteTrekk = tr.getSpillerSittTrekk();
 		poeng = tr.getPoeng();
 		return true;
 	}
 
-	/**
-	 * Starter fra det første elementet man la til i dequeuen.
-	 *
-	 * @return
-	 */
-	public boolean spillAvNesteTrekk()
+	private void angreSetBrikke(Brikke br)
 	{
-		if (spillTrekk.size() == 0)
-			return false;
-		Trekk tr = spillTrekk.pollLast();
-		brikkene = tr.getSnapshot();
-		nesteTrekk = tr.getSpillerSittTrekk();
-		return true;
+		if (br.brikkenavn().equals("K")) {
+			if (br.getFarge() == Farge.HVIT) {
+				hvitKonge = br;
+			} else {
+				sortKonge = br; // Brikkene blir kopiert for å angre, må oppdatere referanse
+			}
+		}
+		brikkene[br.getRuteid()] = br;
 	}
+
+	/**
+	 * Restore en fjernet brikke
+	 *
+	 * @param fjernetBrikke
+	 */
+	public void angreSetBrikkeFjernet(Brikke fjernetBrikke)
+	{
+		if (fjernetBrikke.getFarge() == Farge.HVIT) {
+			poeng -= fjernetBrikke.getPoeng();
+		} else {
+			poeng += fjernetBrikke.getPoeng();
+		}
+		angreSetBrikke(fjernetBrikke);
+	}
+
 
 	public void lagreTrekk()
 	{
-		spillTrekk.push(new Trekk(brikkene, nesteTrekk, poeng));
+		spillTrekk.push(new Trekk(null,0, null, nesteTrekk, poeng));
+	}
+
+	public void lagreTrekk(int fraruteid, int tilruteid)
+	{
+		spillTrekk.push(new Trekk(getBrikke(fraruteid), tilruteid, getBrikke(tilruteid),nesteTrekk,poeng));
 	}
 
 	public Trekk seSisteTrekk()
@@ -446,9 +506,17 @@ public class Brett
 	public int getPoeng(Farge spiller)
 	{
 		if (spiller == Farge.HVIT) {
-			return poeng;
+			if (sjekkSjakk(Farge.SVART)) {
+				return poeng + 500;
+			} else {
+				return poeng;
+			}
 		} else {
-			return 0 - poeng;
+			if (sjekkSjakk(Farge.HVIT)) {
+				return 0 - poeng - 500;
+			} else {
+				return 0 - poeng;
+			}
 		}
 	}
 }

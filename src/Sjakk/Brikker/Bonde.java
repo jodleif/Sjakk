@@ -34,17 +34,6 @@ public class Bonde extends Brikke
 		return flytteRegel.gyldigAngrep(getRuteid(), ruteid, this, getBrett());
 	}
 
-	/**
-	 * Sørger for at den flytter seg kun 2 på første trekk.
-	 * @param tilRuteid ruten brikken skal flyttes til.
-	 * @return
-	 */
-	@Override
-	public boolean flyttTil(int tilRuteid)
-	{
-		boolean status = super.flyttTil(tilRuteid);
-		return status;
-	}
 
 	@Override
 	public ArrayList<Integer> gyldigeTrekk()

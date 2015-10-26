@@ -5,8 +5,14 @@ import Sjakk.Brett.Brett;
 import Sjakk.Brikker.Brikke;
 import Sjakk.Regler.Farge;
 import Sjakk.Regler.Koordinater;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.util.Duration;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,16 +32,19 @@ public class SpilleBrett
 	private BildeListe bildeCache; // Lagrer imageviews for alle brikker.
 	private MiniMax aiSpiller;
 	private Farge spillerFarge;
+	private Timeline aiSpillerGjørTrekk;
+	private Label statusFelt;
 
 	/**
 	 * Oppretter et nytt GUI-brett
 	 * @param spillnr spillnr for sjakkbrettet
 	 */
-	public SpilleBrett(int spillnr)
+	public SpilleBrett(int spillnr, Label statusFelt)
 	{
 		sjakkBrett = new Brett(spillnr);
 		bildeCache = new BildeListe();
 		gridPane = new GridPane();
+		this.statusFelt = statusFelt;
 		gridPane.setPrefSize(620, 620);
 		gridPane.setOnMouseClicked(e -> mouseClickHandler(e));
 		ruter = new Rute[Brett.BRETTSTØRRELSE][Brett.BRETTSTØRRELSE];
@@ -43,14 +52,29 @@ public class SpilleBrett
 		aiSpiller = new MiniMax(4, spillerFarge.motsatt());
 		initBrett();
 		oppdaterBrett();
+		startAiSpiller();
+		oppdaterStatusfelt();
 	}
 
-	public SpilleBrett(Brett b)
+	private void startAiSpiller()
 	{
-		this(0);
-		sjakkBrett = b;
-	}
+		aiSpillerGjørTrekk = new Timeline(
+			new KeyFrame(Duration.millis(250), new EventHandler<ActionEvent>()
+			{
+				@Override
+				public void handle(ActionEvent event)
+				{
+					if (sjakkBrett.getSpillerSinTur() == spillerFarge.motsatt()) {
+						oppdaterBrett();
+						aiSpillerSinTur();
+					}
+				}
 
+			})
+		);
+		aiSpillerGjørTrekk.setCycleCount(Timeline.INDEFINITE);
+		aiSpillerGjørTrekk.play();
+	}
 	/**
 	 * Opprett ruter i brettet. Kjøres når spillbrettet opprettes (og skal kun kjøres da)
 	 */
@@ -69,8 +93,10 @@ public class SpilleBrett
 	public void aiSpillerSinTur()
 	{
 		if (sjakkBrett.getSpillerSinTur() == spillerFarge.motsatt()) {
+			oppdaterStatusfelt();
 			aiSpiller.nesteAiTrekk(sjakkBrett);
 			oppdaterBrett();
+			oppdaterStatusfelt();
 		}
 	}
 	/**
@@ -93,10 +119,13 @@ public class SpilleBrett
 
 		if (sistMerket == null) {
 			if (r.erSjakkbrikke()) {
-				if (sjakkBrett.getBrikke(sjakkPos).getFarge() == sjakkBrett.getSpillerSinTur()) {
+				Brikke b = sjakkBrett.getBrikke(sjakkPos);
+				if (b != null && b.getFarge() == sjakkBrett.getSpillerSinTur()) {
 					r.merk();
 					sistMerket = r;
 					merkGyldige();
+				} else if (b == null) {
+					System.err.println("Ikke gyldig brikke");
 				} else {
 					System.err.println("Andre spiller sin tur!");
 				}
@@ -107,7 +136,7 @@ public class SpilleBrett
 			sistMerket = null;
 		} else {
 			System.out.println(sjakkPos);
-			if (sjakkBrett.getBrikke(sistMerket.getPos()).flyttTil(sjakkPos)) {
+			if (sjakkBrett.flyttBrikke(sistMerket.getPos(), sjakkPos)) {
 				sistMerket.merk();
 				merkGyldige();
 				sistMerket = null;
@@ -117,6 +146,7 @@ public class SpilleBrett
 			}
 
 		}
+		oppdaterStatusfelt();
 	}
 
 	/**
@@ -153,6 +183,14 @@ public class SpilleBrett
 		}
 	}
 
+	private void oppdaterStatusfelt()
+	{
+		if (sjakkBrett.getSpillerSinTur() == spillerFarge) {
+			statusFelt.setText("Din tur, poeng:" + sjakkBrett.getPoeng(spillerFarge));
+		} else {
+			statusFelt.setText("AI tenker..." + sjakkBrett.getPoeng(spillerFarge.motsatt()));
+		}
+	}
 	/**
 	 * Hent ut rute (GUI element) fra ruter tabellen
 	 * @param sjakkPos sjakkPosisjon som ruten representerer
@@ -171,27 +209,17 @@ public class SpilleBrett
 	 */
 	public boolean angre() {
 		if(sjakkBrett.angre()){
+			aiSpillerGjørTrekk.pause();
 			if(sistMerket!=null){
 				merkGyldige();
 				sistMerket.merk();
 				sistMerket = null;
 			}
 			oppdaterBrett();
+			aiSpillerGjørTrekk.play();
 			return true;
 		}
 		return false;
 	}
 
-	public boolean spillAvNesteTrekk() {
-		if(sjakkBrett.spillAvNesteTrekk()){
-			if(sistMerket!=null){
-				merkGyldige();
-				sistMerket.merk();
-				sistMerket=null;
-			}
-			oppdaterBrett();
-			return true;
-		}
-		return false;
-	}
 }

@@ -25,7 +25,7 @@ public class Konge extends Offiser
 	{
 		Boolean gyldig = flytteRegel.gyldigTrekk(getRuteid(), tilRuteid, this, getBrett());
 		if (!gyldig) return false;
-		return !sjekkSjakk(tilRuteid);
+		return gyldig;
 	}
 
 	/**
@@ -39,13 +39,7 @@ public class Konge extends Offiser
 		 * Tungvindt metode- brikken "flyttes" på brettet hvis feltet er åpent, så sjekkes det om den (kongen) fortsatt står i sjakk.
 		 */
 		if (getBrett().getBrikke(ruteid) == null) {
-			int backup = this.getRuteid();
-			getBrett().setBrikke(ruteid, this);
-			getBrett().fjernBrikke(backup);
-			boolean sjakk = sjekkSjakk();
-			getBrett().setBrikke(backup, this);
-			getBrett().fjernBrikke(ruteid);
-			return sjakk;
+			return getBrett().simulerSjakkTest(this, ruteid);
 		} else {
 
 			ArrayList<Brikke> brikker = getBrett().getAlleBrikker(getFarge().motsatt());
@@ -76,7 +70,6 @@ public class Konge extends Offiser
 	@Override
 	public boolean sjekkSjakk()
 	{
-		//return sjekkSjakk(this.getRuteNavn());
 		ArrayList<Brikke> brikker = getBrett().getAlleBrikker(getFarge().motsatt());
 		ArrayList<Brikke> setterISjakk = new ArrayList<>();
 		for (Brikke brikke : brikker)

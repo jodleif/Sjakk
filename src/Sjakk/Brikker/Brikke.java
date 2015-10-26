@@ -3,7 +3,6 @@ package Sjakk.Brikker;
 import Sjakk.Brett.Brett;
 import Sjakk.Regler.Farge;
 import Sjakk.Regler.FlytteRegel;
-import Sjakk.Regler.Koordinater;
 
 import java.util.ArrayList;
 
@@ -55,35 +54,6 @@ public abstract class Brikke
 	 * @return returnerer navnet på brikken. (i.e. T for tårn)
 	 */
 	public abstract String brikkenavn();
-
-	/***
-	 * Flytt brikke til rutenavn. Mesteparten av sjekkingen skjer i "brett"
-	 * @param tilRuteid ruten brikken skal flyttes til.
-	 * @return true hvis den ble flyttet, false ellers.
-	 *
-	 */
-	public boolean flyttTil(int tilRuteid)
-	{
-		Brikke tmp = brett.getBrikke(tilRuteid);
-		if (tmp == null || (tmp.getFarge() != this.getFarge())) {
-			if (brett.flyttBrikke(this.ruteid, tilRuteid)) { // Flytt på brettet, hvis false var det ulovlig
-				this.ruteid = tilRuteid; // Oppdater posisjon hvis flyttingen ble utført
-				antTrekk++;
-				return true; // Ferdig flyttet!
-			}
-		}
-		return false; // "noe" gikk galt, men har ikke endret noe!
-	}
-
-	public boolean flyttTil(String rutenavn)
-	{
-		if (rutenavn != null) {
-			int ruteid = Koordinater.tilRuteid(rutenavn);
-			return flyttTil(ruteid);
-		}
-		return false;
-	}
-
 
 	public int getRuteid()
 	{
