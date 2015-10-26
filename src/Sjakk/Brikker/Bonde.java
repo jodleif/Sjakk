@@ -26,6 +26,7 @@ public class Bonde extends Brikke
 	{
 		super(brett, ruteid, farge);
 		flytteRegel = new BondeFlytteRegel(2); // Kan kun flytte fremover. 2 i første trekk
+		poeng = 1;
 	}
 
 	@Override
@@ -41,7 +42,7 @@ public class Bonde extends Brikke
 		int rutey = getRuteid() / Brett.BRETTSTØRRELSE;
 		int rutex = getRuteid() - rutey * Brett.BRETTSTØRRELSE;
 		int maxY = (getAntallTrekk() == 0) ? 2 : 1;
-		if (this.getFarge() == Farge.HVIT) {
+		if (getFarge() == Farge.HVIT) {
 			return gyldigeTrekk(Math.max(rutex - 1, 0), Math.min(rutex + 1, 7), Math.min(rutey + 1, 7), Math.min(rutey + maxY, 7));
 		} else {
 			return gyldigeTrekk(Math.max(rutex - 1, 0), Math.min(rutex + 1, 7), Math.max(rutey - maxY, 0), Math.max(rutey - 1, 0));

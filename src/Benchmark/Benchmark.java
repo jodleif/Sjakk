@@ -35,10 +35,10 @@ public class Benchmark
 			trekk = aiTest2.getAntallTrekk();
 			liste.add(new Pair<Long, Integer>(time, trekk));
 		}
-		displayBenchmarkStats(liste);
+		visBenchmarkStatistikk(liste);
 	}
 
-	public static void displayBenchmarkStats(ArrayList<Pair<Long, Integer>> stats)
+	public static void visBenchmarkStatistikk(ArrayList<Pair<Long, Integer>> stats)
 	{
 		int avgTrekk = 0;
 		long avgTime = 0;

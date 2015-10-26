@@ -10,10 +10,7 @@ import Sjakk.Regler.Farge;
 import Sjakk.Regler.Koordinater;
 import Sjakk.Regler.StartPosisjonRegler;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Deque;
-import java.util.HashMap;
+import java.util.*;
 
 /***
  * Klasse for sjakkbrettet i spill-logikk.
@@ -246,6 +243,10 @@ public class Brett
 	 */
 	public boolean flyttBrikke(int fraRuteid, int tilRuteid)
 	{
+		if (fraRuteid == tilRuteid) {
+			System.out.println("SKAL IKKE SKJE");
+			return false;
+		}
 		if (!(erLovligRutenavn(fraRuteid) && erLovligRutenavn(tilRuteid))) {
 			return false;
 		}
@@ -286,8 +287,9 @@ public class Brett
 	public boolean sjekkSjakk(Farge f)
 	{
 		for (Brikke b : getAlleBrikker(f)) {
-			if (b.brikkenavn().equals("K"))
-				return false;
+			if (b.brikkenavn().equals("K")) {
+				return b.sjekkSjakk();
+			}
 		}
 		return true;
 	}
@@ -307,11 +309,10 @@ public class Brett
 		return alleBrikker;
 	}
 
-	public HashMap<Integer, ArrayList<Integer>> getAlleGyldigeTrekk(Farge f)
+	public LinkedHashMap<Integer, ArrayList<Integer>> getAlleGyldigeTrekk(Farge f)
 	{
 		boolean spillerISjakk = sjekkSjakk(f);
-		HashMap<Integer, ArrayList<Integer>> listeOverGyldigeTrekk = new HashMap<>();
-		if (spillerISjakk) return listeOverGyldigeTrekk;
+		LinkedHashMap<Integer, ArrayList<Integer>> listeOverGyldigeTrekk = new LinkedHashMap<>();
 		ArrayList<Brikke> fargeBrikker = getAlleBrikker(f);
 		for (Brikke brikke : fargeBrikker) {
 			ArrayList<Integer> liste;
@@ -344,7 +345,7 @@ public class Brett
 			return sjakk;
 		}
 		//System.out.println("Skal ikke være mulig å nå dette! [simulersjakk]");
-		return false;
+		return true;
 	}
 
 	public ArrayList<Brikke> getAlleBrikker(Farge f)
@@ -357,6 +358,7 @@ public class Brett
 				brikker.add(tmp);
 			}
 		}
+		Collections.shuffle(brikker);
 		return brikker;
 	}
 
@@ -497,5 +499,16 @@ public class Brett
 		} else {
 			return 0 - poeng;
 		}
+	}
+
+	public int getPoeng(Farge spiller, boolean sjekkSjakkmatt)
+	{
+		if (getAlleGyldigeTrekk(spiller.motsatt()).size() == 0) {
+			return getPoeng(spiller) + 10;
+		}
+		if (getAlleGyldigeTrekk(spiller).size() == 0) {
+			return getPoeng(spiller) - 10;
+		}
+		return getPoeng(spiller);
 	}
 }

@@ -20,13 +20,6 @@ public class Konge extends Offiser
 		poeng = 1000;
 	}
 
-	@Override
-	public boolean erLovligTrekk(int tilRuteid)
-	{
-		Boolean gyldig = flytteRegel.gyldigTrekk(getRuteid(), tilRuteid, this, getBrett());
-		if (!gyldig) return false;
-		return gyldig;
-	}
 
 	/**
 	 * @param ruteid
@@ -72,14 +65,13 @@ public class Konge extends Offiser
 	@Override
 	public boolean sjekkSjakk()
 	{
-		return false;/*
 		ArrayList<Brikke> brikker = getBrett().getAlleBrikker(getFarge().motsatt());
-		ArrayList<Brikke> setterISjakk = new ArrayList<>();
+		int setterisjakk = 0;
 		for (Brikke brikke : brikker)
 			if (brikke.erLovligAngrep(getRuteid())) {
-				setterISjakk.add(brikke);
+				++setterisjakk;
 			}
-		return setterISjakk.size() != 0;*/
+		return setterisjakk != 0;
 	}
 
 	@Override

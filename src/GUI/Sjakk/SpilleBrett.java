@@ -15,7 +15,7 @@ import javafx.scene.layout.GridPane;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 /**
  * Created by Jo Øivind Gjernes on 20.10.2015.
@@ -28,12 +28,13 @@ public class SpilleBrett
 	private GridPane gridPane; // GridPane - til å knytte opp mot hovedvinduet
 	private Rute sistMerket; // Her lagres den siste merkede ruten - for interaksjon med musepeker!
 	private Rute[][] ruter; // Her lagres GUI representasjonen av spillruter.
-	private HashMap<Integer, ArrayList<Integer>> gyldigePos; // Lagres for å kunne fjerne avmerkinger. Kunne eventuelt søkt gjennom rutene for å fjerne.
+	private LinkedHashMap<Integer, ArrayList<Integer>> gyldigePos; // Lagres for å kunne fjerne avmerkinger. Kunne eventuelt søkt gjennom rutene for å fjerne.
 	private BildeListe bildeCache; // Lagrer imageviews for alle brikker.
 	private MiniMax aiSpiller;
 	private Farge spillerFarge;
 	private Timeline aiSpillerGjørTrekk;
 	private Label statusFelt;
+	private boolean lock = false;
 
 	/**
 	 * Oppretter et nytt GUI-brett
@@ -65,10 +66,7 @@ public class SpilleBrett
 				@Override
 				public void handle(ActionEvent event)
 				{
-					if (sjakkBrett.getSpillerSinTur() == spillerFarge.motsatt()) {
-						oppdaterBrett();
-						aiSpillerSinTur();
-					}
+					aiSpillerSinTur();
 				}
 
 			})
@@ -94,11 +92,12 @@ public class SpilleBrett
 
 	public void aiSpillerSinTur()
 	{
-		if (sjakkBrett.getSpillerSinTur() == spillerFarge.motsatt()) {
-			oppdaterStatusfelt();
+		if (sjakkBrett.getSpillerSinTur() == spillerFarge.motsatt() && !lock) {
+			lock = true;
 			aiSpiller.nesteAiTrekk(sjakkBrett);
 			oppdaterBrett();
 			oppdaterStatusfelt();
+			lock = false;
 		}
 	}
 
@@ -151,6 +150,7 @@ public class SpilleBrett
 			}
 
 		}
+
 		oppdaterStatusfelt();
 	}
 
@@ -217,7 +217,7 @@ public class SpilleBrett
 	 */
 	public boolean angre()
 	{
-		aiSpillerGjørTrekk.pause();
+		lock = true;
 		if (sjakkBrett.angre()) {
 			if (sjakkBrett.angre()) {
 				if (sistMerket != null) {
@@ -226,11 +226,11 @@ public class SpilleBrett
 					sistMerket = null;
 				}
 				oppdaterBrett();
-				aiSpillerGjørTrekk.play();
+				lock = false;
 				return true;
 			}
 		}
-		aiSpillerGjørTrekk.play();
+		lock = false;
 		return false;
 	}
 

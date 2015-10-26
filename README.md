@@ -14,3 +14,4 @@ for å få riktige tegn!
  - Kun bruke heltall internt for å finne brikker etc: 2x
  - Redusere antall sjekker i brikke.getGyldigePosisjoner: 2-3x
  - Total endring: 25000 -> 140000 simulerte trekk per sekund
+ - Fikset en bug i minimax -> ~2.2-2.4 millioner trekk per sekund

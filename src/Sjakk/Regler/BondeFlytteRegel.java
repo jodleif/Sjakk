@@ -80,7 +80,7 @@ public class BondeFlytteRegel extends FlytteRegel
 
 		Retning retning = finnRetning(diffx, diffy, brikke.getFarge());
 		if (retning == null) return false;
-		return retning == Retning.DIAGONALT && Koordinater.avstand(diffx, diffy) == 1 && Koordinater.radRetning(diffy, brikke.getFarge()) == Retning.FREM;
+		return (retning == Retning.DIAGONALT) && (Koordinater.avstand(diffx, diffy) == 1) && (Koordinater.radRetning(diffy, brikke.getFarge()) == Retning.FREM);
 
 	}
 }

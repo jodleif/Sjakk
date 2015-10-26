@@ -41,6 +41,7 @@ public abstract class Brikke
 	 */
 	public boolean erLovligTrekk(int tilRuteid)
 	{
+		if (tilRuteid == getRuteid()) return false;
 		return flytteRegel.gyldigTrekk(this.ruteid, tilRuteid, this, brett);
 	}
 
@@ -108,6 +109,7 @@ public abstract class Brikke
 		for (int y = yMin; y <= yMax; ++y) {
 			for (int x = xMin; x <= xMax; ++x) {
 				int ruteid = (y * 8) + x;
+
 				if (erLovligTrekk(ruteid) && (!sjekkForKollisjoner(ruteid))) {
 					tmp.add(ruteid);
 				}

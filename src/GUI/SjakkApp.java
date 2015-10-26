@@ -69,11 +69,16 @@ public class SjakkApp extends Application
 		HBox hbox = new HBox();
 		hbox.setMaxHeight(30);
 		Button b = new Button("Angre");
-		Button b2 = new Button("Spill av");
+		Button b2 = new Button("Nytt spill");
 		b.setPrefHeight(30);
 		b2.setPrefHeight(30);
 		b.setOnAction(e -> this.spilleBrett.angre());
-		b2.setOnAction(e -> this.spilleBrett.aiSpillerSinTur());
+		b2.setOnAction(e -> {
+			borderPane.getChildren().remove(spilleBrett.getGridPane());
+			spilleBrett = new SpilleBrett(0, statusFelt);
+			borderPane.setCenter(spilleBrett.getGridPane());
+
+		});
 		bunnPanel.getChildren().add(hbox);
 		hbox.getChildren().add(b);
 		hbox.getChildren().add(b2);

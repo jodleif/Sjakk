@@ -9,7 +9,7 @@ public class SpillTrekk
 {
 	private int fraPos;
 	private int tilPos;
-	private int poeng;
+	private int poeng = 0;
 
 	public SpillTrekk(int fraPos, int tilPos)
 	{
