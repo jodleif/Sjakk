@@ -4,6 +4,8 @@ import Sjakk.Brett.Brett;
 import Sjakk.Regler.BondeFlytteRegel;
 import Sjakk.Regler.Farge;
 
+import java.util.ArrayList;
+
 /**
  * Created by Jo Øivind Gjernes on 20.10.2015.
  *
@@ -16,32 +18,34 @@ public class Bonde extends Brikke
 	/**
 	 * Konstruktør
 	 * @param brett brettet brikken er plassert på
-	 * @param rutenavn rutenavnet der brikken er plassert
+	 * @param ruteid rutenavnet der brikken er plassert
 	 * @param farge brikkens farge
 	 * @throws IllegalArgumentException
 	 */
-	public Bonde(Brett brett, String rutenavn, Farge farge) throws IllegalArgumentException
+	public Bonde(Brett brett, int ruteid, Farge farge) throws IllegalArgumentException
 	{
-		super(brett, rutenavn, farge);
+		super(brett, ruteid, farge);
 		flytteRegel = new BondeFlytteRegel(2); // Kan kun flytte fremover. 2 i første trekk
 	}
 
 	@Override
-	public boolean erLovligAngrep(String rutenavn)
+	public boolean erLovligAngrep(int ruteid)
 	{
-		return flytteRegel.gyldigAngrep(getRuteNavn(), rutenavn, this, getBrett());
+		return flytteRegel.gyldigAngrep(getRuteid(), ruteid, this, getBrett());
 	}
 
-	/**
-	 * Sørger for at den flytter seg kun 2 på første trekk.
-	 * @param ruteNavn ruten brikken skal flyttes til.
-	 * @return
-	 */
+
 	@Override
-	public boolean flyttTil(String ruteNavn)
+	public ArrayList<Integer> gyldigeTrekk()
 	{
-		boolean status = super.flyttTil(ruteNavn);
-		return status;
+		int rutey = getRuteid() / Brett.BRETTSTØRRELSE;
+		int rutex = getRuteid() - rutey * Brett.BRETTSTØRRELSE;
+		int maxY = (getAntallTrekk() == 0) ? 2 : 1;
+		if (this.getFarge() == Farge.HVIT) {
+			return gyldigeTrekk(Math.max(rutex - 1, 0), Math.min(rutex + 1, 7), Math.min(rutey + 1, 7), Math.min(rutey + maxY, 7));
+		} else {
+			return gyldigeTrekk(Math.max(rutex - 1, 0), Math.min(rutex + 1, 7), Math.max(rutey - maxY, 0), Math.max(rutey - 1, 0));
+		}
 	}
 
 	/**
@@ -57,7 +61,7 @@ public class Bonde extends Brikke
 	@Override
 	public Brikke kopierBrikken()
 	{
-		Brikke b = new Bonde(getBrett(), getRuteNavn(), getFarge());
+		Brikke b = new Bonde(getBrett(), getRuteid(), getFarge());
 		b.setAntTrekk(getAntallTrekk());
 		return b;
 	}

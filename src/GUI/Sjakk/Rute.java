@@ -1,6 +1,5 @@
 package GUI.Sjakk;
 
-import Sjakk.Brikker.Brikke;
 import Sjakk.Regler.Farge;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -45,6 +44,7 @@ public class Rute extends Pane
 	{
 		getChildren().remove(brikkeBilde);
 		brikkeBilde = null;
+		sjakkBrikke = false;
 	}
 
 	private void initBakgrunn()
@@ -55,15 +55,15 @@ public class Rute extends Pane
 		getChildren().add(bakgrunn);
 	}
 
-	public void oppdater(Brikke brikke)
+	public void oppdater(String brikkeNavn, Farge farge)
 	{
 		if (brikkeBilde != null) {
 			fjernBilde();
 		}
 
-		if (brikke != null) {
+		if (brikkeNavn != null) {
 			sjakkBrikke = true;
-			setBilde(brikke.brikkenavn(), brikke.getFarge());
+			setBilde(brikkeNavn, farge);
 		} else {
 			sjakkBrikke = false;
 		}

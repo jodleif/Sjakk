@@ -1,9 +1,5 @@
 package Sjakk.FileIO;
 
-import Sjakk.Brett.Brett;
-import Sjakk.Brikker.*;
-import Sjakk.Regler.Farge;
-
 /**
  * Created by Jo Øivind Gjernes on 21.10.2015.
  *
@@ -11,6 +7,7 @@ import Sjakk.Regler.Farge;
  */
 public class Konvertering
 {
+	/*
 	public static String brikkeTilTekst(Brikke br){
 		String tekst=br.getRuteNavn();
 		tekst+=br.brikkenavn();
@@ -58,5 +55,6 @@ public class Konvertering
 			}
 		}
 	}
+	*/
 
 }

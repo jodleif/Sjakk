@@ -5,6 +5,7 @@ import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -31,6 +32,7 @@ public class SjakkApp extends Application
 	private BorderPane borderPane;
 	private SpilleBrett spilleBrett;
 	private VBox bunnPanel;
+	private Label statusFelt;
 
 	public static void main(String[] args)
 	{
@@ -47,7 +49,8 @@ public class SjakkApp extends Application
 		borderPane = new BorderPane();
 		rot = new Group();
 		Scene scene = new Scene(rot,WIDTH,HEIGHT);
-		spilleBrett = new SpilleBrett(0);
+		statusFelt = new Label();
+		spilleBrett = new SpilleBrett(0, statusFelt);
 		tegnBakgrunn();
 		byggSpillBrett();
 		leggTilTestKnapp();
@@ -74,6 +77,7 @@ public class SjakkApp extends Application
 		bunnPanel.getChildren().add(hbox);
 		hbox.getChildren().add(b);
 		hbox.getChildren().add(b2);
+		hbox.getChildren().add(statusFelt);
 	}
 
 	private void byggSpillBrett(){

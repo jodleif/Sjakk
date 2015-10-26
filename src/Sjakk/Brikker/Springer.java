@@ -12,9 +12,9 @@ import Sjakk.Regler.FlytteRegel;
 public class Springer extends Offiser
 {
 
-	public Springer(Brett brett, String rutenavn, Farge farge) throws IllegalArgumentException
+	public Springer(Brett brett, int ruteid, Farge farge) throws IllegalArgumentException
 	{
-		super(brett, rutenavn, farge);
+		super(brett, ruteid, farge);
 		flytteRegel = new FlytteRegel(true, true);
 		poeng = 7;
 	}
@@ -29,7 +29,7 @@ public class Springer extends Offiser
 	@Override
 	public Brikke kopierBrikken()
 	{
-		Brikke b = new Springer(getBrett(), getRuteNavn(), getFarge());
+		Brikke b = new Springer(getBrett(), getRuteid(), getFarge());
 		b.setAntTrekk(getAntallTrekk());
 		return b;
 	}

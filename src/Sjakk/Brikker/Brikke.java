@@ -3,7 +3,6 @@ package Sjakk.Brikker;
 import Sjakk.Brett.Brett;
 import Sjakk.Regler.Farge;
 import Sjakk.Regler.FlytteRegel;
-import Sjakk.Regler.Koordinater;
 
 import java.util.ArrayList;
 
@@ -16,17 +15,18 @@ public abstract class Brikke
 {
 	protected FlytteRegel flytteRegel;
 	protected int poeng = 1;
-	private String ruteNavn;
+	private int ruteid;
 	private Farge farge;
 	private Brett brett;
 	private int antTrekk = 0;
 
 
-	public Brikke(Brett brett, String rutenavn, Farge farge) throws IllegalArgumentException {
+	public Brikke(Brett brett, int ruteid, Farge farge) throws IllegalArgumentException
+	{
 		this.farge = farge;
 		this.brett = brett;
-		if(Brett.erLovligRutenavn(rutenavn)){
-			this.ruteNavn = rutenavn;
+		if (Brett.erLovligRutenavn(ruteid)) {
+			this.ruteid = ruteid;
 		} else {
 			throw new IllegalArgumentException("Ugyldig rutenavn");
 		}
@@ -36,17 +36,17 @@ public abstract class Brikke
 	public abstract Brikke kopierBrikken();
 	/***
 	 * Implementeres i underklasser- unike regler for hver "brikketype"
-	 * @param rutenavn navnet på ruten brikken skal flyttes til. på sjakkformat i.e. a1
+	 * @param tilRuteid navnet på ruten brikken skal flyttes til. på sjakkformat i.e. a1
 	 * @return returnerer true hvis trekket er gyldig.
 	 */
-	public boolean erLovligTrekk(String rutenavn)
+	public boolean erLovligTrekk(int tilRuteid)
 	{
-		return flytteRegel.gyldigTrekk(getRuteNavn(), rutenavn, this, brett);
+		return flytteRegel.gyldigTrekk(this.ruteid, tilRuteid, this, brett);
 	}
 
-	public boolean erLovligAngrep(String rutenavn)
+	public boolean erLovligAngrep(int ruteid)
 	{
-		return erLovligTrekk(rutenavn);
+		return erLovligTrekk(ruteid);
 	}
 
 	/***
@@ -55,31 +55,14 @@ public abstract class Brikke
 	 */
 	public abstract String brikkenavn();
 
-	/***
-	 * Flytt brikke til rutenavn. Mesteparten av sjekkingen skjer i "brett"
-	 * @param ruteNavn ruten brikken skal flyttes til.
-	 * @return true hvis den ble flyttet, false ellers.
-	 *
-	 */
-	public boolean flyttTil(String ruteNavn){
-		if(brett.getBrikke(ruteNavn) == null || (brett.getBrikke(ruteNavn).getFarge()!=this.getFarge())) {
-			if (brett.flyttBrikke(this.ruteNavn, ruteNavn)) { // Flytt på brettet, hvis false var det ulovlig
-				this.ruteNavn = ruteNavn; // Oppdater posisjon hvis flyttingen ble utført
-				antTrekk++;
-				System.out.println("FLYTTER" + this.brikkenavn());
-				return true; // Ferdig flyttet!
-			}
-		}
-		return false; // "noe" gikk galt, men har ikke endret noe!
-	}
-	public String getRuteNavn()
+	public int getRuteid()
 	{
-		return ruteNavn;
+		return ruteid;
 	}
 
-	public void setRuteNavn(String ruteNavn)
+	public void setRuteid(int ruteid)
 	{
-		this.ruteNavn = ruteNavn;
+		this.ruteid = ruteid;
 	}
 
 	public Farge getFarge()
@@ -105,21 +88,32 @@ public abstract class Brikke
 	 * Returnerer en array med alle gyldige trekk for brikken.
 	 * @return array med gyldige trekk for brikken.
 	 */
-	public String[] gyldigeTrekk()
+	public ArrayList<Integer> gyldigeTrekk()
 	{
-		ArrayList<String> tmp = new ArrayList<>();
-		String trekk;
-		for(int i=0;i<Brett.BRETTSTØRRELSE;++i){
-			for(int j=0;j<Brett.BRETTSTØRRELSE;++j){
-				trekk = Koordinater.fra_koordinater(new int[]{i,j});
-				if(erLovligTrekk(trekk)&&(!sjekkForKollisjoner(trekk))){
-					tmp.add(trekk);
+		return gyldigeTrekk(0, Brett.BRETTSTØRRELSE - 1, 0, Brett.BRETTSTØRRELSE - 1);
+	}
+
+	/**
+	 * Gir gyldige trekk fra en range [min,max] (inklusiv siste)
+	 *
+	 * @param xMin
+	 * @param xMax
+	 * @param yMin
+	 * @param yMax
+	 * @return
+	 */
+	protected ArrayList<Integer> gyldigeTrekk(int xMin, int xMax, int yMin, int yMax)
+	{
+		ArrayList<Integer> tmp = new ArrayList<>();
+		for (int y = yMin; y <= yMax; ++y) {
+			for (int x = xMin; x <= xMax; ++x) {
+				int ruteid = (y * 8) + x;
+				if (erLovligTrekk(ruteid)&&(!sjekkForKollisjoner(ruteid))){
+					tmp.add(ruteid);
 				}
 			}
 		}
-		String[] str = new String[tmp.size()];
-		tmp.toArray(str);
-		return str;
+		return tmp;
 	}
 
 	public boolean sjekkSjakk()
@@ -132,7 +126,7 @@ public abstract class Brikke
 	 * @param sjakkPos posisjon man sjekker
 	 * @return true hvis det er en kollisjon (feltet er ikke tomt og inneholder en brikke av samme farge.
 	 */
-	private boolean sjekkForKollisjoner(String sjakkPos)
+	private boolean sjekkForKollisjoner(int sjakkPos)
 	{
 		Brikke tmp = brett.getBrikke(sjakkPos);
 		return tmp != null && (tmp.getFarge() == this.getFarge());
@@ -144,7 +138,7 @@ public abstract class Brikke
 		if(obj==null)
 			return false;
 		Brikke b = (Brikke)obj;
-		return b.getFarge() == getFarge() && b.getRuteNavn().equals(getRuteNavn()) && b.brikkenavn().equals(brikkenavn());
+		return b.getFarge() == getFarge() && b.getRuteid() == getRuteid() && b.brikkenavn().equals(brikkenavn());
 	}
 
 	public int getAntallTrekk(){

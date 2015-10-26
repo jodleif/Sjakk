@@ -1,17 +1,12 @@
 package Sjakk.FileIO;
 
-import Sjakk.Brett.Brett;
-import Sjakk.Brikker.Brikke;
-
-import java.util.ArrayList;
-
 /**
  * Created by Jo Øivind Gjernes on 21.10.2015.
  *
  * Fil for å håndtere lagring og lasting av sjakkbrett
  */
 public class SjakkFil
-{
+{/*
 	private Brett brett;
 	private String fil;
 	private ArrayList<String> tekstBrikker;
@@ -59,12 +54,14 @@ public class SjakkFil
 		}
 		return res.substring(0,res.length()-1); // Fjern siste ;
 	}
-
+*/
 	/**
 	 * Hent sjakkbrett
 	 * @return sjakkbrett
 	 */
+	/*
 	public Brett getBrett(){
 		return brett;
 	}
+	*/
 }

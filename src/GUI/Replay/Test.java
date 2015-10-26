@@ -1,7 +1,6 @@
 package GUI.Replay;
 
 import Sjakk.Brett.Brett;
-import Sjakk.FileIO.PGN;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -51,7 +50,8 @@ public class Test
 		};
 		ArrayList<String> trekkListe = new ArrayList<String>();
 		Collections.addAll(trekkListe, test);
-		return PGN.pgnListeTilBrett(trekkListe);
+//		return PGN.pgnListeTilBrett(trekkListe);
+		return null;
 	}
 
 	public static Brett getSjakkBrettTest()
@@ -61,7 +61,8 @@ public class Test
 			"Bc5+", "d4", "Bd6", "Bb5+", "Kf8", "Re1", "Qf5", "Re8"
 		};
 		ArrayList<String> trekkListe = new ArrayList<>(Arrays.asList(test));
-		return PGN.pgnListeTilBrett(trekkListe);
+		//return PGN.pgnListeTilBrett(trekkListe);
+		return null;
 
 	}
 }

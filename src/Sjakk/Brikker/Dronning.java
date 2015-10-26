@@ -14,13 +14,13 @@ public class Dronning extends Offiser
 	/**
 	 * Lag en ny dronning
 	 * @param brett spillbrettet dronningen er på
-	 * @param rutenavn ruten dronningen står i
+	 * @param ruteid ruten dronningen står i
 	 * @param farge dronningens farge
 	 * @throws IllegalArgumentException
 	 */
-	public Dronning(Brett brett, String rutenavn, Farge farge) throws IllegalArgumentException
+	public Dronning(Brett brett, int ruteid, Farge farge) throws IllegalArgumentException
 	{
-		super(brett, rutenavn, farge);
+		super(brett, ruteid, farge);
 		flytteRegel = new FlytteRegel(true, true, true, true);
 		poeng = 10;
 	}
@@ -37,7 +37,7 @@ public class Dronning extends Offiser
 	@Override
 	public Brikke kopierBrikken()
 	{
-		Brikke b = new Dronning(getBrett(), getRuteNavn(), getFarge());
+		Brikke b = new Dronning(getBrett(), getRuteid(), getFarge());
 		b.setAntTrekk(getAntallTrekk());
 		return b;
 	}

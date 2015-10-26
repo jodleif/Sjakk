@@ -1,9 +1,6 @@
 package GUI.Sjakk;
 
-import Sjakk.Brett.Brett;
-import Sjakk.Brikker.Brikke;
 import Sjakk.Regler.Koordinater;
-import javafx.scene.layout.GridPane;
 
 /**
  * Created by Jo Øivind Gjernes on 20.10.2015.
@@ -39,8 +36,8 @@ public class LogikkKobling
 	public static int[] tilGridPane(String sjakkPos)
 	{
 		int[] koord = Koordinater.til_koordinater(sjakkPos);
-		koord[1] = 7-koord[1];
-		return koord;
+		int[] copyCoord = new int[]{koord[0], 7 - koord[1]};
+		return copyCoord;
 	}
 
 	/**
