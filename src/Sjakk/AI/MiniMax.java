@@ -14,6 +14,7 @@ public class MiniMax
 {
 	private int aiDybde = 3;
 	private Farge aiFarge;
+	private int antallTrekk = 0;
 
 	public MiniMax(int dybde, Farge aiFarge)
 	{
@@ -28,17 +29,21 @@ public class MiniMax
 
 	SpillTrekk minimax(int dybde, Farge spiller, Brett b)
 	{
-		HashMap<String, ArrayList<String>> muligeTrekk = b.getAlleGyldigeTrekk(spiller);
+		++antallTrekk;
 		int bestePoeng = (spiller == aiFarge) ? Integer.MIN_VALUE : Integer.MAX_VALUE;
 		SpillTrekk besteTrekk = new SpillTrekk(null, null);
-		if (muligeTrekk.isEmpty() || dybde == 0) {
-			besteTrekk = new SpillTrekk(b.getPoeng(aiFarge));
-		} else {
-			if (b.getSpillerSinTur() == aiFarge) { // AIen sin tur
+		if (dybde == 0) {
+			return new SpillTrekk(b.getPoeng(aiFarge));
+		}
+		HashMap<String, ArrayList<String>> muligeTrekk = b.getAlleGyldigeTrekk(spiller);
+		if (muligeTrekk.isEmpty()) {
+			return new SpillTrekk(b.getPoeng(aiFarge));
+		}
+		if (b.getSpillerSinTur() == aiFarge) { // AIen sin tur
 				for (Map.Entry<String, ArrayList<String>> brikke : muligeTrekk.entrySet())
 					for (String tilPos : brikke.getValue()) {
 						b.flyttBrikke(brikke.getKey(), tilPos);
-						final SpillTrekk trekk = minimax(dybde - 1, spiller.motsatt(), b);
+						SpillTrekk trekk = minimax(dybde - 1, spiller.motsatt(), b);
 						if (trekk.getPoeng() > bestePoeng) {
 							bestePoeng = trekk.getPoeng();
 							besteTrekk.setPoeng(bestePoeng);
@@ -50,7 +55,7 @@ public class MiniMax
 				for (Map.Entry<String, ArrayList<String>> brikke : muligeTrekk.entrySet())
 					for (String tilPos : brikke.getValue()) {
 						b.flyttBrikke(brikke.getKey(), tilPos);
-						final SpillTrekk trekk = minimax(dybde - 1, spiller.motsatt(), b);
+						SpillTrekk trekk = minimax(dybde - 1, spiller.motsatt(), b);
 						if (trekk.getPoeng() < bestePoeng) {
 							bestePoeng = trekk.getPoeng();
 							besteTrekk.setPoeng(bestePoeng);
@@ -59,16 +64,20 @@ public class MiniMax
 						b.angre();
 					}
 			}
-		}
+
 
 		return besteTrekk; // Poeng går oppover fra bunnen. Trekk blir "påført" nærmere toppen av treet.
 	}
 
 	public void nesteAiTrekk(Brett b)
 	{
+		antallTrekk = 0;
 		SpillTrekk nesteTrekk = minimax(aiDybde, aiFarge, b);
-		nesteTrekk.utfør(b);
+		if (nesteTrekk.utfør(b)) ;
 	}
 
-
+	public int getAntallTrekk()
+	{
+		return antallTrekk;
+	}
 }

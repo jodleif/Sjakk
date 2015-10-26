@@ -228,12 +228,7 @@ public class Brett
 
 	public boolean sjekkSjakk(Farge f)
 	{
-		if (hvitKonge == null || sortKonge == null) return true;
-		if (f == Farge.HVIT) {
-			return hvitKonge.sjekkSjakk();
-		} else {
-			return sortKonge.sjekkSjakk();
-		}
+		return hvitKonge == null || sortKonge == null;
 	}
 
 	public Brikke[] getAlleBrikker()
