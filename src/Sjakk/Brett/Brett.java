@@ -252,10 +252,17 @@ public class Brett
 		}
 
 		Brikke br = getBrikke(fraRuteid);
-		if (br == null)
+		if (br == null) {
+			//System.out.println("Fra brikke == null");
 			return false;
-		if (!br.erLovligTrekk(tilRuteid))
+		}
+		if (!br.erLovligTrekk(tilRuteid)) {
+			//System.out.println("Ulovlig trekk");
+			if (br.getRuteid() != fraRuteid) {
+				System.out.println("Uvalidert brikke");
+			}
 			return false;
+		}
 		//Lagre snapshot
 		lagreTrekk(fraRuteid, tilRuteid);
 
@@ -315,9 +322,9 @@ public class Brett
 		LinkedHashMap<Integer, ArrayList<Integer>> listeOverGyldigeTrekk = new LinkedHashMap<>();
 		ArrayList<Brikke> fargeBrikker = getAlleBrikker(f);
 		for (Brikke brikke : fargeBrikker) {
-			ArrayList<Integer> liste;
+			ArrayList<Integer> liste = null;
 			ArrayList<Integer> trekk = brikke.gyldigeTrekk();
-			if (trekk != null) {
+			if (!trekk.isEmpty()) {
 				if (spillerISjakk) {
 					liste = new ArrayList<Integer>();
 					for (Integer ruteid : trekk) {
@@ -327,7 +334,7 @@ public class Brett
 				} else { // Spiller ikke i sjakk
 					liste = trekk;
 				}
-				if (liste.size() != 0) {
+				if (!liste.isEmpty()) {
 					listeOverGyldigeTrekk.put(brikke.getRuteid(), liste);
 				}
 			}
@@ -344,8 +351,8 @@ public class Brett
 			angre(); // Angre simulering
 			return sjakk;
 		}
-		//System.out.println("Skal ikke være mulig å nå dette! [simulersjakk]");
-		return true;
+		//System.out.println("Skal ikke være mulig å nå dette! [simulersjakk]" +br.getRuteid() + " til " + tilRute);
+		return sjekkSjakk(br.getFarge());
 	}
 
 	public ArrayList<Brikke> getAlleBrikker(Farge f)
@@ -441,7 +448,11 @@ public class Brett
 
 	public void lagreTrekk(int fraruteid, int tilruteid)
 	{
-		spillTrekk.push(new Trekk(getBrikke(fraruteid), tilruteid, getBrikke(tilruteid),nesteTrekk,poeng));
+		Brikke b = getBrikke(fraruteid);
+		if (b == null) {
+			System.out.println("ERROR!");
+		}
+		spillTrekk.push(new Trekk(b, tilruteid, getBrikke(tilruteid), nesteTrekk, poeng));
 	}
 
 	public Trekk seSisteTrekk()

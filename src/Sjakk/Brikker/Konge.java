@@ -67,10 +67,11 @@ public class Konge extends Offiser
 	{
 		ArrayList<Brikke> brikker = getBrett().getAlleBrikker(getFarge().motsatt());
 		int setterisjakk = 0;
-		for (Brikke brikke : brikker)
+		for (Brikke brikke : brikker) {
 			if (brikke.erLovligAngrep(getRuteid())) {
 				++setterisjakk;
 			}
+		}
 		return setterisjakk != 0;
 	}
 

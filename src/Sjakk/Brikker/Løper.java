@@ -37,9 +37,9 @@ public class Løper extends Offiser
 	@Override
 	public ArrayList<Integer> gyldigeTrekk()
 	{
-		int ruteid = getRuteid();
-		int rutey = ruteid / Brett.BRETTSTØRRELSE;
-		int rutex = ruteid - (rutey << 3);
+		int lruteid = getRuteid();
+		int rutey = lruteid / Brett.BRETTSTØRRELSE;
+		int rutex = lruteid - (rutey << 3);
 		ArrayList<Integer> result = new ArrayList<Integer>();
 		return super.gyldigeTrekk();
 	}

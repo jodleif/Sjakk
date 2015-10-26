@@ -108,10 +108,10 @@ public abstract class Brikke
 		ArrayList<Integer> tmp = new ArrayList<>();
 		for (int y = yMin; y <= yMax; ++y) {
 			for (int x = xMin; x <= xMax; ++x) {
-				int ruteid = (y * 8) + x;
-
-				if (erLovligTrekk(ruteid) && (!sjekkForKollisjoner(ruteid))) {
-					tmp.add(ruteid);
+				int localRuteid = (y * 8) + x;
+				if (localRuteid == getRuteid()) continue;
+				if (erLovligTrekk(localRuteid) && (!sjekkForKollisjoner(localRuteid))) {
+					tmp.add(localRuteid);
 				}
 			}
 		}

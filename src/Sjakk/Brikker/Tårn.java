@@ -39,9 +39,9 @@ public class Tårn extends Offiser
 	@Override
 	public ArrayList<Integer> gyldigeTrekk()
 	{
-		int ruteid = getRuteid();
-		int rutey = ruteid / Brett.BRETTSTØRRELSE;
-		int rutex = ruteid - (rutey << 3);
+		int lruteid = getRuteid();
+		int rutey = lruteid / Brett.BRETTSTØRRELSE;
+		int rutex = lruteid - (rutey << 3);
 		ArrayList<Integer> gyldigeTrekk = super.gyldigeTrekk(rutex, rutex, 0, 7);
 		gyldigeTrekk.addAll(super.gyldigeTrekk(0, 7, rutey, rutey));
 		return gyldigeTrekk;

@@ -36,7 +36,7 @@ public class MiniMax
 		LinkedHashMap<Integer, ArrayList<Integer>> muligeTrekk = b.getAlleGyldigeTrekk(spiller);
 
 		if (muligeTrekk.size() == 0) {
-			return new SpillTrekk(b.getPoeng(aiFarge, true));
+			return new SpillTrekk(b.getPoeng(aiFarge));
 		}
 
 		if (spiller == aiFarge) { // AIen sin tur trekket blir maksimert

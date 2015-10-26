@@ -30,9 +30,9 @@ public class Bonde extends Brikke
 	}
 
 	@Override
-	public boolean erLovligAngrep(int ruteid)
+	public boolean erLovligAngrep(int tilRuteid)
 	{
-		return flytteRegel.gyldigAngrep(getRuteid(), ruteid, this, getBrett());
+		return flytteRegel.gyldigAngrep(getRuteid(), tilRuteid, this, getBrett());
 	}
 
 
