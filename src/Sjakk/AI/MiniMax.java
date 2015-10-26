@@ -30,39 +30,45 @@ public class MiniMax
 	SpillTrekk minimax(int dybde, Farge spiller, Brett b)
 	{
 		++trekkVurdert;
-		HashMap<Integer, ArrayList<Integer>> muligeTrekk = b.getAlleGyldigeTrekk(spiller);
 		int bestePoeng = (spiller == aiFarge) ? Integer.MIN_VALUE : Integer.MAX_VALUE;
+
 		SpillTrekk besteTrekk = new SpillTrekk(0, 0);
-		if (muligeTrekk.isEmpty() || dybde == 0) {
-			besteTrekk = new SpillTrekk(b.getPoeng(aiFarge));
-		} else {
-			if (b.getSpillerSinTur() == aiFarge) { // AIen sin tur trekket blir maksimert
-				for (Map.Entry<Integer, ArrayList<Integer>> brikke : muligeTrekk.entrySet())
-					for (int tilPos : brikke.getValue()) {
-						if (b.flyttBrikke(brikke.getKey(), tilPos)) {
-							SpillTrekk trekk = minimax(dybde - 1, spiller.motsatt(), b);
-							if (trekk.getPoeng() > bestePoeng) {
-								bestePoeng = trekk.getPoeng();
-								besteTrekk.setPoeng(bestePoeng);
-								besteTrekk.setTrekk(brikke.getKey(), tilPos);
-							}
-							b.angre();
+
+		if (dybde == 0) {
+			return new SpillTrekk(b.getPoeng(aiFarge));
+		}
+		HashMap<Integer, ArrayList<Integer>> muligeTrekk = b.getAlleGyldigeTrekk(spiller);
+
+		if (muligeTrekk.size() == 0) {
+			return new SpillTrekk(b.getPoeng(aiFarge));
+		}
+
+		if (b.getSpillerSinTur() == aiFarge) { // AIen sin tur trekket blir maksimert
+			for (Map.Entry<Integer, ArrayList<Integer>> brikke : muligeTrekk.entrySet())
+				for (int tilPos : brikke.getValue()) {
+					if (b.flyttBrikke(brikke.getKey(), tilPos)) {
+						SpillTrekk trekk = minimax(dybde - 1, aiFarge.motsatt(), b);
+						if (trekk.getPoeng() > bestePoeng) {
+							bestePoeng = trekk.getPoeng();
+							besteTrekk.setPoeng(bestePoeng);
+							besteTrekk.setTrekk(brikke.getKey(), tilPos);
 						}
+						b.angre();
 					}
-			} else { // Ikke AIen sin tur velger minimert trekk
-				for (Map.Entry<Integer, ArrayList<Integer>> brikke : muligeTrekk.entrySet())
-					for (int tilPos : brikke.getValue()) {
-						if (b.flyttBrikke(brikke.getKey(), tilPos)) {
-							SpillTrekk trekk = minimax(dybde - 1, spiller.motsatt(), b);
-							if (trekk.getPoeng() < bestePoeng) {
-								bestePoeng = trekk.getPoeng();
-								besteTrekk.setPoeng(bestePoeng);
-								besteTrekk.setTrekk(brikke.getKey(), tilPos);
-							}
-							b.angre();
+				}
+		} else { // Ikke AIen sin tur velger minimert trekk
+			for (Map.Entry<Integer, ArrayList<Integer>> brikke : muligeTrekk.entrySet())
+				for (int tilPos : brikke.getValue()) {
+					if (b.flyttBrikke(brikke.getKey(), tilPos)) {
+						SpillTrekk trekk = minimax(dybde - 1, aiFarge, b);
+						if (trekk.getPoeng() < bestePoeng) {
+							bestePoeng = trekk.getPoeng();
+							besteTrekk.setPoeng(bestePoeng);
+							besteTrekk.setTrekk(brikke.getKey(), tilPos);
 						}
+						b.angre();
 					}
-			}
+				}
 		}
 
 		return besteTrekk; // Poeng går oppover fra bunnen. Trekk blir "påført" nærmere toppen av treet.
@@ -72,6 +78,7 @@ public class MiniMax
 	{
 		return trekkVurdert;
 	}
+
 	public void nesteAiTrekk(Brett b)
 	{
 		trekkVurdert = 0;

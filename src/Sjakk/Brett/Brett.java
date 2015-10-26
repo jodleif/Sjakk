@@ -27,8 +27,6 @@ public class Brett
 	private Farge nesteTrekk = Farge.HVIT;
 	private int poeng;
 
-	private Brikke hvitKonge;
-	private Brikke sortKonge;
 
 	/**
 	 * Opprett et nytt spillbrett
@@ -131,11 +129,6 @@ public class Brett
 			int ruteid = Koordinater.tilRuteid(kongePos);
 			Farge farge = finnFargeFraRad(ruteid / BRETTSTØRRELSE);
 			brikkene[ruteid] = new Konge(this, ruteid, farge);
-			if (farge == Farge.HVIT) {
-				hvitKonge = brikkene[ruteid];
-			} else {
-				sortKonge = brikkene[ruteid];
-			}
 		}
 		for (String dronningPos : StartPosisjonRegler.DRONNINGPOSISJONER) {
 			int ruteid = Koordinater.tilRuteid(dronningPos);
@@ -291,12 +284,11 @@ public class Brett
 
 	public boolean sjekkSjakk(Farge f)
 	{
-		if (hvitKonge == null || sortKonge == null) return true;
-		if (f == Farge.HVIT) {
-			return hvitKonge.sjekkSjakk();
-		} else {
-			return sortKonge.sjekkSjakk();
+		for (Brikke b : getAlleBrikker(f)) {
+			if (b.brikkenavn().equals("K"))
+				return false;
 		}
+		return true;
 	}
 
 	public Brikke[] getAlleBrikker()
@@ -318,6 +310,7 @@ public class Brett
 	{
 		boolean spillerISjakk = sjekkSjakk(f);
 		HashMap<Integer, ArrayList<Integer>> listeOverGyldigeTrekk = new HashMap<>();
+		if (spillerISjakk) return listeOverGyldigeTrekk;
 		ArrayList<Brikke> fargeBrikker = getAlleBrikker(f);
 		for (Brikke brikke : fargeBrikker) {
 			ArrayList<Integer> liste;
@@ -419,13 +412,6 @@ public class Brett
 
 	private void angreSetBrikke(Brikke br)
 	{
-		if (br.brikkenavn().equals("K")) {
-			if (br.getFarge() == Farge.HVIT) {
-				hvitKonge = br;
-			} else {
-				sortKonge = br; // Brikkene blir kopiert for å angre, må oppdatere referanse
-			}
-		}
 		brikkene[br.getRuteid()] = br;
 	}
 
@@ -506,17 +492,9 @@ public class Brett
 	public int getPoeng(Farge spiller)
 	{
 		if (spiller == Farge.HVIT) {
-			if (sjekkSjakk(Farge.SVART)) {
-				return poeng + 500;
-			} else {
-				return poeng;
-			}
+			return poeng;
 		} else {
-			if (sjekkSjakk(Farge.HVIT)) {
-				return 0 - poeng - 500;
-			} else {
-				return 0 - poeng;
-			}
+			return 0 - poeng;
 		}
 	}
 }

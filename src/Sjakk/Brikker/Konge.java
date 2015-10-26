@@ -34,10 +34,11 @@ public class Konge extends Offiser
 	 */
 	private boolean sjekkSjakk(int ruteid)
 	{
-
+		return false;
 		/**
 		 * Tungvindt metode- brikken "flyttes" på brettet hvis feltet er åpent, så sjekkes det om den (kongen) fortsatt står i sjakk.
 		 */
+		/*
 		if (getBrett().getBrikke(ruteid) == null) {
 			return getBrett().simulerSjakkTest(this, ruteid);
 		} else {
@@ -56,6 +57,7 @@ public class Konge extends Offiser
 			}
 			return false;
 		}
+		*/
 	}
 
 	@Override
@@ -70,13 +72,14 @@ public class Konge extends Offiser
 	@Override
 	public boolean sjekkSjakk()
 	{
+		return false;/*
 		ArrayList<Brikke> brikker = getBrett().getAlleBrikker(getFarge().motsatt());
 		ArrayList<Brikke> setterISjakk = new ArrayList<>();
 		for (Brikke brikke : brikker)
 			if (brikke.erLovligAngrep(getRuteid())) {
 				setterISjakk.add(brikke);
 			}
-		return setterISjakk.size() != 0;
+		return setterISjakk.size() != 0;*/
 	}
 
 	@Override

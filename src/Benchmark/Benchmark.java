@@ -19,10 +19,10 @@ public class Benchmark
 		ArrayList<Pair<Long, Integer>> liste = new ArrayList<>();
 
 		Brett b = new Brett(0);
-		MiniMax aiTest = new MiniMax(4, Farge.HVIT);
+		MiniMax aiTest = new MiniMax(3, Farge.HVIT);
 		MiniMax aiTest2 = new MiniMax(4, Farge.SVART);
 
-		for (int i = 0; i < 10; ++i) {
+		for (int i = 0; i < 20; ++i) {
 
 			long startTime = System.currentTimeMillis();
 			aiTest.nesteAiTrekk(b);

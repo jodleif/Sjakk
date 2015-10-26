@@ -19,7 +19,7 @@ import java.util.HashMap;
 
 /**
  * Created by Jo Øivind Gjernes on 20.10.2015.
- *
+ * <p>
  * Spillebrettets representasjon i GUI
  */
 public class SpilleBrett
@@ -37,6 +37,7 @@ public class SpilleBrett
 
 	/**
 	 * Oppretter et nytt GUI-brett
+	 *
 	 * @param spillnr spillnr for sjakkbrettet
 	 */
 	public SpilleBrett(int spillnr, Label statusFelt)
@@ -49,7 +50,7 @@ public class SpilleBrett
 		gridPane.setOnMouseClicked(e -> mouseClickHandler(e));
 		ruter = new Rute[Brett.BRETTSTØRRELSE][Brett.BRETTSTØRRELSE];
 		spillerFarge = Farge.HVIT;
-		aiSpiller = new MiniMax(4, spillerFarge.motsatt());
+		aiSpiller = new MiniMax(5, spillerFarge.motsatt());
 		initBrett();
 		oppdaterBrett();
 		startAiSpiller();
@@ -75,6 +76,7 @@ public class SpilleBrett
 		aiSpillerGjørTrekk.setCycleCount(Timeline.INDEFINITE);
 		aiSpillerGjørTrekk.play();
 	}
+
 	/**
 	 * Opprett ruter i brettet. Kjøres når spillbrettet opprettes (og skal kun kjøres da)
 	 */
@@ -84,7 +86,7 @@ public class SpilleBrett
 			for (int j = 0; j < Brett.BRETTSTØRRELSE; ++j) {
 				Rute tempRute = new Rute(Koordinater.fra_koordinater(new int[]{i, j}), bildeCache);
 				ruter[i][j] = (tempRute); // Lagre en referanse til ruten.
-				gridPane.add(tempRute, i, 7-j); // OBS: Må tegne "opp ned" siden gridpane starter med (0,0) i øvre venstre hjørne, ikke nedre som sjakk
+				gridPane.add(tempRute, i, 7 - j); // OBS: Må tegne "opp ned" siden gridpane starter med (0,0) i øvre venstre hjørne, ikke nedre som sjakk
 			}
 		}
 
@@ -99,8 +101,10 @@ public class SpilleBrett
 			oppdaterStatusfelt();
 		}
 	}
+
 	/**
 	 * Returner GridPane for spillbrettet
+	 *
 	 * @return gridpane
 	 */
 	public GridPane getGridPane()
@@ -110,11 +114,12 @@ public class SpilleBrett
 
 	/**
 	 * Eventhandler for museklikk på spillbrettet! Gjelder kun i GridPane sitt område. Brukes for flytting av brikker
+	 *
 	 * @param event sendes fra MouseEvent
 	 */
 	private void mouseClickHandler(MouseEvent event)
 	{
-		String sjakkPos = LogikkKobling.pixelTilSjakkPos(event.getX(),event.getY());
+		String sjakkPos = LogikkKobling.pixelTilSjakkPos(event.getX(), event.getY());
 		Rute r = getRute(sjakkPos);
 
 		if (sistMerket == null) {
@@ -191,8 +196,10 @@ public class SpilleBrett
 			statusFelt.setText("AI tenker..." + sjakkBrett.getPoeng(spillerFarge.motsatt()));
 		}
 	}
+
 	/**
 	 * Hent ut rute (GUI element) fra ruter tabellen
+	 *
 	 * @param sjakkPos sjakkPosisjon som ruten representerer
 	 * @return ruten
 	 */
@@ -205,20 +212,25 @@ public class SpilleBrett
 	/**
 	 * Angre funksjon.
 	 * merk: Sørger for å fjerne eventuelle merkede felter for å unngå bugs.
+	 *
 	 * @return true hvis angringen gikk bra.
 	 */
-	public boolean angre() {
-		if(sjakkBrett.angre()){
-			aiSpillerGjørTrekk.pause();
-			if(sistMerket!=null){
-				merkGyldige();
-				sistMerket.merk();
-				sistMerket = null;
+	public boolean angre()
+	{
+		aiSpillerGjørTrekk.pause();
+		if (sjakkBrett.angre()) {
+			if (sjakkBrett.angre()) {
+				if (sistMerket != null) {
+					merkGyldige();
+					sistMerket.merk();
+					sistMerket = null;
+				}
+				oppdaterBrett();
+				aiSpillerGjørTrekk.play();
+				return true;
 			}
-			oppdaterBrett();
-			aiSpillerGjørTrekk.play();
-			return true;
 		}
+		aiSpillerGjørTrekk.play();
 		return false;
 	}
 
