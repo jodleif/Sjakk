@@ -33,7 +33,14 @@ public class BondeFlytteRegel extends FlytteRegel
 	@Override
 	public boolean gyldigTrekk(int fraPos, int tilPos, Brikke br, Brett brett)
 	{
-		Retning retning = finnRetning(fraPos, tilPos, br.getFarge());
+		int fraRutey = fraPos / Brett.BRETTSTØRRELSE;
+		int fraRutex = fraPos - fraRutey * Brett.BRETTSTØRRELSE;
+		int tilRutey = tilPos / Brett.BRETTSTØRRELSE;
+		int tilRutex = tilPos - tilRutey * Brett.BRETTSTØRRELSE;
+		int diffx = tilRutex - fraRutex;
+		int diffy = tilRutey - fraRutey;
+
+		Retning retning = finnRetning(diffx, diffy, br.getFarge());
 		if (br.getAntallTrekk() < 1) {
 			maxAvstand = 2;
 		} else {
@@ -41,17 +48,17 @@ public class BondeFlytteRegel extends FlytteRegel
 		}
 		if (retning == null) return false;
 
-		if (!gyldigAvstand(fraPos, tilPos)) {
+		if (!gyldigAvstand(diffx, diffy)) {
 			return false;
 		}
 
-		if (kollisjonsSjekk(fraPos, tilPos, br, brett)) return false;
+		if (kollisjonsSjekk(fraRutex, fraRutey, diffx, diffy, br, brett)) return false;
 
 		Brikke tmp = brett.getBrikke(tilPos);
 		if (tmp != null && brett.getBrikke(tilPos).getFarge() != br.getFarge()) {
 			if (retning == Retning.FREM) {
 				return false; // KAN ikke angripe fremover
-			} else if (retning == Retning.DIAGONALT && Koordinater.avstand(fraPos, tilPos) == 1 && Koordinater.radRetning(fraPos, tilPos, br.getFarge()) == Retning.FREM) {
+			} else if (retning == Retning.DIAGONALT && Koordinater.avstand(diffx, diffy) == 1 && Koordinater.radRetning(diffy, br.getFarge()) == Retning.FREM) {
 				// Angriper kun diagonalt og frem
 				return true;
 			}
@@ -64,9 +71,16 @@ public class BondeFlytteRegel extends FlytteRegel
 	@Override
 	public boolean gyldigAngrep(int fraPos, int tilPos, Brikke brikke, Brett brett)
 	{
-		Retning retning = finnRetning(fraPos, tilPos, brikke.getFarge());
+		int fraRutey = fraPos / Brett.BRETTSTØRRELSE;
+		int fraRutex = fraPos - fraRutey * Brett.BRETTSTØRRELSE;
+		int tilRutey = tilPos / Brett.BRETTSTØRRELSE;
+		int tilRutex = tilPos - tilRutey * Brett.BRETTSTØRRELSE;
+		int diffx = tilRutex - fraRutex;
+		int diffy = tilRutey - fraRutey;
+
+		Retning retning = finnRetning(diffx, diffy, brikke.getFarge());
 		if (retning == null) return false;
-		return retning == Retning.DIAGONALT && Koordinater.avstand(fraPos, tilPos) == 1 && Koordinater.radRetning(fraPos, tilPos, brikke.getFarge()) == Retning.FREM;
+		return retning == Retning.DIAGONALT && Koordinater.avstand(diffx, diffy) == 1 && Koordinater.radRetning(diffy, brikke.getFarge()) == Retning.FREM;
 
 	}
 }

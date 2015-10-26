@@ -9,21 +9,22 @@ import java.util.ArrayList;
 
 /**
  * Created by Jo Øivind Gjernes on 25.10.2015.
+ *
+ * Teste hvor mange trekk AIen kan gjøre per sekund.
  */
 public class Benchmark
 {
 	public static void main(String[] args)
 	{
 		ArrayList<Pair<Long, Integer>> liste = new ArrayList<>();
-		for (int i = 0; i < 5; ++i) {
+		for (int i = 0; i < 1; ++i) {
 			Brett b = new Brett(0);
-			MiniMax aiTest = new MiniMax(5, Farge.HVIT);
+			MiniMax aiTest = new MiniMax(4, Farge.HVIT);
 			long startTime = System.currentTimeMillis();
 			aiTest.nesteAiTrekk(b);
 			int trekk = aiTest.getAntallTrekk();
 			long time = System.currentTimeMillis() - startTime;
 			liste.add(new Pair<Long, Integer>(time, trekk));
-			//Koordinater.resetTables();
 		}
 		displayBenchmarkStats(liste);
 	}

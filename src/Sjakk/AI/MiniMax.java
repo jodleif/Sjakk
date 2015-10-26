@@ -36,7 +36,7 @@ public class MiniMax
 		if (muligeTrekk.isEmpty() || dybde == 0) {
 			besteTrekk = new SpillTrekk(b.getPoeng(aiFarge));
 		} else {
-			if (b.getSpillerSinTur() == aiFarge) { // AIen sin tur
+			if (b.getSpillerSinTur() == aiFarge) { // AIen sin tur trekket blir maksimert
 				for (Map.Entry<Integer, ArrayList<Integer>> brikke : muligeTrekk.entrySet())
 					for (int tilPos : brikke.getValue()) {
 						if (b.flyttBrikke(brikke.getKey(), tilPos)) {
@@ -49,7 +49,7 @@ public class MiniMax
 							b.angre();
 						}
 					}
-			} else { // Ikke AIen sin tur
+			} else { // Ikke AIen sin tur velger minimert trekk
 				for (Map.Entry<Integer, ArrayList<Integer>> brikke : muligeTrekk.entrySet())
 					for (int tilPos : brikke.getValue()) {
 						if (b.flyttBrikke(brikke.getKey(), tilPos)) {

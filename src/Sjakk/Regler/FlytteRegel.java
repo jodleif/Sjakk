@@ -66,20 +66,20 @@ public class FlytteRegel
 	}
 
 	/**
-	 * Metode som sjekker rutene mellom fra og til posisjon for � finne ut om det er noen brikker "p� veien"
+	 * Metode som sjekker rutene mellom fra og til posisjon for å finne ut om det er noen brikker "på veien"
 	 *
-	 * @param fraPos brikkens fra-posisjon
-	 * @param tilPos brikkens til-posisjon
+	 * @param fraPosx brikkens fra-posisjon
+	 * @param fraPosy brikkens til-posisjon
 	 * @param brett  spillbrettet
-	 * @return true hvis det oppst�r kollisjoner.
+	 * @return true hvis det oppstår kollisjoner.
 	 */
-	protected static boolean kollisjonsSjekk(int fraPos, int tilPos, Brikke brikke, Brett brett)
+	protected static boolean kollisjonsSjekk(int fraPosx, int fraPosy, int diffx, int diffy, Brikke brikke, Brett brett)
 	{
-		Brikke tmp = brett.getBrikke(tilPos);
+		Brikke tmp = brett.getBrikke((fraPosy + diffy) * Brett.BRETTSTØRRELSE + (fraPosx + diffx));
 		if(tmp!=null&&tmp.getFarge()== brikke.getFarge()){
 			return true;
 		}
-		ArrayList<Integer> diff = ruterMellom(fraPos, tilPos);
+		ArrayList<Integer> diff = ruterMellom(fraPosx, fraPosy, diffx, diffy);
 		if(diff==null)
 			return false;
 		for (Integer ruteid : diff) {
@@ -94,19 +94,13 @@ public class FlytteRegel
 	/**
 	 * Bestemmer retningen flyttingen går i
 	 *
-	 * @param fraRute brikkens fra-posisjon
-	 * @param tilRute brikkens til-posisjon
+	 * @param diffx tilPosx - fraPosx
+	 * @param diffy tilPosy - fraPosy
 	 * @param farge  brikkens farge (trengs for å finne ut om man beveger seg fremover eller bakover)
 	 * @return Returnerer hvilken retning bevegelsen vil være - (SE enumen Retning)
 	 */
-	protected static Retning finnRetning(int fraRute, int tilRute, Farge farge)
+	protected static Retning finnRetning(int diffx, int diffy, Farge farge)
 	{
-		int fraRutey = fraRute / Brett.BRETTSTØRRELSE;
-		int fraRutex = fraRute - fraRutey * Brett.BRETTSTØRRELSE;
-		int tilRutey = tilRute / Brett.BRETTSTØRRELSE;
-		int tilRutex = tilRute - tilRutey * Brett.BRETTSTØRRELSE; // Skal være raskere enn tilRUte%Brettstørrelse (x retning går aldri opp i 8 (0-7))
-		int diffx = tilRutex - fraRutex;
-		int diffy = tilRutey - fraRutey;
 		// Frem og tilbake
 		if (diffx == 0 && diffy != 0) {
 			if (diffy > 0) {
@@ -138,20 +132,15 @@ public class FlytteRegel
 	/**
 	 * Finner rutene mellom to sjakkruter f.eks a1 og d4 skal gi oss b2 c3 som resultat - skal brukes til å sjekke for kollisjoner i et sjakktrekk.
 	 * Funksjonen antar at rutene man skal sjekke er vertikal, horisontalt eller diagonalt orientert ift hverandre
-	 * @param fra rute man starter fra
-	 * @param til rute man ender i
+	 * @param fraRutex x-koordinat man flytter fra
+	 * @param fraRutey y-koordinat man flytter fra
+	 * @param diffx endring i x (pga trekket)
+	 * @parma diffy endring i y (pga trekket)
 	 * @return navn på rutene mellom fra og til
 	 */
-	protected static ArrayList<Integer> ruterMellom(int fra, int til)
+	protected static ArrayList<Integer> ruterMellom(int fraRutex, int fraRutey, int diffx, int diffy)
 	{
-
-		int fraRutey = fra / Brett.BRETTSTØRRELSE;
-		int fraRutex = fra % Brett.BRETTSTØRRELSE;
-		int tilRutey = til / Brett.BRETTSTØRRELSE;
-		int tilRutex = til % Brett.BRETTSTØRRELSE;
-		int diffx = tilRutex - fraRutex;
-		int diffy = tilRutey - fraRutey;
-		int avstand = Koordinater.avstand(fra,til);
+		int avstand = Koordinater.avstand(diffx, diffy);
 		if(avstand<=1) return null;
 
 		int stegKol = diffx / (avstand);
@@ -176,15 +165,23 @@ public class FlytteRegel
 	 */
 	public boolean gyldigTrekk(int fraPos, int tilPos, Brikke br, Brett brett)
 	{
-		Retning retning = finnRetning(fraPos, tilPos, br.getFarge());
+		if (fraPos == tilPos) return false;
+		int fraRutey = fraPos / Brett.BRETTSTØRRELSE;
+		int fraRutex = fraPos - fraRutey * Brett.BRETTSTØRRELSE;
+		int tilRutey = tilPos / Brett.BRETTSTØRRELSE;
+		int tilRutex = tilPos - tilRutey * Brett.BRETTSTØRRELSE;
+		int diffx = tilRutex - fraRutex;
+		int diffy = tilRutey - fraRutey;
+
+		Retning retning = finnRetning(diffx, diffy, br.getFarge());
 		if (retning == null) return false;
 
-		if (maxAvstand != 0 && (!gyldigAvstand(fraPos, tilPos))) {
+		if (maxAvstand != 0 && (!gyldigAvstand(diffx, diffy))) {
 			return false;
 		}
 
 		if (!hoppOverAndre) { // Hvis den ikke kan hoppe over andre brikker!
-			if (kollisjonsSjekk(fraPos, tilPos, br, brett)) {
+			if (kollisjonsSjekk(fraRutex, fraRutey, diffx, diffy, br, brett)) {
 				return false; // Hvis kollisjon - ugyldig trekk!
 			}
 		}
@@ -209,9 +206,9 @@ public class FlytteRegel
 		return gyldigTrekk(fraPos, tilPos, brikke, brett);
 	}
 
-	protected boolean gyldigAvstand(int fraPos, int tilPos)
+	protected boolean gyldigAvstand(int diffx, int diffy)
 	{
-		return Koordinater.avstand(fraPos,tilPos)<=maxAvstand;
+		return Koordinater.avstand(diffx, diffy) <= maxAvstand;
 	}
 
 }

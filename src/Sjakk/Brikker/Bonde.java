@@ -55,7 +55,7 @@ public class Bonde extends Brikke
 		if (this.getFarge() == Farge.HVIT) {
 			return gyldigeTrekk(Math.max(rutex - 1, 0), Math.min(rutex + 1, 7), Math.min(rutey + 1, 7), Math.min(rutey + maxY, 7));
 		} else {
-			return gyldigeTrekk(Math.max(rutex - 1, 0), Math.min(rutex + 1, 7), Math.max(rutey - 1, 0), Math.max(rutey - maxY, 0));
+			return gyldigeTrekk(Math.max(rutex - 1, 0), Math.min(rutex + 1, 7), Math.max(rutey - maxY, 0), Math.max(rutey - 1, 0));
 		}
 	}
 

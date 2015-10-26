@@ -98,25 +98,18 @@ public class Koordinater
 	 * Regner ut avstand mellom to ruter på sjakkbrettet.
 	 * MERK: Diagonal avstand i sjakk blir bare antall ruter for det ene "benet"
 	 * OBS! Fungerer ikke for "Spesielle bevegelser", i.e. for hesten
-	 * @param fraPos sjakk-koordinat fra
-	 * @param tilPos sjakk-koordinat til
+	 * @param diffx sjakk-koordinat fra
+	 * @param diffy sjakk-koordinat til
 	 * @return avstand (antall ruter)
 	 */
-	public static int avstand(int fraPos, int tilPos)
+	public static int avstand(int diffx, int diffy)
 	{
-		int fray = fraPos / Brett.BRETTSTØRRELSE;
-		int frax = fraPos - fray * Brett.BRETTSTØRRELSE;
-		int tily = tilPos / Brett.BRETTSTØRRELSE;
-		int tilx = tilPos - tily * Brett.BRETTSTØRRELSE;
-		int diffx = tilx - frax;
-		int diffy = tily - fray;
 		int antallRuter = Math.max(Math.abs(diffx), Math.abs(diffy));
 		return antallRuter;
 	}
 
-	public static Retning radRetning(int fraPos, int tilPos, Farge f)
+	public static Retning radRetning(int diffy, Farge f)
 	{
-		int diffy = (tilPos - fraPos) / Brett.BRETTSTØRRELSE;
 		if (f == Farge.HVIT) {
 			return (diffy > 0) ? Retning.FREM : Retning.BAKOVER;
 		}
