@@ -4,6 +4,8 @@ import Sjakk.Brett.Brett;
 import Sjakk.Regler.Farge;
 import Sjakk.Regler.FlytteRegel;
 
+import java.util.ArrayList;
+
 /**
  * Created by Jo Øivind Gjernes on 20.10.2015.
  *
@@ -30,5 +32,15 @@ public class Løper extends Offiser
 		Brikke b = new Løper(getBrett(), getRuteid(), getFarge());
 		b.setAntTrekk(getAntallTrekk());
 		return b;
+	}
+
+	@Override
+	public ArrayList<Integer> gyldigeTrekk()
+	{
+		int ruteid = getRuteid();
+		int rutey = ruteid / Brett.BRETTSTØRRELSE;
+		int rutex = ruteid - (rutey << 3);
+		ArrayList<Integer> result = new ArrayList<Integer>();
+		return super.gyldigeTrekk();
 	}
 }

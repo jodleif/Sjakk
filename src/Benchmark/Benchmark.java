@@ -15,9 +15,9 @@ public class Benchmark
 	public static void main(String[] args)
 	{
 		ArrayList<Pair<Long, Integer>> liste = new ArrayList<>();
-		for (int i = 0; i < 100; ++i) {
+		for (int i = 0; i < 5; ++i) {
 			Brett b = new Brett(0);
-			MiniMax aiTest = new MiniMax(3, Farge.HVIT);
+			MiniMax aiTest = new MiniMax(5, Farge.HVIT);
 			long startTime = System.currentTimeMillis();
 			aiTest.nesteAiTrekk(b);
 			int trekk = aiTest.getAntallTrekk();

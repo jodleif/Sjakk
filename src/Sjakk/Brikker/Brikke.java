@@ -120,12 +120,26 @@ public abstract class Brikke
 	 */
 	public ArrayList<Integer> gyldigeTrekk()
 	{
+		return gyldigeTrekk(0, Brett.BRETTSTØRRELSE - 1, 0, Brett.BRETTSTØRRELSE - 1);
+	}
+
+	/**
+	 * Gir gyldige trekk fra en range [min,max] (inklusiv siste)
+	 *
+	 * @param xMin
+	 * @param xMax
+	 * @param yMin
+	 * @param yMax
+	 * @return
+	 */
+	protected ArrayList<Integer> gyldigeTrekk(int xMin, int xMax, int yMin, int yMax)
+	{
 		ArrayList<Integer> tmp = new ArrayList<>();
-		for(int i=0;i<Brett.BRETTSTØRRELSE;++i){
-			for(int j=0;j<Brett.BRETTSTØRRELSE;++j){
-				int ruteSjekk = i * Brett.BRETTSTØRRELSE + j;
-				if (erLovligTrekk(ruteSjekk) && (!sjekkForKollisjoner(ruteSjekk))) {
-					tmp.add(ruteSjekk);
+		for (int y = yMin; y <= yMax; ++y) {
+			for (int x = xMin; x <= xMax; ++x) {
+				int ruteid = (y * 8) + x;
+				if (erLovligTrekk(ruteid)&&(!sjekkForKollisjoner(ruteid))){
+					tmp.add(ruteid);
 				}
 			}
 		}

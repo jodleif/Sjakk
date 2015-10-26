@@ -65,6 +65,15 @@ public class Konge extends Offiser
 	}
 
 	@Override
+	public ArrayList<Integer> gyldigeTrekk()
+	{
+		int ruteid = getRuteid();
+		int rutey = ruteid / Brett.BRETTSTØRRELSE;
+		int rutex = ruteid - (rutey << 3);
+		return gyldigeTrekk(Math.max(0, rutex - 1), Math.min(rutex + 1, 7), Math.max(rutey - 1, 0), Math.min(rutey + 1, 7));
+	}
+
+	@Override
 	public boolean sjekkSjakk()
 	{
 		//return sjekkSjakk(this.getRuteNavn());

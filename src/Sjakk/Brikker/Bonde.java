@@ -4,6 +4,8 @@ import Sjakk.Brett.Brett;
 import Sjakk.Regler.BondeFlytteRegel;
 import Sjakk.Regler.Farge;
 
+import java.util.ArrayList;
+
 /**
  * Created by Jo Øivind Gjernes on 20.10.2015.
  *
@@ -42,6 +44,19 @@ public class Bonde extends Brikke
 	{
 		boolean status = super.flyttTil(tilRuteid);
 		return status;
+	}
+
+	@Override
+	public ArrayList<Integer> gyldigeTrekk()
+	{
+		int rutey = getRuteid() / Brett.BRETTSTØRRELSE;
+		int rutex = getRuteid() - rutey * Brett.BRETTSTØRRELSE;
+		int maxY = (getAntallTrekk() == 0) ? 2 : 1;
+		if (this.getFarge() == Farge.HVIT) {
+			return gyldigeTrekk(Math.max(rutex - 1, 0), Math.min(rutex + 1, 7), Math.min(rutey + 1, 7), Math.min(rutey + maxY, 7));
+		} else {
+			return gyldigeTrekk(Math.max(rutex - 1, 0), Math.min(rutex + 1, 7), Math.max(rutey - 1, 0), Math.max(rutey - maxY, 0));
+		}
 	}
 
 	/**

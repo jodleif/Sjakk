@@ -146,6 +146,9 @@ public class SpilleBrett
 				Brikke tmp = sjakkBrett.getBrikke(String.valueOf((char) (i + 'a')) + String.valueOf((char) (j + '1')));
 				if (tmp != null)
 					ruter[i][j].oppdater(tmp.brikkenavn(), tmp.getFarge());
+				else {
+					ruter[i][j].fjernBilde();
+				}
 			}
 		}
 	}
