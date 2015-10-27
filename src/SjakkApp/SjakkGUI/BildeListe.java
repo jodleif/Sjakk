@@ -9,7 +9,7 @@ import java.util.HashMap;
 /**
  * Created by Jo Øivind Gjernes on 20.10.2015.
  *
- * Inneholder en liste over alle ImageViews (bilder av alle spillbrikker)
+ * Inneholder en liste over alle Image (bilder av alle spillbrikker)
  */
 public class BildeListe
 {

@@ -29,6 +29,12 @@ public class HjelpeFunksjoner
 		return null;
 	}
 
+	/**
+	 * Laster Image (javafx) fra spesifisert filbane
+	 *
+	 * @param filbane relativ eller full bane til bildefil
+	 * @return Bildet eller null hvis det feiler
+	 */
 	public static Image lastBildeFraFil(String filbane)
 	{
 		Image bilde;

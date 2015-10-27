@@ -16,7 +16,13 @@ import javafx.stage.Stage;
  * Created by Jo Øivind Gjernes on 20.10.2015.
  *
  * Kommentarer til øvingen:
- *
+ * - Brikkene i spillet er flyttbare med musen. Man merker spillbrikker og så
+ * trykker på en rute for å flytte (så sant trekket er lovlig)
+ * - Har laget en AI motspiller (som er satt til å "tenke" 4 trekk fremover, 5-6 funker også men blir tregt!)
+ * - Har implementert de fleste muligheter på sjakkbretet. Det som ikke er med er:
+ *    * Skikkelig sjekking for sjakk og sjakk matt
+ *    * Rokkering
+ *    * Oppgradering av bønder til dronning e.l.
  *
  * Hovedklassen til SjakkApp-applikasjonen.
  *
@@ -40,6 +46,12 @@ public class SjakkApp extends Application
 		System.exit(0);
 	}
 
+	/**
+	 * Start javafx
+	 *
+	 * @param primaryStage javafx variabel
+	 * @throws Exception
+	 */
 	@Override
 	public void start(Stage primaryStage) throws Exception
 	{
@@ -53,26 +65,36 @@ public class SjakkApp extends Application
 		spilleBrett = new SpilleBrett(0, statusFelt);
 		tegnBakgrunn();
 		byggSpillBrett();
-		leggTilTestKnapp();
+		leggTilKnapperOgStatusfelt();
 		primaryStage.setScene(scene);
 		primaryStage.show();
 	}
 
+	/**
+	 * Last bagrunnsbilde og legg det til i GUI
+	 */
 	private void tegnBakgrunn()
 	{
 		ImageView iv = HjelpeFunksjoner.lastImageViewFraFil("img/sjakkbrett.png");
-		if(iv!=null){
+		if(iv!=null) {
 			rot.getChildren().add(iv);
 		}
 	}
-	private void leggTilTestKnapp(){
+
+	/**
+	 * Legg til knapper og statusfelt...
+	 */
+	private void leggTilKnapperOgStatusfelt(){
 		HBox hbox = new HBox();
 		hbox.setMaxHeight(30);
+
 		Button b = new Button("Angre");
 		Button b2 = new Button("Nytt spill");
 		b.setPrefHeight(30);
 		b2.setPrefHeight(30);
+
 		b.setOnAction(e -> this.spilleBrett.angre());
+
 		b2.setOnAction(e -> {
 			borderPane.getChildren().remove(spilleBrett.getGridPane());
 			spilleBrett = new SpilleBrett(0, statusFelt);
@@ -80,17 +102,25 @@ public class SjakkApp extends Application
 
 		});
 		bunnPanel.getChildren().add(hbox);
+
 		hbox.getChildren().add(b);
 		hbox.getChildren().add(b2);
 		hbox.getChildren().add(statusFelt);
 	}
 
+	/**
+	 * Legger til GUI elementer for spillbrettet
+	 */
 	private void byggSpillBrett(){
 		borderPane.setPrefSize(WIDTH, HEIGHT);
 		leggTilPadding();
 		borderPane.setCenter(spilleBrett.getGridPane());
 		rot.getChildren().add(borderPane);
 	}
+
+	/**
+	 * Legg til "padding" / tomme GUI elementer utenfor spillbrettet.
+	 */
 	private void leggTilPadding(){
 		borderPane.setTop(new Padding(WIDTH,60));
 		bunnPanel = new VBox();

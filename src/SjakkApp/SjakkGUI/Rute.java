@@ -30,6 +30,13 @@ public class Rute extends Pane
 		rutePos = pos;
 	}
 
+	/**
+	 * Setter rutens bilde. Brukes for å vise sjakkbrikker
+	 *
+	 * @param brikketype type sjakkbrikke
+	 * @param farge      farge på sjakkbrikken
+	 * @throws IllegalArgumentException
+	 */
 	private void setBilde(String brikketype, Farge farge) throws IllegalArgumentException
 	{
 		Image temp = bildeCache.getBilde(brikketype, farge); // Slår opp bilde.
@@ -40,6 +47,9 @@ public class Rute extends Pane
 			getChildren().add(brikkeBilde);
 	}
 
+	/**
+	 * Fjern bilde fra ruten
+	 */
 	public void fjernBilde()
 	{
 		getChildren().remove(brikkeBilde);
@@ -47,6 +57,9 @@ public class Rute extends Pane
 		sjakkBrikke = false;
 	}
 
+	/**
+	 * Legger til et rektangel, for å illustrere når ruten er merket. (legges til som gjennomsiktig)
+	 */
 	private void initBakgrunn()
 	{
 		bakgrunn = new Rectangle(80, 80);
@@ -55,6 +68,11 @@ public class Rute extends Pane
 		getChildren().add(bakgrunn);
 	}
 
+	/**
+	 * Oppdater ruten. Kjøres når man har flyttet en brikke
+	 * @param brikkeNavn brikkenavn = f.eks B hvis bonde
+	 * @param farge farge på brikken.
+	 */
 	public void oppdater(String brikkeNavn, Farge farge)
 	{
 		if (brikkeBilde != null) {
