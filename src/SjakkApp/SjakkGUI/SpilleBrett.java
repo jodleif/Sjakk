@@ -7,8 +7,6 @@ import SjakkApp.SjakkLogikk.Regler.Farge;
 import SjakkApp.SjakkLogikk.Regler.Koordinater;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
@@ -58,17 +56,15 @@ public class SpilleBrett
 		oppdaterStatusfelt();
 	}
 
+	/**
+	 * Lag en timer som starter AIspilleren 4 ganger per sekund
+	 * aiSpillerSinTur metoden gjør bare noe dersom det er ai-spilleren sin tur
+	 */
 	private void startAiSpiller()
 	{
 		aiSpillerGjørTrekk = new Timeline(
-			new KeyFrame(Duration.millis(250), new EventHandler<ActionEvent>()
-			{
-				@Override
-				public void handle(ActionEvent event)
-				{
-					aiSpillerSinTur();
-				}
-
+			new KeyFrame(Duration.millis(250), event -> {
+				aiSpillerSinTur();
 			})
 		);
 		aiSpillerGjørTrekk.setCycleCount(Timeline.INDEFINITE);
@@ -174,8 +170,6 @@ public class SpilleBrett
 	private void oppdaterBrett()
 	{
 		gyldigePos = sjakkBrett.getAlleGyldigeTrekk(sjakkBrett.getSpillerSinTur());
-		if (gyldigePos == null || gyldigePos.size() == 0)
-			System.err.println("SjakkLogikk matt! Vinner: " + sjakkBrett.getSpillerSinTur().motsatt());
 		for (int i = 0; i < Brett.BRETTSTØRRELSE; ++i) {
 			for (int j = 0; j < Brett.BRETTSTØRRELSE; ++j) {
 				Brikke tmp = sjakkBrett.getBrikke(String.valueOf((char) (i + 'a')) + String.valueOf((char) (j + '1')));
@@ -188,8 +182,15 @@ public class SpilleBrett
 		}
 	}
 
+	/**
+	 * Oppdaterer teksten i statusfeltet.
+	 */
 	private void oppdaterStatusfelt()
 	{
+		if (gyldigePos == null || gyldigePos.size() == 0) {
+			statusFelt.setText("Sjakk matt! Vinner: " + sjakkBrett.getSpillerSinTur().motsatt());
+			return;
+		}
 		if (sjakkBrett.getSpillerSinTur() == spillerFarge) {
 			statusFelt.setText("Din tur, poeng:" + sjakkBrett.getPoeng(spillerFarge));
 		} else {
@@ -210,7 +211,7 @@ public class SpilleBrett
 	}
 
 	/**
-	 * Angre funksjon.
+	 * Angre funksjon. Angrer to trekk slik at det blir spilleren sin tur igjen
 	 * merk: Sørger for å fjerne eventuelle merkede felter for å unngå bugs.
 	 *
 	 * @return true hvis angringen gikk bra.
