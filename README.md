@@ -1,5 +1,5 @@
-# Sjakk
-[6109]Prosjekt 2 - Sjakk
+# SjakkApp.SjakkLogikk
+[6109]Prosjekt 2 - SjakkApp.SjakkLogikk
 ### Bildemateriale
 Laget spillbrettet selv
 
