@@ -16,6 +16,7 @@ import javafx.stage.Stage;
  * Created by Jo Øivind Gjernes on 20.10.2015.
  *
  * Kommentarer til øvingen:
+ * - For å få javadoc til å kjøre bruk ekstraparametere: -encoding UTF-8 -docencoding UTF-8 -charset UTF-8
  * - Brikkene i spillet er flyttbare med musen. Man merker spillbrikker og så
  * trykker på en rute for å flytte (så sant trekket er lovlig)
  * - Har laget en AI motspiller (som er satt til å "tenke" 4 trekk fremover, 5-6 funker også men blir tregt!)

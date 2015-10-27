@@ -15,3 +15,4 @@ for å få riktige tegn!
  - Redusere antall sjekker i brikke.getGyldigePosisjoner: 2-3x
  - Total endring: 25000 -> 140000 simulerte trekk per sekund
  - Fikset en bug i minimax -> ~2.2-2.4 millioner trekk per sekund
+ - Redusert (bugget) sjakktesting -> ~2.7-3 millioner trekk per sekund
