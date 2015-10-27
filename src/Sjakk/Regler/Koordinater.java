@@ -2,8 +2,6 @@ package Sjakk.Regler;
 
 import Sjakk.Brett.Brett;
 
-import java.util.HashMap;
-
 /**
  * Created by Jo Øivind Gjernes on 20.10.2015.
  * <p>
@@ -11,13 +9,7 @@ import java.util.HashMap;
  */
 public class Koordinater
 {
-	/**
-	 * Sjekker om rutenavnet er lovlig i sjakk
-	 * @param rutenavn et rutenavn. Format: bokstav tall eks: d1
-	 * @return True hvis gyldig
-	 */
-	public static HashMap<String, int[]> stringTilKoord = new HashMap<>();
-	public static HashMap<Integer, String> koordTilString = new HashMap<>();
+
 
 	public static boolean erLovligRutenavn(String rutenavn)
 	{
@@ -43,13 +35,10 @@ public class Koordinater
 	 */
 	public static int[] til_koordinater(String rutenavn)
 	{
-		//int[] tmp = stringTilKoord.get(rutenavn);
-		//if (tmp != null) return tmp;
 		if (erLovligRutenavn(rutenavn)) {
 			int[] koordinater = new int[2];
 			koordinater[0] = rutenavn.charAt(0) - 'a';
 			koordinater[1] = rutenavn.charAt(1) - '1';
-			//	stringTilKoord.put(rutenavn, koordinater);
 			return koordinater;
 		}
 		return null;
@@ -77,15 +66,12 @@ public class Koordinater
 	 */
 	public static String fra_koordinater(int[] koordinater)
 	{
-		//String tmp = koordTilString.get(Arrays.hashCode(koordinater));
-		//if (tmp != null) return tmp;
 		if (koordinater.length != 2)
 			return null; // Avbryt.
 
 		String str = "" + (char) (koordinater[0] + 'a');
 		str += (char) (koordinater[1] + '1');
 		if (erLovligRutenavn(str)) { // Sjekk om lovlig rutenavn.
-			//koordTilString.put(Arrays.hashCode(koordinater), str);
 			return str;
 		}
 
@@ -106,9 +92,16 @@ public class Koordinater
 		return antallRuter;
 	}
 
-	public static Retning radRetning(int diffy, Farge f)
+	/**
+	 * Sjekker hvilken retning en brikke beveger seg langs en rad
+	 *
+	 * @param diffy         endring i y koordinat
+	 * @param brikkensFarge brikken som flyttes sin farge
+	 * @return retningen brikken flyttes.
+	 */
+	public static Retning radRetning(int diffy, Farge brikkensFarge)
 	{
-		if (f == Farge.HVIT) {
+		if (brikkensFarge == Farge.HVIT) {
 			return (diffy > 0) ? Retning.FREM : Retning.BAKOVER;
 		}
 		return (diffy < 0) ? Retning.FREM : Retning.BAKOVER;

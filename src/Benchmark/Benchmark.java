@@ -1,6 +1,6 @@
 package Benchmark;
 
-import Sjakk.AI.MiniMax;
+import Sjakk.Brett.AI.MiniMax;
 import Sjakk.Brett.Brett;
 import Sjakk.Regler.Farge;
 import javafx.util.Pair;

@@ -1,4 +1,4 @@
-package Sjakk.Brikker;
+package Sjakk.Brett.Brikker;
 
 import Sjakk.Brett.Brett;
 import Sjakk.Regler.Farge;
@@ -20,7 +20,14 @@ public abstract class Brikke
 	private Brett brett;
 	private int antTrekk = 0;
 
-
+	/**
+	 * Konstruktør for klassen Brikke
+	 *
+	 * @param brett  Brettet brikken plasseres på
+	 * @param ruteid ruten brikken står i
+	 * @param farge  brikkens farge.
+	 * @throws IllegalArgumentException
+	 */
 	public Brikke(Brett brett, int ruteid, Farge farge) throws IllegalArgumentException
 	{
 		this.farge = farge;
@@ -33,6 +40,10 @@ public abstract class Brikke
 	}
 
 
+	/**
+	 * Metode for å kopiere brikken. Implementeres i hver klasse som arver av denne
+	 * @return
+	 */
 	public abstract Brikke kopierBrikken();
 	/***
 	 * Implementeres i underklasser- unike regler for hver "brikketype"
@@ -45,9 +56,14 @@ public abstract class Brikke
 		return flytteRegel.gyldigTrekk(this.ruteid, tilRuteid, this, brett);
 	}
 
-	public boolean erLovligAngrep(int ruteid)
+	/**
+	 * Funksjon for å se om et trekk er et gyldig angrep. For de fleste brikker er lovlige trekk = lovlig angrep. Untatt for bonden.
+	 * @param tilRute ruteid man sjekker om er et gyldig angrep
+	 * @return true hvis man kan angripe ruten
+	 */
+	public boolean erLovligAngrep(int tilRute)
 	{
-		return erLovligTrekk(ruteid);
+		return erLovligTrekk(tilRute);
 	}
 
 	/***
@@ -56,21 +72,36 @@ public abstract class Brikke
 	 */
 	public abstract String brikkenavn();
 
+	/**
+	 *
+	 * @return
+	 */
 	public int getRuteid()
 	{
 		return ruteid;
 	}
 
+	/**
+	 * Setter brikkens ruteid
+	 * @param ruteid id til ruten der brikken står.
+	 */
 	public void setRuteid(int ruteid)
 	{
 		this.ruteid = ruteid;
 	}
 
+	/**
+	 *
+	 * @return Brikkens farge
+	 */
 	public Farge getFarge()
 	{
 		return farge;
 	}
 
+	/**
+	 * @return Brettet brikken tilhører.
+	 */
 	public Brett getBrett()
 	{
 		return brett;
@@ -97,11 +128,11 @@ public abstract class Brikke
 	/**
 	 * Gir gyldige trekk fra en range [min,max] (inklusiv siste)
 	 *
-	 * @param xMin
-	 * @param xMax
-	 * @param yMin
-	 * @param yMax
-	 * @return
+	 * @param xMin minimum x-koordinat å sjekke
+	 * @param xMax maximum x-koordinat å sjekke
+	 * @param yMin minimuam y-koordinat å sjekke
+	 * @param yMax maksimum y-koordinat å sjekke
+	 * @return Liste over alle gyldige trekk for brikken
 	 */
 	protected ArrayList<Integer> gyldigeTrekk(int xMin, int xMax, int yMin, int yMax)
 	{
@@ -109,7 +140,6 @@ public abstract class Brikke
 		for (int y = yMin; y <= yMax; ++y) {
 			for (int x = xMin; x <= xMax; ++x) {
 				int localRuteid = (y * 8) + x;
-				if (localRuteid == getRuteid()) continue;
 				if (erLovligTrekk(localRuteid) && (!sjekkForKollisjoner(localRuteid))) {
 					tmp.add(localRuteid);
 				}
@@ -134,35 +164,40 @@ public abstract class Brikke
 		return tmp != null && (tmp.getFarge() == this.getFarge());
 	}
 
-	@Override
-	public boolean equals(Object obj)
-	{
-		if (obj == null)
-			return false;
-		Brikke b = (Brikke) obj;
-		return b.getFarge() == getFarge() && b.getRuteid() == getRuteid() && b.brikkenavn().equals(brikkenavn());
-	}
-
+	/**
+	 * @return antall trekk brikken er flyttet
+	 */
 	public int getAntallTrekk(){
 		return antTrekk;
 	}
 
-	public void reduserAntallTrekk(){
+	public void reduserAntallTrekk()
+	{
 		--antTrekk;
 		//assert(antTrekk>=0);
 	}
 
+	/**
+	 * Øker antall trekk brikken er flyttet med en.
+	 */
 	public void økAntallTrekk()
 	{
 		++antTrekk;
 		//assert(antTrekk>=0);
 	}
 
+	/**
+	 * @return Antall poeng brikken er verdt (til AI)
+	 */
 	public int getPoeng()
 	{
 		return poeng;
 	}
 
+	/**
+	 * Sett hvor mange trekk brikken er flyttet.
+	 * @param antallTrekk antall trekk brikken har flyttet
+	 */
 	protected void setAntTrekk(int antallTrekk){
 		this.antTrekk = antallTrekk;
 	}

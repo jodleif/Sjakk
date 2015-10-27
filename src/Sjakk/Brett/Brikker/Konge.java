@@ -1,4 +1,4 @@
-package Sjakk.Brikker;
+package Sjakk.Brett.Brikker;
 
 import Sjakk.Brett.Brett;
 import Sjakk.Regler.Farge;
@@ -20,38 +20,6 @@ public class Konge extends Offiser
 		poeng = 1000;
 	}
 
-
-	/**
-	 * @param ruteid
-	 * @return
-	 */
-	private boolean sjekkSjakk(int ruteid)
-	{
-		return false;
-		/**
-		 * Tungvindt metode- brikken "flyttes" på brettet hvis feltet er åpent, så sjekkes det om den (kongen) fortsatt står i sjakk.
-		 */
-		/*
-		if (getBrett().getBrikke(ruteid) == null) {
-			return getBrett().simulerSjakkTest(this, ruteid);
-		} else {
-
-			ArrayList<Brikke> brikker = getBrett().getAlleBrikker(getFarge().motsatt());
-			ArrayList<Brikke> setterISjakk = new ArrayList<>();
-			for (Brikke brikke : brikker) {
-				if (brikke.erLovligAngrep(ruteid)) {
-					setterISjakk.add(brikke);
-				}
-			}
-			if (setterISjakk.size() > 1) {
-				return true;
-			} else if (setterISjakk.size() == 1) {
-				return !(setterISjakk.get(0).getRuteid() == ruteid);
-			}
-			return false;
-		}
-		*/
-	}
 
 	@Override
 	public ArrayList<Integer> gyldigeTrekk()

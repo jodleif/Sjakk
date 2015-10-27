@@ -1,7 +1,7 @@
 package Sjakk.Regler;
 
 import Sjakk.Brett.Brett;
-import Sjakk.Brikker.Brikke;
+import Sjakk.Brett.Brikker.Brikke;
 
 import java.util.ArrayList;
 
@@ -9,7 +9,7 @@ import java.util.ArrayList;
  * Created by Jo Øivind Gjernes on 20.10.2015.
  * <p>
  * Inneholder definerbare regler for hvordan en brikke skal ha lov til å bevege seg.
- * Alle "private" felter er gjort protected pga jeg har utvidet regelen med noen spesialklausuler for bonde
+ * Alle "private" felter er gjort protected pga jeg har utvidet regelen med noen spesialklausuler for bonde (og utvidet klassen)
  */
 public class FlytteRegel
 {
@@ -68,8 +68,10 @@ public class FlytteRegel
 	/**
 	 * Metode som sjekker rutene mellom fra og til posisjon for å finne ut om det er noen brikker "på veien"
 	 *
-	 * @param fraPosx brikkens fra-posisjon
-	 * @param fraPosy brikkens til-posisjon
+	 * @param fraPosx brikkens fra-posisjon (x) / kolonne
+	 * @param fraPosy brikkens fra-posisjon (y) / rad
+	 * @param diffx differanse i x retninng
+	 * @param diffy differanse i y retning
 	 * @param brett  spillbrettet
 	 * @return true hvis det oppstår kollisjoner.
 	 */
@@ -135,7 +137,7 @@ public class FlytteRegel
 	 * @param fraRutex x-koordinat man flytter fra
 	 * @param fraRutey y-koordinat man flytter fra
 	 * @param diffx endring i x (pga trekket)
-	 * @parma diffy endring i y (pga trekket)
+	 * @param diffy endring i y (pga trekket)
 	 * @return navn på rutene mellom fra og til
 	 */
 	protected static ArrayList<Integer> ruterMellom(int fraRutex, int fraRutey, int diffx, int diffy)
@@ -206,6 +208,13 @@ public class FlytteRegel
 		return gyldigTrekk(fraPos, tilPos, brikke, brett);
 	}
 
+	/**
+	 * Sjekker om avstanden man flytter er gyldig.
+	 *
+	 * @param diffx endring i x-pos
+	 * @param diffy endring i y-pos
+	 * @return
+	 */
 	protected boolean gyldigAvstand(int diffx, int diffy)
 	{
 		return Koordinater.avstand(diffx, diffy) <= maxAvstand;

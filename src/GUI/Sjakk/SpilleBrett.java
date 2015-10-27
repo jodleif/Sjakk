@@ -1,8 +1,8 @@
 package GUI.Sjakk;
 
-import Sjakk.AI.MiniMax;
+import Sjakk.Brett.AI.MiniMax;
 import Sjakk.Brett.Brett;
-import Sjakk.Brikker.Brikke;
+import Sjakk.Brett.Brikker.Brikke;
 import Sjakk.Regler.Farge;
 import Sjakk.Regler.Koordinater;
 import javafx.animation.KeyFrame;

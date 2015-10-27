@@ -1,4 +1,4 @@
-package Sjakk.Brikker;
+package Sjakk.Brett.Brikker;
 
 import Sjakk.Brett.Brett;
 import Sjakk.Regler.Farge;

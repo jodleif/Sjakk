@@ -1,7 +1,7 @@
 package Sjakk.Regler;
 
 import Sjakk.Brett.Brett;
-import Sjakk.Brikker.Brikke;
+import Sjakk.Brett.Brikker.Brikke;
 
 /**
  * Created by Jo Øivind Gjernes on 21.10.2015.
@@ -78,9 +78,7 @@ public class BondeFlytteRegel extends FlytteRegel
 		int diffx = tilRutex - fraRutex;
 		int diffy = tilRutey - fraRutey;
 
-		Retning retning = finnRetning(diffx, diffy, brikke.getFarge());
-		if (retning == null) return false;
-		return (retning == Retning.DIAGONALT) && (Koordinater.avstand(diffx, diffy) == 1) && (Koordinater.radRetning(diffy, brikke.getFarge()) == Retning.FREM);
+		return Math.abs(diffx) == Math.abs(diffy) && (Koordinater.avstand(diffx, diffy) == 1) && (Koordinater.radRetning(diffy, brikke.getFarge()) == Retning.FREM);
 
 	}
 }

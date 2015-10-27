@@ -1,4 +1,4 @@
-package Sjakk.Brikker;
+package Sjakk.Brett.Brikker;
 
 import Sjakk.Brett.Brett;
 import Sjakk.Regler.Farge;
@@ -16,7 +16,7 @@ public class Springer extends Offiser
 	{
 		super(brett, ruteid, farge);
 		flytteRegel = new FlytteRegel(true, true);
-		poeng = 7;
+		poeng = 5;
 	}
 
 

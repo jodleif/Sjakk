@@ -1,6 +1,6 @@
 package Sjakk.Brett.Historikk;
 
-import Sjakk.Brikker.Brikke;
+import Sjakk.Brett.Brikker.Brikke;
 import Sjakk.Regler.Farge;
 
 /**
@@ -19,6 +19,15 @@ public class Trekk
 	private Farge spillerSittTrekk;
 	private int poeng;
 
+	/**
+	 * Opprett trekk
+	 *
+	 * @param flyttetBrikke    brikken som blir flyttet
+	 * @param flyttTil         dit brikken blir flyttet
+	 * @param fjernetBrikke    brikken som evt. blir fjernet
+	 * @param spillerSittTrekk hvilken spiller sin tur det er
+	 * @param poeng            antall poeng som ligger på brettet.
+	 */
 	public Trekk(Brikke flyttetBrikke, int flyttTil, Brikke fjernetBrikke, Farge spillerSittTrekk, int poeng)
 	{
 		if (flyttetBrikke != null)
@@ -31,16 +40,26 @@ public class Trekk
 
 	}
 
+	/**
+	 *
+	 * @return flyttet brikke
+	 */
 	public Brikke getFlyttetBrikke()
 	{
 		return flyttetBrikke;
 	}
 
+	/**
+	 * @return evt fjernet brikke
+	 */
 	public Brikke getFjernetBrikke()
 	{
 		return fjernetBrikke;
 	}
 
+	/**
+	 * @return hvor brikken ble flyttet til
+	 */
 	public int getFlyttTil()
 	{
 		return flyttTil;

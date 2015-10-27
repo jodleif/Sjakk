@@ -1,4 +1,4 @@
-package Sjakk.Brikker;
+package Sjakk.Brett.Brikker;
 
 import Sjakk.Brett.Brett;
 import Sjakk.Regler.Farge;
@@ -19,7 +19,7 @@ public class Tårn extends Offiser
 	{
 		super(brett, ruteid, farge);
 		flytteRegel = new FlytteRegel(true, true, true, false);
-		poeng = 5;
+		poeng = 10;
 	}
 
 	@Override
@@ -41,9 +41,9 @@ public class Tårn extends Offiser
 	{
 		int lruteid = getRuteid();
 		int rutey = lruteid / Brett.BRETTSTØRRELSE;
-		int rutex = lruteid - (rutey << 3);
-		ArrayList<Integer> gyldigeTrekk = super.gyldigeTrekk(rutex, rutex, 0, 7);
-		gyldigeTrekk.addAll(super.gyldigeTrekk(0, 7, rutey, rutey));
+		int rutex = lruteid - (rutey * Brett.BRETTSTØRRELSE);
+		ArrayList<Integer> gyldigeTrekk = super.gyldigeTrekk(rutex, rutex, 0, 7); // Legge til rad
+		gyldigeTrekk.addAll(super.gyldigeTrekk(0, 7, rutey, rutey)); // legge til kolonne
 		return gyldigeTrekk;
 	}
 }

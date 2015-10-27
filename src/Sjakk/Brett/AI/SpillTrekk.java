@@ -1,4 +1,4 @@
-package Sjakk.AI;
+package Sjakk.Brett.AI;
 
 import Sjakk.Brett.Brett;
 

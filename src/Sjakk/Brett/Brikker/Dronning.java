@@ -1,4 +1,4 @@
-package Sjakk.Brikker;
+package Sjakk.Brett.Brikker;
 
 import Sjakk.Brett.Brett;
 import Sjakk.Regler.Farge;
@@ -22,7 +22,7 @@ public class Dronning extends Offiser
 	{
 		super(brett, ruteid, farge);
 		flytteRegel = new FlytteRegel(true, true, true, true);
-		poeng = 10;
+		poeng = 25;
 	}
 	/**
 	 * Brikkens type

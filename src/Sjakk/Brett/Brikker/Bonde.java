@@ -1,4 +1,4 @@
-package Sjakk.Brikker;
+package Sjakk.Brett.Brikker;
 
 import Sjakk.Brett.Brett;
 import Sjakk.Regler.BondeFlytteRegel;
@@ -18,7 +18,7 @@ public class Bonde extends Brikke
 	/**
 	 * Konstruktør
 	 * @param brett brettet brikken er plassert på
-	 * @param ruteid rutenavnet der brikken er plassert
+	 * @param ruteid ruten der brikken er plassert
 	 * @param farge brikkens farge
 	 * @throws IllegalArgumentException
 	 */

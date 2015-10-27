@@ -4,8 +4,8 @@ package Sjakk.Brett;
  * Created by Jo Øivind Gjernes on 20.10.2015.
  */
 
+import Sjakk.Brett.Brikker.*;
 import Sjakk.Brett.Historikk.Trekk;
-import Sjakk.Brikker.*;
 import Sjakk.Regler.Farge;
 import Sjakk.Regler.Koordinater;
 import Sjakk.Regler.StartPosisjonRegler;
