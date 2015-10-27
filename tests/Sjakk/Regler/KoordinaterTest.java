@@ -2,8 +2,6 @@ package Sjakk.Regler;
 
 import org.junit.Test;
 
-import java.util.Arrays;
-
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -43,14 +41,4 @@ public class KoordinaterTest
 		assertTrue(test3.equals(forventet));
 	}
 
-	@Test
-	public void testKoordinater() throws Exception
-	{
-		Koordinater.stringTilKoord.forEach((integer, ints) -> {
-			String str = Koordinater.koordTilString.get(Arrays.hashCode(ints));
-			assertTrue(integer.hashCode() == str.hashCode());
-			System.out.println(str + " = " + ints[0] + "," + ints[1]);
-
-		});
-	}
 }

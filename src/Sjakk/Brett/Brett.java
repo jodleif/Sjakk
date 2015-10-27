@@ -244,7 +244,6 @@ public class Brett
 	public boolean flyttBrikke(int fraRuteid, int tilRuteid)
 	{
 		if (fraRuteid == tilRuteid) {
-			System.out.println("SKAL IKKE SKJE");
 			return false;
 		}
 		if (!(erLovligRutenavn(fraRuteid) && erLovligRutenavn(tilRuteid))) {
@@ -279,23 +278,11 @@ public class Brett
 		return false;
 	}
 
-	/*
-	public boolean sjekkSjakk(Farge f)
-	{
-		if (hvitKonge == null || sortKonge == null) return true;
-		if (f == Farge.HVIT) {
-			return hvitKonge.sjekkSjakk();
-		} else {
-			return sortKonge.sjekkSjakk();
-		}
-	}
-*/
-
 	public boolean sjekkSjakk(Farge f)
 	{
 		for (Brikke b : getAlleBrikker(f)) {
 			if (b.brikkenavn().equals("K")) {
-				return b.sjekkSjakk();
+				return false;
 			}
 		}
 		return true;
@@ -320,23 +307,12 @@ public class Brett
 	{
 		boolean spillerISjakk = sjekkSjakk(f);
 		LinkedHashMap<Integer, ArrayList<Integer>> listeOverGyldigeTrekk = new LinkedHashMap<>();
+		if (spillerISjakk) return listeOverGyldigeTrekk;
 		ArrayList<Brikke> fargeBrikker = getAlleBrikker(f);
 		for (Brikke brikke : fargeBrikker) {
-			ArrayList<Integer> liste = null;
 			ArrayList<Integer> trekk = brikke.gyldigeTrekk();
 			if (!trekk.isEmpty()) {
-				if (spillerISjakk) {
-					liste = new ArrayList<Integer>();
-					for (Integer ruteid : trekk) {
-						if (!simulerSjakkTest(brikke, ruteid))
-							liste.add(ruteid);
-					}
-				} else { // Spiller ikke i sjakk
-					liste = trekk;
-				}
-				if (!liste.isEmpty()) {
-					listeOverGyldigeTrekk.put(brikke.getRuteid(), liste);
-				}
+				listeOverGyldigeTrekk.put(brikke.getRuteid(), trekk);
 			}
 		}
 		return listeOverGyldigeTrekk;
@@ -351,7 +327,6 @@ public class Brett
 			angre(); // Angre simulering
 			return sjakk;
 		}
-		//System.out.println("Skal ikke være mulig å nå dette! [simulersjakk]" +br.getRuteid() + " til " + tilRute);
 		return sjekkSjakk(br.getFarge());
 	}
 
@@ -365,7 +340,7 @@ public class Brett
 				brikker.add(tmp);
 			}
 		}
-		Collections.shuffle(brikker);
+		Collections.shuffle(brikker); // Gi litt tilfeldigheter til AItrekk
 		return brikker;
 	}
 
@@ -511,15 +486,15 @@ public class Brett
 			return 0 - poeng;
 		}
 	}
-
+	/*
 	public int getPoeng(Farge spiller, boolean sjekkSjakkmatt)
 	{
 		if (getAlleGyldigeTrekk(spiller.motsatt()).size() == 0) {
-			return getPoeng(spiller) + 10;
+			return getPoeng(spiller) + 1000;
 		}
 		if (getAlleGyldigeTrekk(spiller).size() == 0) {
-			return getPoeng(spiller) - 10;
+			return getPoeng(spiller) - 1000;
 		}
 		return getPoeng(spiller);
-	}
+	}*/
 }

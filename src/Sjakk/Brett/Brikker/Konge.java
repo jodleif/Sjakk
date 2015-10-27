@@ -26,7 +26,7 @@ public class Konge extends Offiser
 	{
 		int ruteid = getRuteid();
 		int rutey = ruteid / Brett.BRETTSTØRRELSE;
-		int rutex = ruteid - (rutey << 3);
+		int rutex = ruteid - (rutey * Brett.BRETTSTØRRELSE);
 		return gyldigeTrekk(Math.max(0, rutex - 1), Math.min(rutex + 1, 7), Math.max(rutey - 1, 0), Math.min(rutey + 1, 7));
 	}
 
@@ -55,11 +55,5 @@ public class Konge extends Offiser
 		Brikke b = new Konge(getBrett(), getRuteid(), getFarge());
 		b.setAntTrekk(getAntallTrekk());
 		return b;
-	}
-
-	public boolean rokker(boolean kongeside)
-	{
-		getBrett().Rokker(kongeside, getFarge());
-		return true; // TODO: implementer i spillet, legge til som gyldig trekk.
 	}
 }

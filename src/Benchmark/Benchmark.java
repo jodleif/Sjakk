@@ -38,6 +38,12 @@ public class Benchmark
 		visBenchmarkStatistikk(liste);
 	}
 
+
+	/**
+	 * Liten metode for å vise statistikk fra "benchmark" til skjermen
+	 *
+	 * @param stats Lagret antall trekk og tid trekk tok å utføre.
+	 */
 	public static void visBenchmarkStatistikk(ArrayList<Pair<Long, Integer>> stats)
 	{
 		int avgTrekk = 0;
